@@ -1,0 +1,2685 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:b="http://www.google.com/2005/gml/b" xmlns:data="http://www.google.com/2005/gml/data" xmlns:expr="http://www.google.com/2005/gml/expr"><head>
+<link href="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/3957297643-widget_css_bundle.css" rel="stylesheet" type="text/css">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="blogger" name="generator">
+<link href="http://mvidner.blogspot.fr/favicon.ico" rel="icon" type="image/x-icon">
+<link href="http://mvidner.blogspot.com/2017/01/capturing-and-decoding-lego-mindstorms.html" rel="canonical">
+<link rel="alternate" type="application/atom+xml" title="Martin Vidner - Atom" href="http://mvidner.blogspot.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="Martin Vidner - RSS" href="http://mvidner.blogspot.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="Martin Vidner - Atom" href="https://www.blogger.com/feeds/34112729/posts/default">
+
+<link rel="alternate" type="application/atom+xml" title="Martin Vidner - Atom" href="http://mvidner.blogspot.com/feeds/8446843548359418647/comments/default">
+<!--Can't find substitution for tag [blog.ieCssRetrofitLinks]-->
+<link href="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/09f45f48-e735-11e6-984b-879bf7d55bdb.jpg" rel="image_src">
+<meta content="http://mvidner.blogspot.com/2017/01/capturing-and-decoding-lego-mindstorms.html" property="og:url">
+<meta content="Capturing and Decoding Lego Mindstorms EV3 Bluetooth Communication" property="og:title">
+<meta content="The Lego Mindstorms EV3 robots  can be controlled with an Android app ( Lego Mindstorms Commander ) communicating with the brick via Bluetoo..." property="og:description">
+<meta content="https://lh6.googleusercontent.com/proxy/S-FQl90WxeOoSpSEIyr80EQ_FnHw-I_iWdfvsZmYN3d58a--CFvwKOpNAgFZxXIPPHwV0kRcUEVBCirwJrK63OgtCXMvZJmU09N7gMkggfrRhrHF0EzCBflGQTVBmVgaT2LniMi7p4tXYwaCOR0Njbs_pciEojI=w1200-h630-p-k-no-nu" property="og:image">
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<title>Martin Vidner: Capturing and Decoding Lego Mindstorms EV3 Bluetooth Communication</title>
+<style id="page-skin-1" type="text/css"><!--
+/*
+-----------------------------------------------
+Blogger Template Style
+Name:     Son of Moto (Mean Green Blogging Machine variation)
+Date:     23 Feb 2004
+Updated by: Blogger Team
+----------------------------------------------- */
+/* Variable definitions
+====================
+<Variable name="mainBgColor" description="Main Background Color"
+type="color" default="#ffffff">
+<Variable name="mainTextColor" description="Text Color"
+type="color" default="#555544">
+<Variable name="pageHeaderColor" description="Blog Title Color"
+type="color" default="#ffffee">
+<Variable name="blogDescriptionColor" description="Blog Description Color"
+type="color" default="#ffffee">
+<Variable name="linkColor" description="Link Color"
+type="color" default="#669922">
+<Variable name="hoverLinkColor" description="Link Hover Color"
+type="color" default="#88bb22">
+<Variable name="dateHeaderColor" description="Date Header Color"
+type="color" default="#555544">
+<Variable name="sidebarHeaderColor" description="Sidebar Title Color"
+type="color" default="#555544">
+<Variable name="sidebarTextColor" description="Sidebar Text Color"
+type="color" default="#555544">
+<Variable name="bodyFont" description="Text Font" type="font"
+default="normal normal 100% tahoma, 'Trebuchet MS', lucida, helvetica, sans-serif">
+<Variable name="startSide" description="Start side in blog language"
+type="automatic" default="left">
+<Variable name="endSide" description="End side in blog language"
+type="automatic" default="right">
+*/
+/* Primary layout */
+body {
+margin: 0;
+padding: 0;
+border: 0;
+text-align: center;
+color: #555544;
+background: #692 url(https://resources.blogblog.com/blogblog/data/moto_son/outerwrap.gif) top center repeat-y;
+font-size: small;
+}
+img {
+border: 0;
+display: block;
+}
+.clear {
+clear: both;
+}
+/* Wrapper */
+#outer-wrapper {
+margin: 0 auto;
+border: 0;
+width: 792px;
+text-align: left;
+background: #ffffff url(https://resources.blogblog.com/blogblog/data/moto_son/innerwrap.gif) top right repeat-y;
+font: normal normal 100% tahoma, 'Trebuchet MS', lucida, helvetica, sans-serif;
+}
+/* Header */
+#header-wrapper	{
+background: #8b2 url(https://resources.blogblog.com/blogblog/data/moto_son/headbotborder.gif) bottom left repeat-x;
+margin: 0 auto;
+padding-top: 0;
+padding-right: 0;
+padding-bottom: 15px;
+padding-left: 0;
+border: 0;
+}
+#header h1 {
+text-align: left;
+font-size: 200%;
+color: #ffffee;
+margin: 0;
+padding-top: 15px;
+padding-right: 20px;
+padding-bottom: 0;
+padding-left: 20px;
+background-image: url(https://resources.blogblog.com/blogblog/data/moto_son/topper.gif);
+background-repeat: repeat-x;
+background-position: top left;
+}
+h1 a, h1 a:link, h1 a:visited {
+color: #ffffee;
+}
+#header .description {
+font-size: 110%;
+text-align: left;
+padding-top: 3px;
+padding-right: 20px;
+padding-bottom: 10px;
+padding-left: 23px;
+margin: 0;
+line-height:140%;
+color: #ffffee;
+}
+/* Inner layout */
+#content-wrapper {
+padding: 0 16px;
+}
+#main {
+width: 500px;
+float: left;
+word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+}
+#sidebar {
+width: 226px;
+float: right;
+color: #555544;
+word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+}
+/* Bottom layout */
+#footer	{
+clear: left;
+margin: 0;
+padding: 0 20px;
+border: 0;
+text-align: left;
+border-top: 1px solid #f9f9f9;
+}
+#footer .widget	{
+text-align: left;
+margin: 0;
+padding: 10px 0;
+background-color: transparent;
+}
+/* Default links 	*/
+a:link, a:visited {
+font-weight: bold;
+text-decoration: none;
+color: #669922;
+background: transparent;
+}
+a:hover {
+font-weight: bold;
+text-decoration: underline;
+color: #88bb22;
+background: transparent;
+}
+a:active {
+font-weight : bold;
+text-decoration : none;
+color: #88bb22;
+background: transparent;
+}
+/* Typography */
+.main p, .sidebar p, .post-body {
+line-height: 140%;
+margin-top: 5px;
+margin-bottom: 1em;
+}
+.post-body blockquote {
+line-height:1.3em;
+}
+h2, h3, h4, h5	{
+margin: 0;
+padding: 0;
+}
+h2 {
+font-size: 130%;
+}
+h2.date-header {
+color: #555544;
+}
+.post h3 {
+margin-top: 5px;
+font-size: 120%;
+}
+.post-footer {
+font-style: italic;
+}
+.sidebar h2 {
+color: #555544;
+}
+.sidebar .widget {
+margin-top: 12px;
+margin-right: 0;
+margin-bottom: 13px;
+margin-left: 0;
+padding: 0;
+}
+.main .widget {
+margin-top: 12px;
+margin-right: 0;
+margin-bottom: 0;
+margin-left: 0;
+}
+li  {
+line-height: 160%;
+}
+.sidebar ul {
+margin-left: 0;
+margin-top: 0;
+padding-left: 0;
+}
+.sidebar ul li {
+list-style: disc url(https://resources.blogblog.com/blogblog/data/moto_son/diamond.gif) inside;
+vertical-align: top;
+padding: 0;
+margin: 0;
+}
+.widget-content {
+margin-top: 0.5em;
+}
+/* Profile
+----------------------------------------------- */
+.profile-datablock {
+margin-top: 3px;
+margin-right: 0;
+margin-bottom: 5px;
+margin-left: 0;
+line-height: 140%;
+}
+.profile-textblock {
+margin-left: 0;
+}
+.profile-img {
+float: left;
+margin-top: 0;
+margin-right: 5px;
+margin-bottom: 5px;
+margin-left: 0;
+border:4px solid #8b2;
+}
+#comments  {
+border: 0;
+border-top: 1px dashed #eed;
+margin-top: 10px;
+margin-right: 0;
+margin-bottom: 0;
+margin-left: 0;
+padding: 0;
+}
+#comments h4	{
+margin-top: 10px;
+font-weight: normal;
+font-style: italic;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+#comments dl dt 	{
+font-weight: bold;
+font-style: italic;
+margin-top: 35px;
+padding-top: 1px;
+padding-right: 0;
+padding-bottom: 0;
+padding-left: 18px;
+background: transparent url(https://resources.blogblog.com/blogblog/data/moto_son/commentbug.gif) top left no-repeat;
+}
+#comments dl dd	{
+padding: 0;
+margin: 0;
+}
+.deleted-comment {
+font-style:italic;
+color:gray;
+}
+.feed-links {
+clear: both;
+line-height: 2.5em;
+}
+#blog-pager-newer-link {
+float: left;
+}
+#blog-pager-older-link {
+float: right;
+}
+#blog-pager {
+text-align: center;
+}
+/** Page structure tweaks for layout editor wireframe */
+body#layout #outer-wrapper {
+padding-top: 0;
+}
+body#layout #header,
+body#layout #content-wrapper,
+body#layout #footer {
+padding: 0;
+}
+
+--></style>
+<link href="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/authorization.css" media="all" onload="if(media!='all')media='all'" rel="stylesheet"><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=34112729&amp;zx=88efb5eb-5702-4dd2-950a-1c4c0884ca11' rel='stylesheet'/></noscript>
+<script src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/cbgapi.loaded_3" async=""></script><script src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/cbgapi.loaded_2" async=""></script><script type="text/javascript" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/google_top_exp.js"></script><style>.gc-bubbleDefault{background-color:transparent !important;text-align:left;padding:0 !important;margin:0 !important;border:0 !important;table-layout:auto !important}.gc-reset{background-color:transparent !important;border:0 !important;padding:0 !important;margin:0 !important;text-align:left}.pls-bubbleTop{border-bottom:1px solid #ccc !important}.pls-topTail,.pls-vertShimLeft,.pls-contentLeft{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/border_3.gif) !important}.pls-topTail{background-repeat:repeat-x !important;background-position:bottom !important}.pls-vertShim{background-color:#fff !important;text-align:right}.tbl-grey .pls-vertShim{background-color:#f5f5f5 !important}.pls-vertShimLeft{background-repeat:repeat-y !important;background-position:right !important;height:4px}.pls-vertShimRight{height:4px}.pls-confirm-container .pls-vertShim{background-color:#fff3c2 !important}.pls-contentWrap{background-color:#fff !important;position:relative !important;vertical-align:top}.pls-contentLeft{background-repeat:repeat-y;background-position:right;vertical-align:top}.pls-dropRight{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropR_3.png) !important;background-repeat:repeat-y !important;vertical-align:top}.pls-vert,.pls-tailleft,.pls-dropTR .pls-dropBR,.pls-dropBL,.pls-vert img{vertical-align:top}.pls-dropBottom{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropB_3.png) !important;background-repeat:repeat-x !important;width:100%;vertical-align:top}.pls-topLeft{background:inherit !important;text-align:right;vertical-align:bottom}.pls-topRight{background:inherit !important;text-align:left;vertical-align:bottom}.pls-bottomLeft{background:inherit !important;text-align:right}.pls-bottomRight{background:inherit !important;text-align:left;vertical-align:top}.pls-tailtop,.pls-tailright,.pls-tailbottom,.pls-tailleft{display:none;position:relative}.pls-tailbottom,.pls-tailtop,.pls-tailright,.pls-tailleft,.pls-dropTR,.pls-dropBR,.pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite_3.png) !important;background-repeat:no-repeat}.tbl-grey .pls-tailbottom,.tbl-grey .pls-tailtop,.tbl-grey .pls-tailright,.tbl-grey .pls-tailleft,.tbl-grey .pls-dropTR,.tbl-grey .pls-dropBR,.tbl-grey .pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite-grey.png) !important}.pls-tailbottom{background-position:-23px 0}.pls-confirm-container .pls-tailbottom{background-position:-23px -10px}.pls-tailtop{background-position:-19px -20px}.pls-tailright{background-position:0 0}.pls-tailleft{background-position:-10px 0}.pls-tailtop{vertical-align:top}.gc-bubbleDefault td{line-height:0;font-size:0}.pls-topLeft img,.pls-topRight img,.pls-tailbottom{vertical-align:bottom}.pls-bottomLeft img,.bubbleDropTR,.pls-dropBottomL img,.pls-dropBottom img,.pls-dropBottomR img,.pls-bottomLeft{vertical-align:top}.pls-dropTR{background-position:0 -22px}.pls-dropBR{background-position:0 -27px}.pls-dropBL{background-position:0 -16px}.pls-spacertop,.pls-spacerright,.pls-spacerbottom,.pls-spacerleft{position:static !important}.pls-spinner{bottom:0;position:absolute;left:0;margin:auto;right:0;top:0} </style><script async="" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/lazy.js"></script></head>
+<body>
+<div class="navbar section" id="navbar"><div class="widget Navbar" data-version="1" id="Navbar1"><script src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/cbgapi.loaded_1" async=""></script><script src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/cbgapi.loaded_0" async=""></script><script type="text/javascript">
+    function setAttributeOnload(object, attribute, val) {
+      if(window.addEventListener) {
+        window.addEventListener('load',
+          function(){ object[attribute] = val; }, false);
+      } else {
+        window.attachEvent('onload', function(){ object[attribute] = val; });
+      }
+    }
+  </script>
+<div id="navbar-iframe-container"><iframe ng-non-bindable="" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="" tabindex="0" vspace="0" id="navbar-iframe" name="navbar-iframe" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/navbar.html" width="100%" frameborder="0"></iframe></div>
+<script type="text/javascript" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/plusone.js" gapi_processed="true"></script>
+<script type="text/javascript">
+      gapi.load("gapi.iframes:gapi.iframes.style.bubble", function() {
+        if (gapi.iframes && gapi.iframes.getContext) {
+          gapi.iframes.getContext().openChild({
+              url: 'https://www.blogger.com/navbar.g?targetBlogID\x3d34112729\x26blogName\x3dMartin+Vidner\x26publishMode\x3dPUBLISH_MODE_BLOGSPOT\x26navbarType\x3dBLUE\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttp://mvidner.blogspot.com/search\x26blogLocale\x3den\x26v\x3d2\x26homepageUrl\x3dhttp://mvidner.blogspot.com/\x26targetPostID\x3d8446843548359418647\x26blogPostOrPageUrl\x3dhttp://mvidner.blogspot.com/2017/01/capturing-and-decoding-lego-mindstorms.html\x26vt\x3d-5009959266794317991',
+              where: document.getElementById("navbar-iframe-container"),
+              id: "navbar-iframe"
+          });
+        }
+      });
+    </script><script type="text/javascript">
+(function() {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
+var head = document.getElementsByTagName('head')[0];
+if (head) {
+head.appendChild(script);
+}})();
+</script>
+</div></div>
+<div id="outer-wrapper"><div id="wrap2">
+<!-- skip links for text browsers -->
+<span id="skiplinks" style="display:none;">
+<a href="#main">skip to main </a> |
+      <a href="#sidebar">skip to sidebar</a>
+</span>
+<div id="header-wrapper">
+<div class="header section" id="header"><div class="widget Header" data-version="1" id="Header1">
+<div id="header-inner">
+<div class="titlewrapper">
+<h1 class="title">
+<a href="http://mvidner.blogspot.fr/">
+Martin Vidner
+</a>
+</h1>
+</div>
+<div class="descriptionwrapper">
+<p class="description"><span><a href="http://en.opensuse.org/">openSUSE</a>. Linux. computers.</span></p>
+</div>
+</div>
+</div></div>
+</div>
+<div id="content-wrapper">
+<div id="crosscol-wrapper" style="text-align:center">
+<div class="crosscol no-items section" id="crosscol"></div>
+</div>
+<div id="main-wrapper">
+<div class="main section" id="main"><div class="widget Blog" data-version="1" id="Blog1">
+<div class="blog-posts hfeed">
+
+          <div class="date-outer">
+        
+<h2 class="date-header"><span>Jan 30, 2017</span></h2>
+
+          <div class="date-posts">
+        
+<div class="post-outer">
+<div class="post hentry uncustomized-post-template" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+<meta content="https://cloud.githubusercontent.com/assets/102056/22440715/09f45f48-e735-11e6-984b-879bf7d55bdb.jpg" itemprop="image_url">
+<meta content="34112729" itemprop="blogId">
+<meta content="8446843548359418647" itemprop="postId">
+<a name="8446843548359418647"></a>
+<h3 class="post-title entry-title" itemprop="name">
+Capturing and Decoding Lego Mindstorms EV3 Bluetooth Communication
+</h3>
+<div class="post-header">
+<div class="post-header-line-1"></div>
+</div>
+<div class="post-body entry-content" id="post-body-8446843548359418647" itemprop="description articleBody">
+<p>The <a href="https://www.lego.com/en-gb/mindstorms/">Lego Mindstorms EV3 robots</a> can be controlled with an Android app
+(<a href="https://play.google.com/store/apps/details?id=com.lego.mindstorms.robotcommander">Lego Mindstorms Commander</a>) communicating with the brick
+via <a href="https://en.wikipedia.org/wiki/Bluetooth">Bluetooth</a>.
+The command protocol is documented by Lego in
+the <em>EV3 Communication Developer Kit</em> and the commands themselves in
+the <em>EV3 Firmware Developer Kit</em> (get them from <a href="https://www.lego.com/en-gb/mindstorms/downloads">Mindstorms Downloads</a>).</p>
+
+<p>I wondered what exactly goes on and I decided to capture the communication and
+decode it, to learn both about Bluetooth and about the details of the EV3
+protocol.</p>
+
+<p><a href="https://cloud.githubusercontent.com/assets/102056/22440715/09f45f48-e735-11e6-984b-879bf7d55bdb.jpg" target="_blank"><img alt="Good Robot. Good Robot!!" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/09f45f48-e735-11e6-984b-879bf7d55bdb.jpg" style="max-width:100%;"></a></p>
+
+<p>I succeeded and made a couple of useful tools along the way:</p>
+
+<ul>
+<li><a href="#extract">extract</a> the <a href="https://en.wikipedia.org/wiki/RFCOMM">RFCOMM</a> data from a btsnoop HCI log</li>
+<li><a href="#decode">decode</a> the EV3 command protocol</li>
+</ul>
+
+<p>See also the previous post
+about <a href="http://mvidner.blogspot.com/2017/01/usb-communication-with-python-and-pyusb.html">sending data (EV3 commands) over USB</a>.</p>
+
+<h2><a id="user-content-outline" class="anchor" href="#outline" aria-hidden="true"></a>Outline</h2>
+
+<ol>
+<li>Enable Android Bluetooth logging</li>
+<li>Run the Commander app and exercise the robot a bit </li>
+<li>Transfer the log to a PC</li>
+<li>Extract the serial data (RFCOMM) from the Bluetooth dump</li>
+<li>Decode the EV3 protocol</li>
+<li>Disassemble the EV3 instructions</li>
+</ol>
+
+<h3><a id="user-content-1-enable-android-bluetooth-logging" class="anchor" href="#1-enable-android-bluetooth-logging" aria-hidden="true"></a>1. Enable Android Bluetooth Logging</h3>
+
+<ul>
+<li>Open <em>Settings</em></li>
+<li>In the <em>System</em> section, choose <em>Developers</em>
+(this needs to be enabled first by tapping <em>Build number</em> 7 times)</li>
+<li>Enable <em>Bluetooth HCI Log</em></li>
+</ul>
+
+<h3><a id="user-content-2-run-the-commander-app-and-exercise-the-robot-a-bit" class="anchor" href="#2-run-the-commander-app-and-exercise-the-robot-a-bit" aria-hidden="true"></a>2. Run the Commander app and exercise the robot a bit</h3>
+
+<h3><a id="user-content-3-transfer-the-log-to-a-pc" class="anchor" href="#3-transfer-the-log-to-a-pc" aria-hidden="true"></a>3. Transfer the log to a PC</h3>
+
+<p>On the phone/tablet:</p>
+
+<ul>
+<li>Open <em>Settings</em></li>
+<li><em>System</em> &gt; <em>Developers</em></li>
+<li>Disable <em>Bluetooth HCI Log</em></li>
+</ul>
+
+<p>Connect to the PC with a USB cable.</p>
+
+<p>My older Android phone offered to mount its storage as a USB disk drive, but the
+newer one no longer has that option, offering <a href="https://en.wikipedia.org/wiki/Media_Transfer_Protocol">MTP</a> instead. I transfered
+the log file with a KDE tool:</p>
+
+<div class="highlight highlight-text-shell-session"><pre>$ <span class="pl-s1">kioclient cp <span class="pl-s"><span class="pl-pds">'</span>mtp:/Xperia Z3/Interní úložiště/btsnoop_hci.log<span class="pl-pds">'</span></span> <span class="pl-c1">.</span></span></pre></div>
+
+<h3><a id="user-content-4-extract-the-serial-data-rfcomm-from-the-bluetooth-dump" class="anchor" href="#4-extract-the-serial-data-rfcomm-from-the-bluetooth-dump" aria-hidden="true"></a>4. Extract the serial data (RFCOMM) from the Bluetooth dump</h3>
+
+<a name="extract"></a><p>The tool I made for this is <a href="https://github.com/mvidner/mindstorms/blob/9d0c87bd7c6b03d1bebfb6d4d867b1a473dcd59f/commander/btsnoop-decode.rb">btsnoop-decode.rb</a>.</p>
+
+<p>I learned the bare minimum needed about Bluetooth so it is very likely the
+tool only works for this specific use case.</p>
+
+<p>Originally I opened the btsnoop log with <a href="https://www.wireshark.org/">Wireshark</a> and guessed my way
+through the BT protocol layers. In the end the RFCOMM length field was harder
+than usual to guess and half of my packets were wrong. So I resorted to
+finding the <a href="http://git.kernel.org/cgit/linux/kernel/git/bluetooth/bluetooth.git/tree/net/bluetooth/rfcomm/core.c?id=7eb7404f7ee4bf59cb034897ab678aba2755c5e0#n92">appropriate part of the Linux kernel source</a> to find out
+the format.</p>
+
+<h3><a id="user-content-56-decode-the-ev3-protocol-and-dissassemble-the-ev3-instructions" class="anchor" href="#56-decode-the-ev3-protocol-and-dissassemble-the-ev3-instructions" aria-hidden="true"></a>5+6. Decode the EV3 protocol and dissassemble the EV3 instructions</h3>
+
+<a name="decode"></a><p>The people of the <a href="http://www.ev3dev.org/">ev3dev project</a> have already
+produced <a href="https://github.com/ev3dev/lms-hacker-tools/blob/04241562d0e9663b13cd708f9bf4c0fc3795d422/EV3/lmsdisasm.py">a disassembler</a> which we will use in the next step. But that
+one assumes you start with a program file (RBF).</p>
+
+<p>Here we have a log containing not only the usual RBF instructions but also
+System Commands.</p>
+
+<p>I made an ugly hack of the lmsdisasm tool and arrived at <a href="https://github.com/mvidner/lms-hacker-tools/blob/da2acc5dbe5e5088e9489ae7f2bb2d5834ed159d/EV3/lmsdisasm.py">a version that
+disassembles the log produced by the RFCOMM extractor</a>.</p>
+
+<h2><a id="user-content-play-time" class="anchor" href="#play-time" aria-hidden="true"></a>Play time</h2>
+
+<p>The above experiments enabled me to put together a little script that can
+control the robot from a Linux terminal, having it ride around and even speak
+a custom sound file:
+<a href="https://github.com/mvidner/mindstorms/blob/9d0c87bd7c6b03d1bebfb6d4d867b1a473dcd59f/lethargic-ministers/lms.py">lethargic-ministers/lms.py</a>.</p>
+<div style="clear: both;"></div>
+</div>
+<div class="post-footer">
+<div class="post-footer-line post-footer-line-1">
+<span class="post-author vcard">
+Posted by
+<span class="fn" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+<meta content="https://www.blogger.com/profile/08755880808140601974" itemprop="url">
+<a class="g-profile" href="https://www.blogger.com/profile/08755880808140601974" rel="author" title="author profile" data-gapiscan="true" data-onload="true" data-gapiattached="true">
+<span itemprop="name">Martin Vidner</span>
+</a>
+</span>
+</span>
+<span class="post-timestamp">
+at
+<meta content="http://mvidner.blogspot.com/2017/01/capturing-and-decoding-lego-mindstorms.html" itemprop="url">
+<a class="timestamp-link" href="http://mvidner.blogspot.fr/2017/01/capturing-and-decoding-lego-mindstorms.html" rel="bookmark" title="permanent link"><abbr class="published" itemprop="datePublished" title="2017-01-30T22:03:00+01:00">1/30/2017 10:03:00 PM</abbr></a>
+</span>
+<span class="reaction-buttons">
+</span>
+<span class="post-comment-link">
+</span>
+<span class="post-backlinks post-comment-link">
+</span>
+<span class="post-icons">
+<span class="item-control blog-admin pid-98716954">
+<a href="https://www.blogger.com/post-edit.g?blogID=34112729&amp;postID=8446843548359418647&amp;from=pencil" title="Edit Post">
+<img alt="" class="icon-action" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/icon18_edit_allbkg.gif" width="18" height="18">
+</a>
+</span>
+</span>
+<div class="post-share-buttons goog-inline-block">
+</div>
+</div>
+<div class="post-footer-line post-footer-line-2">
+<span class="post-labels">
+Labels:
+<a href="http://mvidner.blogspot.fr/search/label/Bluetooth" rel="tag">Bluetooth</a>,
+<a href="http://mvidner.blogspot.fr/search/label/btsnoop" rel="tag">btsnoop</a>,
+<a href="http://mvidner.blogspot.fr/search/label/EV3" rel="tag">EV3</a>,
+<a href="http://mvidner.blogspot.fr/search/label/Lego" rel="tag">Lego</a>,
+<a href="http://mvidner.blogspot.fr/search/label/Mindstorms" rel="tag">Mindstorms</a>,
+<a href="http://mvidner.blogspot.fr/search/label/Python" rel="tag">Python</a>,
+<a href="http://mvidner.blogspot.fr/search/label/RFCOMM" rel="tag">RFCOMM</a>,
+<a href="http://mvidner.blogspot.fr/search/label/Robot" rel="tag">Robot</a>,
+<a href="http://mvidner.blogspot.fr/search/label/Ruby" rel="tag">Ruby</a>
+</span>
+</div>
+<div class="post-footer-line post-footer-line-3">
+<span class="post-location">
+</span>
+</div>
+</div>
+</div>
+<div class="comments" id="comments">
+<a name="comments"></a>
+<h4>No comments:</h4>
+<div id="Blog1_comments-block-wrapper">
+<dl class="avatar-comment-indent" id="comments-block">
+</dl>
+</div>
+<p class="comment-footer">
+<a href="https://www.blogger.com/comment.g?blogID=34112729&amp;postID=8446843548359418647" onclick="">Post a Comment</a>
+</p>
+<div id="backlinks-container">
+<div id="Blog1_backlinks-container"><a name="links"></a><h4>Links to this post</h4>
+<p class="comment-footer">
+<a class="comment-link" href="https://www.blogger.com/blog-this.g" id="Blog1_backlinks-create-link" target="_blank">Create a Link</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+
+        </div></div>
+      
+</div>
+<div class="blog-pager" id="blog-pager">
+<span id="blog-pager-newer-link">
+<a class="blog-pager-newer-link" href="http://mvidner.blogspot.fr/2017/02/jenkins-as-code.html" id="Blog1_blog-pager-newer-link" title="Newer Post">Newer Post</a>
+</span>
+<span id="blog-pager-older-link">
+<a class="blog-pager-older-link" href="http://mvidner.blogspot.fr/2017/01/usb-communication-with-python-and-pyusb.html" id="Blog1_blog-pager-older-link" title="Older Post">Older Post</a>
+</span>
+<a class="home-link" href="http://mvidner.blogspot.fr/">Home</a>
+</div>
+<div class="clear"></div>
+<div class="post-feeds">
+<div class="feed-links">
+Subscribe to:
+<a class="feed-link" href="http://mvidner.blogspot.com/feeds/8446843548359418647/comments/default" target="_blank" type="application/atom+xml">Post Comments (Atom)</a>
+</div>
+</div>
+<script type="text/javascript">
+    window.___gcfg = { 'lang': 'en' };
+  </script>
+</div></div>
+</div>
+<div id="sidebar-wrapper">
+<div class="sidebar section" id="sidebar"><div class="widget BlogArchive" data-version="1" id="BlogArchive1">
+<h2>Blog Archive</h2>
+<div class="widget-content">
+<div id="ArchiveList">
+<div id="BlogArchive1_ArchiveList">
+<ul class="hierarchy">
+<li class="archivedate expanded">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy toggle-open">
+
+        ▼&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2017/">
+2017
+</a>
+<span class="post-count" dir="ltr">(8)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2017/09/">
+September
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2017/03/">
+March
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2017/02/">
+February
+</a>
+<span class="post-count" dir="ltr">(4)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate expanded">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy toggle-open">
+
+        ▼&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2017/01/">
+January
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+<ul class="posts">
+<li><a href="http://mvidner.blogspot.fr/2017/01/capturing-and-decoding-lego-mindstorms.html">Capturing and Decoding Lego Mindstorms EV3 Bluetoo...</a></li>
+<li><a href="http://mvidner.blogspot.fr/2017/01/usb-communication-with-python-and-pyusb.html">USB Communication with Python and PyUSB</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2016/">
+2016
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2016/12/">
+December
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2016/08/">
+August
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2016/05/">
+May
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2015/">
+2015
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2015/11/">
+November
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2013/">
+2013
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2013/08/">
+August
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2011/">
+2011
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2011/07/">
+July
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2011/05/">
+May
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/">
+2010
+</a>
+<span class="post-count" dir="ltr">(13)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/12/">
+December
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/11/">
+November
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/08/">
+August
+</a>
+<span class="post-count" dir="ltr">(4)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/07/">
+July
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/06/">
+June
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/03/">
+March
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/02/">
+February
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2010/01/">
+January
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/">
+2009
+</a>
+<span class="post-count" dir="ltr">(19)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/11/">
+November
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/10/">
+October
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/09/">
+September
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/08/">
+August
+</a>
+<span class="post-count" dir="ltr">(4)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/07/">
+July
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/06/">
+June
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/05/">
+May
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/02/">
+February
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2009/01/">
+January
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/">
+2008
+</a>
+<span class="post-count" dir="ltr">(28)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/11/">
+November
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/09/">
+September
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/08/">
+August
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/07/">
+July
+</a>
+<span class="post-count" dir="ltr">(4)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/06/">
+June
+</a>
+<span class="post-count" dir="ltr">(8)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/05/">
+May
+</a>
+<span class="post-count" dir="ltr">(7)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2008/04/">
+April
+</a>
+<span class="post-count" dir="ltr">(5)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2007/">
+2007
+</a>
+<span class="post-count" dir="ltr">(9)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2007/07/">
+July
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2007/06/">
+June
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2007/03/">
+March
+</a>
+<span class="post-count" dir="ltr">(5)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2007/02/">
+February
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://mvidner.blogspot.fr/2007/01/">
+January
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=34112729&amp;widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=editWidget&amp;sectionId=sidebar" onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogArchive1"));' target="configBlogArchive1" title="Edit">
+<img alt="" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/icon18_wrench_allbkg.png" width="18" height="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget LinkList" data-version="1" id="LinkList1">
+<h2>Links</h2>
+<div class="widget-content">
+<ul>
+<li><a href="http://planetsuse.org/">Planet SUSE</a></li>
+<li><a href="http://pipes.yahoo.com/pipes/pipe.info?_id=rAY4JAQO3RGtU17gyZ1_DQ">Comet YaST</a></li>
+</ul>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=34112729&amp;widgetType=LinkList&amp;widgetId=LinkList1&amp;action=editWidget&amp;sectionId=sidebar" onclick='return _WidgetManager._PopupConfig(document.getElementById("LinkList1"));' target="configLinkList1" title="Edit">
+<img alt="" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/icon18_wrench_allbkg.png" width="18" height="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget Profile" data-version="1" id="Profile1">
+<h2>About Me</h2>
+<div class="widget-content">
+<dl class="profile-datablock">
+<dt class="profile-data">
+<a class="profile-name-link g-profile" href="https://www.blogger.com/profile/08755880808140601974" rel="author" style="background-image: url(//www.blogger.com/img/logo-16.png);" data-gapiscan="true" data-onload="true" data-gapiattached="true">
+Martin Vidner
+</a>
+</dt>
+<dd class="profile-data">Prague, Czechia</dd>
+</dl>
+<a class="profile-link" href="https://www.blogger.com/profile/08755880808140601974" rel="author">View my complete profile</a>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=34112729&amp;widgetType=Profile&amp;widgetId=Profile1&amp;action=editWidget&amp;sectionId=sidebar" onclick='return _WidgetManager._PopupConfig(document.getElementById("Profile1"));' target="configProfile1" title="Edit">
+<img alt="" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/icon18_wrench_allbkg.png" width="18" height="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget Label" data-version="1" id="Label1">
+<h2>Labels</h2>
+<div class="widget-content list-label-widget-content">
+<ul>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/D-Bus">D-Bus</a>
+<span dir="ltr">(17)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Ruby">Ruby</a>
+<span dir="ltr">(16)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/YaST">YaST</a>
+<span dir="ltr">(15)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/TRYME">TRYME</a>
+<span dir="ltr">(11)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Python">Python</a>
+<span dir="ltr">(9)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/binding">binding</a>
+<span dir="ltr">(9)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/CLI">CLI</a>
+<span dir="ltr">(8)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/NetworkManager">NetworkManager</a>
+<span dir="ltr">(8)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/release">release</a>
+<span dir="ltr">(8)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Hack%20Week">Hack Week</a>
+<span dir="ltr">(7)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Bugzilla">Bugzilla</a>
+<span dir="ltr">(6)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/RPM">RPM</a>
+<span dir="ltr">(6)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/debugging">debugging</a>
+<span dir="ltr">(6)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/script">script</a>
+<span dir="ltr">(6)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Build%20Service">Build Service</a>
+<span dir="ltr">(4)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/OBS">OBS</a>
+<span dir="ltr">(4)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/cultural%20exchange">cultural exchange</a>
+<span dir="ltr">(4)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/logs">logs</a>
+<span dir="ltr">(4)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/openSUSE">openSUSE</a>
+<span dir="ltr">(4)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/0.1">0.1</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Android">Android</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Git">Git</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Perl">Perl</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/RERO">RERO</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Robot">Robot</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Ubuntu">Ubuntu</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/app">app</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/documentation">documentation</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/phone">phone</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/policy">policy</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/tablet">tablet</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/tutorial">tutorial</a>
+<span dir="ltr">(3)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/APK">APK</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/DWIM">DWIM</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/EV3">EV3</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Google%20Play">Google Play</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/KDE">KDE</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Lego">Lego</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Mindstorms">Mindstorms</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Novell">Novell</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/OSM">OSM</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/OpenStreetMap">OpenStreetMap</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/PHP">PHP</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/RubyGem">RubyGem</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/UI">UI</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/WebYaST">WebYaST</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/appliance">appliance</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/beta">beta</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/code">code</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/conference">conference</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dbus-monitor">dbus-monitor</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/diagram">diagram</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/disk">disk</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dist-upgrade">dist-upgrade</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/first%20time">first time</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/image">image</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/installation">installation</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/networking">networking</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/notification">notification</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/openSUSE%2011.0">openSUSE 11.0</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/printing">printing</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/registration">registration</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/repository">repository</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/subversion">subversion</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/suse">suse</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/tip">tip</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/usability">usability</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/virtualization">virtualization</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/women">women</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/zypper">zypper</a>
+<span dir="ltr">(2)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/1.9.2">1.9.2</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/ATI">ATI</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Arabic">Arabic</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/BDD">BDD</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Bluetooth">Bluetooth</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/C%2B%2B">C++</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/CI">CI</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/CcDoc">CcDoc</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Continuous%20Integration">Continuous Integration</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/DHCP">DHCP</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Dia">Dia</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Endpoint">Endpoint</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Epos">Epos</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Error">Error</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Exception">Exception</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/FAT">FAT</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/FCoE">FCoE</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/FIXME">FIXME</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Foreman">Foreman</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/GNOME">GNOME</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/GeoRSS">GeoRSS</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/GitHub">GitHub</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Greasemonkey">Greasemonkey</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Groovy">Groovy</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/HOWTO">HOWTO</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/HarfBuzz">HarfBuzz</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Heroku">Heroku</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/I%2FO">I/O</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/IPA">IPA</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Infrastructure%20as%20Code">Infrastructure as Code</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/International%20Phonetic%20Alphabet">International Phonetic Alphabet</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Java">Java</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Javadoc">Javadoc</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Javascript">Javascript</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Jenkins">Jenkins</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/KIWI">KIWI</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Konqueror">Konqueror</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/LSB">LSB</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/LinDevDoc">LinDevDoc</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/LinuxTag">LinuxTag</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/MSC">MSC</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Markdown">Markdown</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Medoosa">Medoosa</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/NAT">NAT</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/NCC">NCC</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/NFS">NFS</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/OLPC">OLPC</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Osmarender">Osmarender</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/PID">PID</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/PaaS">PaaS</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Planet">Planet</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/PolicyKit">PolicyKit</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Procfile">Procfile</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Puppet">Puppet</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/PyUSB">PyUSB</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Qt">Qt</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/RFCOMM">RFCOMM</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/RSS">RSS</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/RSpec">RSpec</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/SAN">SAN</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/SLEnkins">SLEnkins</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/SSH">SSH</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/Sinatra">Sinatra</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/TCP">TCP</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/TDD">TDD</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/TWM">TWM</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/UML">UML</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/URI">URI</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/USB">USB</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/VM">VM</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/VPN">VPN</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/VirtualBox">VirtualBox</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/WAV">WAV</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/WIP">WIP</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/X">X</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/YAML">YAML</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/YCP">YCP</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/YUM">YUM</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/YaST-not">YaST-not</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/ZENworks">ZENworks</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/a2ps">a2ps</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/addlock">addlock</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/alias">alias</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/archaeology">archaeology</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/attachments">attachments</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/automake">automake</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/automatic">automatic</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/baby">baby</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/bash">bash</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/blame">blame</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/blog">blog</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/book">book</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/btsnoop">btsnoop</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/bug">bug</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/building">building</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/builtin">builtin</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/chart">chart</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/clipped">clipped</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/cmake">cmake</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/code%20size">code size</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/command-not-found">command-not-found</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/comparison">comparison</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/configuration">configuration</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/convert">convert</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/crash">crash</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/curl">curl</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/cut%20off">cut off</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dad">dad</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dbus-daemon">dbus-daemon</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dbus-send">dbus-send</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/deadlock">deadlock</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dependencies">dependencies</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/deployment">deployment</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/desktop%20effects">desktop effects</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dice">dice</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dpkg">dpkg</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dual%20boot">dual boot</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/dump">dump</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/duplicate">duplicate</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/eSpeak">eSpeak</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/eavesdrop">eavesdrop</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/emacs">emacs</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/empty">empty</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/enscript">enscript</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/fable">fable</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/firewall">firewall</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/fix">fix</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/fork">fork</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/form">form</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/forum">forum</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/fragment">fragment</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/freeze">freeze</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/fun">fun</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/gem">gem</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/graph">graph</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/halmount">halmount</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/hang">hang</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/happy">happy</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/hardcopy">hardcopy</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/help">help</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/heretic">heretic</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/hic%20sunt%20leones">hic sunt leones</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/highlight">highlight</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/history">history</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/hosting">hosting</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/iChain">iChain</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/import">import</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/iogrind">iogrind</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/kezboard">kezboard</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/kwrite">kwrite</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/label">label</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/learning">learning</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/library">library</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/line">line</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/link%20storm">link storm</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/live">live</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/lock">lock</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/lockup">lockup</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/manual">manual</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/map">map</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/minify">minify</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/mono">mono</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/moo">moo</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/mutt">mutt</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/n2n">n2n</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/netconfig">netconfig</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/new">new</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/notes">notes</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/one-liner">one-liner</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/openSUSE%2011.1">openSUSE 11.1</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/openSUSE%2011.2">openSUSE 11.2</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/openSUSE%2011.3">openSUSE 11.3</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/openSUSE%2011.4">openSUSE 11.4</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/optional">optional</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/osc">osc</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/osc09">osc09</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/package">package</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/padsp">padsp</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/paper">paper</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/parallel">parallel</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/pattern">pattern</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/performance">performance</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/perseverance">perseverance</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/photos">photos</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/picasa">picasa</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/pictures">pictures</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/pipe%282%29">pipe(2)</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/plugin">plugin</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/pretty">pretty</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/printf">printf</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/profiling">profiling</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/publishing">publishing</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/quote">quote</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/qwertz">qwertz</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/read%282%29">read(2)</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/reading">reading</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/refactoring">refactoring</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/reinventing">reinventing</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/releasecheck">releasecheck</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/repodata">repodata</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/repomd.xml">repomd.xml</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/resolv.conf">resolv.conf</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/resolver">resolver</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/roll">roll</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/rug">rug</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/scrape">scrape</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/search">search</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/sexist">sexist</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/shell">shell</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/signing">signing</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/silent">silent</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/slides">slides</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/software%20bloat">software bloat</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/speaking">speaking</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/speech%20synthesis">speech synthesis</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/startup">startup</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/suseRegister">suseRegister</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/syntax">syntax</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/syscall">syscall</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/systems%20management">systems management</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/talk">talk</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/talking">talking</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/terse">terse</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/testing">testing</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/text%20to%20speech">text to speech</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/thesis">thesis</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/timestamp">timestamp</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/too%20long%20to%20tweet">too long to tweet</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/truncated">truncated</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/ulimit">ulimit</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/update">update</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/upgrade">upgrade</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/verify">verify</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/vim">vim</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/virt-install">virt-install</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/voice">voice</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/wait%282%29">wait(2)</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/web">web</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/wheel">wheel</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/window%20manager">window manager</a>
+<span dir="ltr">(1)</span>
+</li>
+<li>
+<a dir="ltr" href="http://mvidner.blogspot.fr/search/label/workshop">workshop</a>
+<span dir="ltr">(1)</span>
+</li>
+</ul>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=34112729&amp;widgetType=Label&amp;widgetId=Label1&amp;action=editWidget&amp;sectionId=sidebar" onclick='return _WidgetManager._PopupConfig(document.getElementById("Label1"));' target="configLabel1" title="Edit">
+<img alt="" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/icon18_wrench_allbkg.png" width="18" height="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div></div>
+</div>
+<!-- spacer for skins that want sidebar and main to be the same height-->
+<div class="clear">&nbsp;</div>
+</div>
+<!-- end content-wrapper -->
+<div id="footer-wrapper">
+<div class="footer no-items section" id="footer"></div>
+</div>
+</div></div>
+<!-- end outer-wrapper -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-5015010-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+<script src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/plusone.js" type="text/javascript" gapi_processed="true"></script>
+<!--Il est de votre responsabilit\xe9 d\x27informer vos visiteurs \xe0 propos des cookies utilis\xe9s sur votre blog. Rendez-vous sur http://www.blogger.com/go/cookiechoices pour en savoir plus.-->
+<script defer="defer" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/cookiechoices.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+      window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
+          (window.cookieOptions && cookieOptions.msg) || 'Ce site utilise des cookies provenant de Google afin de fournir ses services, personnaliser les annonces et analyser le trafic. Les informations relatives \xe0 votre utilisation du site sont partag\xe9es avec Google. En acceptant ce site, vous acceptez l\x27utilisation des cookies.',
+          (window.cookieOptions && cookieOptions.close) || 'OK\xa0!',
+          (window.cookieOptions && cookieOptions.learn) || 'En savoir plus',
+          (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
+    });
+  </script>
+
+<script type="text/javascript" src="Martin%20Vidner%20%20Capturing%20and%20Decoding%20Lego%20Mindstorms%20EV3%20Bluetooth%20Communication_fichiers/3953819307-widgets.js"></script>
+<script type="text/javascript">
+window['__wavt'] = 'AOuZoY59606kHF8wX2Cjmd0xkd_UTkaP5w:1517622402067';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d34112729','//mvidner.blogspot.fr/2017/01/capturing-and-decoding-lego-mindstorms.html','34112729');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '34112729', 'title': 'Martin Vidner', 'url': 'http://mvidner.blogspot.fr/2017/01/capturing-and-decoding-lego-mindstorms.html', 'canonicalUrl': 'http://mvidner.blogspot.com/2017/01/capturing-and-decoding-lego-mindstorms.html', 'homepageUrl': 'http://mvidner.blogspot.fr/', 'searchUrl': 'http://mvidner.blogspot.fr/search', 'canonicalHomepageUrl': 'http://mvidner.blogspot.com/', 'blogspotFaviconUrl': 'http://mvidner.blogspot.fr/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Martin Vidner - Atom\x22 href\x3d\x22http://mvidner.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22Martin Vidner - RSS\x22 href\x3d\x22http://mvidner.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Martin Vidner - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/34112729/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Martin Vidner - Atom\x22 href\x3d\x22http://mvidner.blogspot.com/feeds/8446843548359418647/comments/default\x22 /\x3e\n', 'meTag': '', 'openIdOpTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/2c0662265d8e8627', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Google+', 'key': 'googlePlus', 'shareMessage': 'Share to Google+', 'target': 'googleplus'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'googlePlusShareButtonWidth': 300, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8446843548359418647', 'postImageUrl': 'https://cloud.githubusercontent.com/assets/102056/22440715/09f45f48-e735-11e6-984b-879bf7d55bdb.jpg', 'pageName': 'Capturing and Decoding Lego Mindstorms EV3 Bluetooth Communication', 'pageTitle': 'Martin Vidner: Capturing and Decoding Lego Mindstorms EV3 Bluetooth Communication'}}, {'name': 'features', 'data': {'lazy_images': 'false', 'unsupported_browser_message': 'false', 'sharing_get_link_dialog': 'true', 'sharing_native': 'false'}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'Capturing and Decoding Lego Mindstorms EV3 Bluetooth Communication', 'description': 'The Lego Mindstorms EV3 robots  can be controlled with an Android app ( Lego Mindstorms Commander ) communicating with the brick via Bluetoo...', 'featuredImage': 'https://lh6.googleusercontent.com/proxy/S-FQl90WxeOoSpSEIyr80EQ_FnHw-I_iWdfvsZmYN3d58a--CFvwKOpNAgFZxXIPPHwV0kRcUEVBCirwJrK63OgtCXMvZJmU09N7gMkggfrRhrHF0EzCBflGQTVBmVgaT2LniMi7p4tXYwaCOR0Njbs_pciEojI', 'url': 'http://mvidner.blogspot.fr/2017/01/capturing-and-decoding-lego-mindstorms.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8446843548359418647}}]);
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1', 'navbar', null, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', null, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'main', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'showBacklinks': true, 'postId': '8446843548359418647', 'useNgc': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/521948727-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/368954415-lightbox_bundle.css'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1', 'sidebar', null, document.getElementById('BlogArchive1'), {'languageDirection': 'ltr', 'loadingMessage': 'Loading\x26hellip;'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList1', 'sidebar', null, document.getElementById('LinkList1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1', 'sidebar', null, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label1', 'sidebar', null, document.getElementById('Label1'), {}, 'displayModeFull'));
+</script>
+
+<link type="text/css" rel="stylesheet" href="https://www.blogger.com/static/v1/v-css/368954415-lightbox_bundle.css"></body></html>

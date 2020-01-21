@@ -1,0 +1,3 @@
+tutorial for installing lejos, lejos on eclipse and préparing the EV3 :
+
+http://stemrobotics.cs.pdx.edu/node/4580

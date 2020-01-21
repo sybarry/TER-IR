@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ev3_wifi</string>
+    <string name="action_settings">Settings</string>
+	<string name="right">Settings</string>
+	<string name="left">Settings</string>
+	<string name="up">Settings</string>
+	<string name="down">Settings</string>
+	<string name="stop">Settings</string>
+	<string name="connect">Settings</string>
+</resources>
