@@ -6,3 +6,15 @@ ne semblent pas fonctionner. Eclipse indique qu'il ne peut pas "resolve" les imp
 import lejos.nxt.comm.USB; ==> "cannot resolve lejos.nxt"
 
 Nous sommes bloqués pour le moment.
+
+### Update 
+
+Le contrôle du boitier à distance via USB (depuis un PC) fonctionne. 
+Nous avons décidé d'utiliser les Sockets de Java avec le boitier en tant que serveur
+et le PC en tant que client. Pour le moment, le code permet simplement d'écrire au clavier
+et d'afficher un message sur l'écran LCD du boitier EV3. Cependant nous savons maintenant
+comment faire pour communiquer à distance. 
+
+Le code se trouve dans le dossier Source (les noms des fichiers ne sont pas très bien trouvés,
+TestUSBControl correspond au server, c'est le programme qui tourne sur le boitier. ClientUSB
+correspond à l'application client qui est lancée sur le PC);
