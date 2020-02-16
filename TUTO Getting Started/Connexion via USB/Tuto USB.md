@@ -3,7 +3,7 @@
 Ce tuto suppose que vous avez correctement installé le plugin Eclipse, que vous avez créer un Projet Eclipse LEJOS
 et que votre boitier boot sur le LEJOS firmware. Si ça n'est pas le cas, voir tuto "Installation LEJOS firmware + plugin EClipse". 
 
-Munissez vous de votre boitier Ev3 et du cable USB fourni dans la boite LEGO. BRANCHEZ VOTRE EV3 à votre PC.
+Munissez vous de votre boitier Ev3 et du cable USB fourni dans la boite LEGO. **BRANCHEZ VOTRE EV3 à votre PC pendant tout ce tuto**.
 
 Ce tuto suppose également que vous opérez sous Windows 10, si ça n'est pas le cas, dommage !
 
