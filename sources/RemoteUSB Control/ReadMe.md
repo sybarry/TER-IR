@@ -15,7 +15,7 @@ Run ClientUSB sur le PC (dans un projet séparé). Il se connecte au server (IP 
 Le boitier doit indiquer "Connected client". Cela veut dire que la connecxion est établie entre
 l'application PC et le sever boitier.
 
-NOTE : le code d'ouverture/fermuture est basé sur notre implémentation de la porte, soient 2 moteurs. Modifiez en conséquence.
+NOTE : le code d'ouverture/fermuture est basé sur notre implémentation de la porte, soit 2 moteurs. Modifiez en conséquence.
 Entrer 1 pour ouvrir la porte;
 Entrer 2 pour fermer la porte;
 Entrer leave pour quitter la connexion des deux côtés
