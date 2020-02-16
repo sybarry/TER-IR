@@ -41,6 +41,8 @@ comme *LCD.drawsString("BONJOUR EV3",0,0)* (Importez ce qu'ecplise vous indique,
 Maintenant nous sommes fin prêt pour importer ce beau programme sur le boitier. Pour ce faire, cliquez droit sur votre classe => Run As ==> lejos EV3 Program.
 
 Votre boitier devrait vous implorer d'attendre 1 seconde. Puis vous devriez voir apparaitre "BONJOUR EV3" sur l'écran du boitier.
+**Pas de panique si ça n'est pas le cas !** Moi non plus ça n'a pas fonctionné du premier coup... Votre boitier fait un *joli* bruit avec une sympathique erreur
+qui ne fait pas sens pour vous? Plongeons dans le magnifique monde des JRE ! Car là se trouve le problème. 
 
 
 
