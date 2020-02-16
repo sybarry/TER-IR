@@ -41,8 +41,19 @@ comme *LCD.drawsString("BONJOUR EV3",0,0)* (Importez ce qu'ecplise vous indique,
 Maintenant nous sommes fin prêt pour importer ce beau programme sur le boitier. Pour ce faire, cliquez droit sur votre classe => Run As ==> lejos EV3 Program.
 
 Votre boitier devrait vous implorer d'attendre 1 seconde. Puis vous devriez voir apparaitre "BONJOUR EV3" sur l'écran du boitier.
-**Pas de panique si ça n'est pas le cas !** Moi non plus ça n'a pas fonctionné du premier coup... Votre boitier fait un *joli* bruit avec une sympathique erreur
-qui ne fait pas sens pour vous? Plongeons dans le magnifique monde des JRE ! Car là se trouve le problème. 
+
+**Pas de panique si ça n'est pas le cas !** Moi non plus ça n'a pas fonctionné du premier coup... 
+Votre boitier fait un *joli* bruit avec une sympathique erreur qui ne fait pas sens pour vous? Plongeons dans le magnifique monde des JRE ! Car là se trouve le problème.
+(Appuyez sur le bouton retour sur le boitier pour quitter l'écran d'erreur)
+
+J'espère pour vous que avez la version 1.7 du JRE java. Sinon il va falloir l'installer. Cliquez droit sur votre projet LEJOS.
+Selectionnez Properties => java compiler
+
+Puis Changer le JRE pour la version 1.7, et validez.
+Maintenant réessayez d'upload le programme. 
+
+Si ça marche, bravo, vous avez correctement lié votre boitier à votre PC !
+Sinon, suivez bien les étapes dans l'ordre et bonne chance
 
 
 
