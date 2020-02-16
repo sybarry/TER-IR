@@ -35,6 +35,13 @@ Vous devriez avoir une réponse avec 0% de pertes.
 
 Si c'est le cas, vous avez correctement connecté votre boitier à votre PC via USB. Reste maintenant à upload un programme sur ce boitier Ev3. 
 
+J'ai suppososé au début de cet article que vous aviez déjà un projet Eclipse correctement Setup en mode Lejos project. Si ça n'est pas le cas, voir le tutoriel 
+"Installation LEJOS firmware + plugin EClipse". C'est bon? Créez maintenant une classe en cochant la case "public static void main" . Écrivez quelque chose de simple 
+comme *LCD.drawsString("BONJOUR EV3",0,0)* (Importez ce qu'ecplise vous indique, soit *import lejos.hardware.lcd.LCD;* dans ce cas). 
+Maintenant nous sommes fin prêt pour importer ce beau programme sur le boitier. Pour ce faire, cliquez droit sur votre classe => Run As ==> lejos EV3 Program.
+
+Votre boitier devrait vous implorer d'attendre 1 seconde. Puis vous devriez voir apparaitre "BONJOUR EV3" sur l'écran du boitier.
+
 
 
 
