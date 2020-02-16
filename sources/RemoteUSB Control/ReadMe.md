@@ -12,8 +12,8 @@ se lance, il attend la connection d'un client. Le port d'écoute est 5555 dans l
 L'écran du boitier doit indiquer "waiting".
 
 Run ClientUSB sur le PC (dans un projet séparé). Il se connecte au server (IP 10.0.1.1).
-Le boitier doit indiquer "Connected client". Cela veut dire que la connecxion est établie entre
-l'application PC et le sever boitier.
+Le boitier doit indiquer "Connected client". Cela veut dire que la connexion est établie entre
+l'application PC et le serveur boitier.
 
 **NOTE** : le code d'ouverture/fermuture est basé sur notre implémentation de la porte, soit 2 moteurs. Modifiez en conséquence.
 
