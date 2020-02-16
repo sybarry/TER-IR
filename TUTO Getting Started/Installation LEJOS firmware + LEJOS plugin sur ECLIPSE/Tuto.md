@@ -34,3 +34,5 @@ Si une erreur du style "Build path problem" arrive, vous n'avez pas correctement
 
 Allez dans Windows => Preference => LEjos EV3 et cochez Connect To names Brick et entrez dans le champ l'addresse 10.0.1.1. Validez. 
 
+C'est terminé, vous êtes prêt pour la suite !
+
