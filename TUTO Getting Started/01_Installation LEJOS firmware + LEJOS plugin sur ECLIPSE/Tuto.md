@@ -30,7 +30,7 @@ il se trouve dans C:\Program Files.
 Normalement, vous devriez maintenant avoir le boitier qui boot sur le firmware LEJOS et le plugin LEJOS sur Eclipse.
 Pour créer un projet LEJOS sur Eclipse, faites File => New => Projet => Lejos EV3 => Lejos EV3 Project
 
-Si une erreur du style "Build path problem" arrive, vous n'avez pas correctement lié EV3_HOME comme vu précédemment.
+(Si une erreur du style "Build path problem" arrive, vous n'avez pas correctement lié EV3_HOME comme vu précédemment.)
 
 Allez dans Windows => Preference => LEjos EV3 et cochez Connect To names Brick et entrez dans le champ l'addresse 10.0.1.1. Validez. 
 
