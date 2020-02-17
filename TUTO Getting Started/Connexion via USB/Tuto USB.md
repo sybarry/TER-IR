@@ -13,7 +13,7 @@ allez voir dans le dossier DRIVER de ce git.
 
 **A lire :** Créez un nouveau dossier "InsertRelevantNameForU" à la racine de votre disque dur. Extrayez-y les fichier se trouvant dans le dossier DRIVER du Git. Cliquez droit
 sur le fichier d'extension .inf et selectionnez "Installer". Soyez consentant aux éventuelles popup.
-Maintenant, tapez trois fois dans vos mains et dîtes à haute voix "abracadabra" ! C'est fait? 
+Maintenant, tapez trois fois dans vos mains et dîtes à haute voix "Hello World" ! C'est fait? 
 Okay, alors suivez maintenant ceci : 
 
 - Windows + R
