@@ -11,7 +11,7 @@ Tout d'abord, il faut savoir que lorsque vous connectez votre boitier Ev3 à vot
 Complétement faux! Il va vous falloir installer un driver particulier par vous-même : le RNDIS !!. Pour ce faire, lisez d'abord les lignes "A lire" qui suivent puis
 allez voir dans le dossier DRIVER de ce git. 
 
-**A lire :** Créez un nouveau dossier "InsertRelevantNameForU" à la racine de votre disque dur. Extrayez-y les fichier se trouvant dans le dossier DRIVER du Git. Cliquez droit
+**A lire :** Créez un nouveau dossier "InsertRelevantNameForU" à la racine de votre disque dur. Extrayez-y les fichiers se trouvant dans le dossier DRIVER du Git. Cliquez droit
 sur le fichier d'extension .inf et selectionnez "Installer". Soyez consentant aux éventuelles popup.
 C'est fait? 
 Okay, alors suivez maintenant ceci : 
