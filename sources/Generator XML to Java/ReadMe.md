@@ -4,5 +4,5 @@ Le code Java présenté ici est une première version qui permet de générer au
 à partir d'un document XML fourni en entrée. Une DTD est également fournie ci-dessus. Cette dernière n'est pas tout à fait exacte mais permet
 surtout d'avoir un aperçu de la structure globale du fichier XML.
 
-La logique de l'automatisation est globalement **linéaire** et fonctionne ainsi : 
+La logique de l'automatisation est globalement *linéaire* et fonctionne ainsi : 
 
