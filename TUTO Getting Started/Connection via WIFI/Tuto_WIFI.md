@@ -31,9 +31,8 @@ de la brick Lejos.
 ETAPE 5) Définir le contrôleur Lejos comme serveur plutôt que client en déroulant et cliquant sur
 l'icône Wifi ensuite sur Access point pt+ et entrez l'adresse IP de votre brick et validez.
 
-ETAPE 6) Dans la ligne de commande de votre PC lancez l'instruction suivante et rentrez comme
-login 'root' et sans mot de passe, en remplaçant 192.168.1.2 par l'adresse Wifi de la brique EV
-obtenue précédemment:
+ETAPE 6) Dans la ligne de commande de votre PC lancez l'instruction: telnet suivie de la nouvelle adresse IP affichée sur la brick et rentrez comme
+login 'root' et sans mot de passe
 
 ETAPE 6bis) Si la commande Telnet n'est pas reconnu:
 
