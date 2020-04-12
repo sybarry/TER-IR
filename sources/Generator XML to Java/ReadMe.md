@@ -6,3 +6,4 @@ surtout d'avoir un aperçu de la structure globale du fichier XML.
 
 La logique de l'automatisation est globalement *linéaire* et fonctionne ainsi : 
 
+![image](/uploads/6e73e35c5e0e44c53fd0d45da6c94fdc/image.png)
