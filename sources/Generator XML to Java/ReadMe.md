@@ -10,10 +10,10 @@ La logique de l'automatisation est globalement *linéaire* et surtout sous forme
 
 La classe Main récupère le XML (qui représente le modèle), puis créée un générateur qui va traiter toutes les classes une par une. Chaque classe traite tout le reste
 des informations (comme le nom de la classe, les importations nécessaires, les fonctions, etc) puis donne le code ainsi généré en résultat. La génération du code est progressive 
-et se fait à l'aide d'une List<String> qui a (pour l'instant, ceci pourrait être amené à changer) 5 éléments :
+et se fait à l'aide d'une List qui a (pour l'instant, ceci pourrait être amené à changer) 5 éléments :
 
-    - [0] qui sont les **imports**
-    - [1] qui est le nom de la classe
-    - [2] qui est la fonction **main**
-    - [3] qui sont les fonctions et déclarations de variables
-    - [4] qui est l'accolade **}** fermante
+- En 0 sont les **imports**
+- En 1 le nom de la classe
+- En 2 la fonction **main**
+- En 3 les fonctions et déclarations de variables
+- En 4 l'accolade **}** fermante
