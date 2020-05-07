@@ -1,0 +1,12 @@
+# Update
+
+## Rapport
+La rédaction du rapport se poursuit. Nous allons également le traduire en anglais.
+
+## Génération automatique du code Java
+Modification du fichier XML source, pour le rendre plus propre et adapté à la génération avec ATL.
+
+## ATL
+Finalisation du code ATL servant à transformer de l'UML (ici, diagramme de séquence) en XML utilisable sur le parser générant le code java.
+Nous avons utilisé Papyrus pour créer des diagrammes et récupérer les fichiers .xmi correspondant, le but étant ensuite de produire les règles nécéssaires à la transformation, tout en identifiant les parties ne pouvant pas être générées avec seulement l'UML (et donc à ajouter à la main, ou grâce à un fichier de configurations).
+
