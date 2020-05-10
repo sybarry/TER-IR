@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_b2t8QJLBEeqXN-A0fjvS0Q" name="garageSequence2">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_cB2OMJLBEeqXN-A0fjvS0Q">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_b4sSMJLBEeqXN-A0fjvS0Q" name="Interaction1">
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_fWKeoJLBEeqXN-A0fjvS0Q" name="Controler" coveredBy="_kWlEgJLBEeqXN-A0fjvS0Q _kWlEgZLBEeqXN-A0fjvS0Q _mdMLsZLBEeqXN-A0fjvS0Q _mdMywJLBEeqXN-A0fjvS0Q"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_kWlEgJLBEeqXN-A0fjvS0Q" name="Message2SendEvent" covered="_fWKeoJLBEeqXN-A0fjvS0Q" message="_kWZeUJLBEeqXN-A0fjvS0Q"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_kWlEgZLBEeqXN-A0fjvS0Q" name="Message2ReceiveEvent" covered="_fWKeoJLBEeqXN-A0fjvS0Q" message="_kWZeUJLBEeqXN-A0fjvS0Q"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_mdMLsZLBEeqXN-A0fjvS0Q" name="Message5SendEvent" covered="_fWKeoJLBEeqXN-A0fjvS0Q" message="_mdMLsJLBEeqXN-A0fjvS0Q"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_mdMywJLBEeqXN-A0fjvS0Q" name="Message5ReceiveEvent" covered="_fWKeoJLBEeqXN-A0fjvS0Q" message="_mdMLsJLBEeqXN-A0fjvS0Q"/>
+    <message xmi:type="uml:Message" xmi:id="_kWZeUJLBEeqXN-A0fjvS0Q" name="OpenDoor()" messageSort="asynchCall" receiveEvent="_kWlEgZLBEeqXN-A0fjvS0Q" sendEvent="_kWlEgJLBEeqXN-A0fjvS0Q"/>
+    <message xmi:type="uml:Message" xmi:id="_mdMLsJLBEeqXN-A0fjvS0Q" name="CloseDoor()" messageSort="asynchCall" receiveEvent="_mdMywJLBEeqXN-A0fjvS0Q" sendEvent="_mdMLsZLBEeqXN-A0fjvS0Q"/>
+  </packagedElement>
+</uml:Model>
