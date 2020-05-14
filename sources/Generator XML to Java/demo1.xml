@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Projet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="XML">
+  <Class name="Client" hardware="PC">
+    <ConnectionInfo type="USB" role="Client" ip="192.168.43.208" port="5555" outputType="text"/>
+    <Fonctions>
+      <fonction name="checkConnexion" actionId="A111"/>
+    </Fonctions>
+  </Class>
+  <Class name="EV3" hardware="EV3">
+    <ConnectionInfo type="USB" inputType="text" role="Server" ip="192.168.43.208" port="5555">
+    <InputMapper>
+
+		<Mapper>
+			<guard>
+				<value>1</value>
+				<action name="isOpen" expect="false"/>
+			</guard>
+			<actionReturn name="openDoor"/>
+		</Mapper>
+
+		<Mapper>
+			<guard>
+			   <value>2</value>
+			   <action name="isOpen" expect="true"/>
+			</guard>
+			<actionReturn name="closeDoor"/>
+		</Mapper>
+
+</InputMapper>
+    </ConnectionInfo>
+    <Fonctions>
+      <fonction name="isOpen" actionId="A110"/>
+      <fonction name="openDoor" actionId="A100"/>
+      <fonction name="closeDoor" actionId="A101"/>
+    </Fonctions>
+  </Class>
+</Projet>
