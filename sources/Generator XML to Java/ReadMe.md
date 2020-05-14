@@ -8,7 +8,7 @@ La logique de l'automatisation est globalement *linéaire* et surtout sous forme
 
 ![image](/uploads/6e73e35c5e0e44c53fd0d45da6c94fdc/image.png)
 
-La classe Main récupère le XML (qui représente le modèle), puis créée un générateur qui va traiter toutes les classes une par une. Chaque classe traite tout le reste
+La classe Main récupère le XML (disponible également ci-dessus : *Demo1.xml*), puis créée un générateur qui va traiter toutes les classes une par une. Chaque classe traite tout le reste
 des informations (comme le nom de la classe, les importations nécessaires, les fonctions, etc) puis donne le code ainsi généré en résultat. La génération du code est progressive 
 et se fait à l'aide d'une List qui a (pour l'instant, ceci pourrait être amené à changer) 5 éléments :
 
