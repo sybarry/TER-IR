@@ -1,0 +1,59 @@
+-- @path SequenceXMI=/SequenceXMI2XML/sequenceXMI.ecore
+-- @path XML=/SequenceXMI2XML/XML.ecore
+
+module SequenceXMI2XML;
+
+create OUT: XML from IN: SequenceXMI;
+
+helper context SequenceXMI!Message def: isContained(s : String): Boolean=  -- s contient tous les id string des messages envoyés ou reçus par une lifeline
+	if s.split(' ')->select(m | m=self.sendEvent).notEmpty() then --self.sendEvent informe sur l'envoyer du message qui appelle le helper
+		true                                                       -- Si self.sendEvent est dans la liste des id couverts par la lifeline,
+	else                                                           -- Alors le message a été envoyé par cette lifeline, et on peut ajouter la fonction
+		false                                                         -- à la classe correspondante
+	endif;	
+
+
+rule project{
+	from 
+		s : SequenceXMI!packagedElement
+	to 
+		t : XML!Projet(
+			Class <- s.lifeline                                   --pour chaque Lifeline dans le fichier source, on crée une classe
+			->select(l | l.oclIsTypeOf(SequenceXMI!Lifeline))
+			->collect(l | thisModule.lifeline2class(l))
+		)
+}
+
+lazy rule lifeline2class{
+	from
+		s : SequenceXMI!Lifeline
+	to
+		t1 : XML!Class(
+			name <- s.name,
+			hardware <- '',
+			Fonctions <- t2,
+			ConnectionInfo <- t3
+		),
+		t2 : XML!Fonctions(                                                        -- 
+			fonction <- SequenceXMI!packagedElement.allInstances().first().message        
+				->select(m | m.isContained(s.coveredBy)) -- On verifie que la fonction appartient bien à cette classe
+				->collect(m | thisModule.message2fonction(m))
+		),
+		t3 : XML!ConnectionInfo(  --Les paramètres dans cette balise devront surement être remplis à la main, pas renseignés dans l'uml
+			type <- '',           
+			role <- '',
+			ip <- '',
+			port <- '',
+			inputType <- ''
+		)
+}
+
+lazy rule message2fonction{
+	from
+		s : SequenceXMI!Message
+	to
+		t : XML!Fonction(
+			name <- s.name,
+			actionId <- ''
+		)
+}
