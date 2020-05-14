@@ -1,3 +1,4 @@
-# Transfo-protocoles
+# Read me
 
-Compte-rendus de r�unions
+Ce répertoire contient tous les compte-rendus qui retracent nos avancées 
+et questionnements tout au long du semestre.
