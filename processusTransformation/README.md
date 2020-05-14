@@ -10,5 +10,7 @@ Le répertoire SequenceXMI2XML contient les règles de transformation ATL et les
 
 Dans Eclipse, avant de lancer la transformation ATL, on renseigne les métamodèles utilisés, ainsi que le fichier source utilisé et le fichier de sortie voulu. 
 Pour cela, clic droit sur le fichier ATL, allez dans **Run As > Run Configuration…** , on remplit ensuite les informations demandées.
+
 ![ATL config](ATLConfig.png)
+
 On peut enfin lancer la transformation, et récupérer le fichier XML nécessaire à la génération de code java.
