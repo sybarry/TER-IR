@@ -19,7 +19,7 @@ public class InputTypeComponent {
 		// un seul type de reception de message pour le moment : texte
 		if(type.equals("text"))
 		{
-			String exit = inputType.getAttribute("ExitCondition");
+			String exit = inputType.hasAttribute("ExitCondition")? inputType.getAttribute("ExitCondition"):"REPLACE WITH VALUE";
 			code.set(2, code.get(2) + "String text;\ndo{\ntext = reader.readLine();\n");
 			
 			// Gestion des arrivées de messages textuels : que faire avec telle ou telle valeur?

@@ -32,7 +32,7 @@ public class FonctionsComponent {
 	
 	public void getCode(List<String> code)
 	{
-		NodeList func = funcSection.getElementsByTagName("Fonction");
+		NodeList func = funcSection.getElementsByTagName("fonction");
 		// Création des fonctions
 		for(int i = 0; i<func.getLength();i++)
 		{

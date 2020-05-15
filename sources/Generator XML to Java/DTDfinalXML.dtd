@@ -1,0 +1,26 @@
+<!ELEMENT Projet (Class+)>
+	<!ELEMENT Class (ConnectionInfo?,Fonctions?)>
+	<!ATTLIST Class name CDATA #REQUIRED>
+	<!ATTLIST Class hardware CDATA #IMPLIED>
+
+		<!ELEMENT ConnectionInfo (InputMapper?)>
+		<!ATTLIST ConnectionInfo type CDATA #REQUIRED>
+		<!ATTLIST ConnectionInfo inputType CDATA #IMPLIED>
+		<!ATTLIST ConnectionInfo role (Server|Client) #REQUIRED>
+		<!ATTLIST ConnectionInfo ip CDATA #REQUIRED>
+		<!ATTLIST ConnectionInfo port CDATA #REQUIRED>
+		<!ATTLIST ConnectionInfo outputType CDATA #IMPLIED>
+		
+		<!ELEMENT Fonctions (fonction+)>
+			<!ELEMENT fonction EMPTY>
+			<!ATTLIST fonction name CDATA #REQUIRED>
+			<!ATTLIST fonction actionID CDATA #REQUIRED>
+		<!ELEMENT InputMapper (Mapper+)>
+		<!ELEMENT Mapper (guard,actionReturn)>
+		<!ELEMENT guard (value,action)>
+		<!ELEMENT value (#PCDATA)>
+		<!ELEMENT action EMPTY>
+		<!ATTLIST action name CDATA #REQUIRED>
+		<!ATTLIST action expect (true|false) #REQUIRED>
+		<!ELEMENT actionReturn EMPTY>
+		<!ATTLIST actionReturn name CDATA #REQUIRED>

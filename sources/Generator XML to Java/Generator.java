@@ -28,11 +28,7 @@ public class Generator {
 	{
 		// Initialisation de la structure qui contiendra le résultat final
 		List<String> res = new ArrayList<String>();
-		res.add("");
-		res.add("");
-		res.add("");
-		res.add("");
-		res.add("");
+		ResetList(res);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			// On récupère le XML dans le Document (utilisation de Dom)
@@ -58,6 +54,7 @@ public class Generator {
 				{
 					System.out.println(res.get(j));
 				}
+				ResetList(res);
 			}
 		}
 		catch (final ParserConfigurationException e) 
@@ -72,6 +69,16 @@ public class Generator {
 		{
 		  e.printStackTrace();
 		}
+	}
+	// Reset (ou initialise) la liste après le traitement de chaque classe
+	private void ResetList(List<String> r)
+	{
+		r.clear();
+		r.add("");
+		r.add("");
+		r.add("");
+		r.add("");
+		r.add("");
 	}
 	
 

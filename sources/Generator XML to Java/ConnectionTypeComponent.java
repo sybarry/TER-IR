@@ -34,12 +34,12 @@ public class ConnectionTypeComponent {
 						+ ip + "\"," + port + ")){\n");
 				
 				// Si la classe a besoin d'envoyer des messages à distance (il suffit de rajouter un if([...]"InputType") pour la réception)
-				if(connectType.hasAttribute("OutputType"))
+				if(connectType.hasAttribute("outputType"))
 				{
 					code.set(0, code.get(0) + "import java.io.OutputStream;\nimport java.io.PrintWriter;\n");
 					code.set(2, code.get(2) + "OutputStream output = socket.getOutputStream();\n"
 							+ "PrintWriter writer = new PrintWriter(output,true);\n");
-					new OutputTypeComponent(connectType,connectType.getAttribute("OutputType")).getCode(code);
+					new OutputTypeComponent(connectType,connectType.getAttribute("outputType")).getCode(code);
 				}
 				
 				code.set(2, code.get(2) + "socket.close();\n}\ncatch(IOException e)"
@@ -53,12 +53,12 @@ public class ConnectionTypeComponent {
 				code.set(2, "public static void main(String[] args){\ntry(ServerSocket socket = new ServerSocket("
 						+ port + ")){\nSocket connectionSocket = socket.accept();\n");
 				
-				if(connectType.hasAttribute("InputType"))
+				if(connectType.hasAttribute("inputType"))
 				{
 					code.set(0, code.get(0) + "import java.io.BufferedReader;\n"
 							+ "import java.io.InputStreamReader;\n");
 					code.set(2, code.get(2) + "BufferedReader reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));\n");
-					new InputTypeComponent(connectType,connectType.getAttribute("InputType")).getCode(code);
+					new InputTypeComponent(connectType,connectType.getAttribute("inputType")).getCode(code);
 				}
 				
 				code.set(2, code.get(2) + "socket.close();\n}\ncatch(IOException e){\ne.printStackTrace();\n}\n}\n");
