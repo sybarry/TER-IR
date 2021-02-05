@@ -3,8 +3,12 @@
  */
 package PortalPart;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * @author TER2021 : Gicquel, Guérin, Rozen
@@ -80,13 +84,32 @@ public class cPortal {
     	String target = "";
 		System.out.println("Recherche");
 	    BTconnector = (BTConnector) Bluetooth.getNXTCommConnector();
-		BTConnect = (BTConnection) BTconnector.connect(target, NXTConnection.RAW);
-		if(BTConnect != null)
-		{
-			setOut(BTConnect.openDataOutputStream());
-			setIn(BTConnect.openDataInputStream());
-			result = true;
-		}
+	    
+	    try
+	    {
+	      // Le fichier d'entrée
+	      File file = new File("BDD_Vehicle.txt");    
+	      // Créer l'objet File Reader
+	      FileReader fr = new FileReader(file);  
+	      // Créer l'objet BufferedReader        
+	      BufferedReader br = new BufferedReader(fr);     
+	      while((target = br.readLine()) != null && result == false)
+	      {
+	    	BTConnect = (BTConnection) BTconnector.connect(target, NXTConnection.RAW);
+	  		if(BTConnect != null)
+	  		{
+	  			setOut(BTConnect.openDataOutputStream());
+	  			setIn(BTConnect.openDataInputStream());
+	  			result = true;
+	  		}
+ 
+	      }
+	      fr.close();    
+	    }
+	    catch(IOException e)
+	    {
+	      e.printStackTrace();
+	    }
 		
 		return result;
 	}
