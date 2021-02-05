@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.lejos.ev3.ldt.LEJOS_EV3_LIBRARY_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/codeEV3_V1"/>
+	<classpathentry kind="src" path="src/codeEV3_V2"/>
+	<classpathentry kind="src" path="src/CodePourApkWifi/ev3_wifi/gen"/>
+	<classpathentry kind="src" path="src/CodePourApkWifi/ev3_wifi/src"/>
+	<classpathentry kind="lib" path="src/CodePourApkWifi/ev3_wifi/bin/dexedLibs/android-support-v4-76fa80e117e966cdde693db5c79cb17f.jar"/>
+	<classpathentry kind="lib" path="src/CodePourApkWifi/ev3_wifi/bin/dexedLibs/android-support-v7-appcompat-0049c0a0c306750c595512680524c679.jar"/>
+	<classpathentry kind="lib" path="src/CodePourApkWifi/ev3_wifi/bin/dexedLibs/android-support-v7-appcompat-3c7f5393c853f7eea69272522e5db017.jar"/>
+	<classpathentry kind="lib" path="src/CodePourApkWifi/ev3_wifi/bin/dexedLibs/ev3classes-dda9f65e4184d02bf3e50ef0f605e8bb.jar"/>
+	<classpathentry kind="lib" path="src/CodePourApkWifi/v7/appcompat/bin/android-support-v7-appcompat.jar"/>
+	<classpathentry kind="output" path="src/CodePourApkWifi/ev3_wifi/bin/classes"/>
+</classpath>
