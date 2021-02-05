@@ -1,7 +1,7 @@
 /**
  * 
  */
-package PortalPart;
+package TouchSensor;
 
 /**
  * @author TER2021 : Gicquel, Guérin, Rozen

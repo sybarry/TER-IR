@@ -7,7 +7,7 @@ package PortalPart;
  * @author TER2021 : Gicquel, Guérin, Rozen
  *
  */
-import lejos.hardware.Button;
+
 
 public class Main {
 
@@ -26,8 +26,12 @@ public class Main {
 			}
 			else
 			{
-				oPortal.openPoral();
-				isOpen = true;
+				if(cPortal.connectCLIENT())
+				{
+					oPortal.openPoral();
+					isOpen = true;
+				}
+				
 			}
 			
 		}
