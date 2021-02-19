@@ -3,6 +3,7 @@
  */
 package PortalPart;
 
+
 /**
  * @author TER2021 : Gicquel, Guérin, Rozen
  *
@@ -14,28 +15,20 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		cPortal oPortal = new cPortal();
-		boolean isOpen = false;
+		
 		
 		while(true)
 		{
 			while (!oPortal.get_oTouchSensor().isTouched()) {}
-			if(isOpen)
+			if(oPortal.activationBT())
 			{
-				oPortal.closePortal();
-				isOpen = false;
-			}
-			else
-			{
-				if(cPortal.connectCLIENT())
+				if(oPortal.autoriserAcces())
 				{
 					oPortal.openPoral();
-					isOpen = true;
 				}
-				
 			}
-			
+			while (!oPortal.get_oTouchSensor().isTouched()) {}
+			oPortal.closePortal();
 		}
-		
 	}
-
 }

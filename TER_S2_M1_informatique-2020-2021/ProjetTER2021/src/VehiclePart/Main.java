@@ -17,26 +17,23 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		cVehicle oVehicle = new cVehicle();
-		boolean isConnect = false;
 		
 		while(true)
 		{
 			while (!oVehicle.get_oTouchSensor().isTouched()) {}
-			if(isConnect)
+			if(oVehicle.activationBT("EV3"))
 			{
-				oVehicle.vehiculeForward();
+				if(oVehicle.demandeAcces())
+				{
+					oVehicle.vehiculeForward();
+				};
 			}
 			else
 			{
-				if(cVehicle.connectSERVEUR())
-				{
-					isConnect = true;
-				}
-				
-			}
-			
-		}
 
+			}
+		}
 	}
+
 
 }
