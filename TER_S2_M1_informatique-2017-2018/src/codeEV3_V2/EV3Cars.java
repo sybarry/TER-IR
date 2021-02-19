@@ -1,6 +1,6 @@
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
-public class EV3Car
+public class EV3Cars
 {
 	private EV3LargeRegulatedMotor leftMotor;
     private EV3LargeRegulatedMotor rightMotor;
@@ -10,7 +10,7 @@ public class EV3Car
 	
 	//----------------------------------------------constructeur
 	
-	public EV3Car(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor)
+	public EV3Cars(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor)
 	{
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;

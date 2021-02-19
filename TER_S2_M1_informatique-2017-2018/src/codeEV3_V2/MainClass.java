@@ -3,7 +3,7 @@ import lejos.hardware.Button;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.RegulatedMotor;
 
-public class MainClass2 
+public class MainClass 
 {
 	public static void main(String[] args) 
     {
@@ -13,7 +13,7 @@ public class MainClass2
     	RegulatedMotor T[] = {rightMotor};
     	leftMotor.synchronizeWith(T);
     	
-    	EV3Car car = new EV3Car(leftMotor, rightMotor);
+    	EV3Cars car = new EV3Cars(leftMotor, rightMotor);
 
     	int button;
 		boolean runProgram = true;

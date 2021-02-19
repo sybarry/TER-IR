@@ -6,7 +6,7 @@ package MotorPart;
  */
 
 import Exception.OutOfMotorException;
-import lejos.hardware.motor.*;
+import lejos.hardware.motor.UnregulatedMotor;
 import lejos.hardware.port.*;
 import lejos.utility.Delay;
 
