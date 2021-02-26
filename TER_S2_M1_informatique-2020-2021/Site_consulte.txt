@@ -1,0 +1,16 @@
+Bluetooth :
+
+http://www.juanantonio.info/docs/2008/LEJOS-BLUETOOTH.pdf
+
+http://www.lejos.org/ev3/docs/index.html?lejos/hardware/Bluetooth.html
+
+https://lejosnews.wordpress.com/2015/02/11/pan-configuration/
+
+USB :
+
+http://www.lejos.org/nxt/nxj/tutorial/Communications/Communications.htm
+
+Wifi :
+
+https://lejos.sourceforge.io/forum/viewtopic.php?t=7731
+http://variantpress.com/books/maximum-lego-mindstorms-ev3/ 
