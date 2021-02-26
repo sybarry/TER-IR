@@ -41,7 +41,7 @@ public class VoitureControleur extends Thread{
 	private static Socket client ;
 	private static OutputStream out ;
 	private static DataOutputStream dOut;
-	private static String nameLocal1 = "";
+	private static String nameLocal = "";
 	
 	
 	
@@ -92,7 +92,7 @@ public class VoitureControleur extends Thread{
 		wifiConnection();
 		
 		brick = (EV3) BrickFinder.getLocal();
-		nameLocal1 = brick.getName();
+		nameLocal = brick.getName();
 		
 		//Signalement que l'application est pr�te
 		appliPreteAMarcher(true);
@@ -129,7 +129,7 @@ public class VoitureControleur extends Thread{
 		new Thread() {
             public void run() {
                	try {
-               		dOut.writeUTF(nameLocal1);
+               		dOut.writeUTF(nameLocal);
             		dOut.flush();
     			} catch (IOException e) {
     				// TODO Auto-generated catch block

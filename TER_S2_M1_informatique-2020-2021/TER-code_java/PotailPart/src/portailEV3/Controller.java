@@ -25,6 +25,8 @@ public class Controller{
 
 	private static State stateDoor;
 	private static ArrayList<State> stateList ;
+	
+	private static ArrayList<String> vehiculeAutorisation;
 
 	
 	public static void main(String[] args) throws InterruptedException{
@@ -45,7 +47,7 @@ public class Controller{
 			
 			remoteControlCode = EBT.byteRecu;
 			
-			switch(remoteControlCode){
+			switch(remoteControlCode){ // revoir ce switch car quand default, il ferme le portail alors qu'il ne devrait peut etre rien faire
 				
 				// Ouvrir la porte partiellement
 				case 1:
@@ -65,10 +67,12 @@ public class Controller{
 				 default:
 					 TimeUnit.SECONDS.sleep(20);
 					 totalClosing();
-					 while(!doorSensorClosed.contact()) {
-						 
-					 }
-					   break;
+					 while(!doorSensorClosed.contact()) {}
+					 break;
+			}
+			
+			if(/*le portail detecte un vehicule &&*/ vehiculeAutorisation.contains(EWF.returnIdVehicule())) {
+				totalOpening();
 			}
 		}
 	}

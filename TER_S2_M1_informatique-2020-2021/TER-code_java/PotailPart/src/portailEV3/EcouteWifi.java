@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class EcouteWifi extends Thread {
-	private String str;
+	private String idVehicule = "";
 	private String ip;
 	private Socket sock;
 	private InputStream in;
-	private DataInputStream dIn = null;
+	private DataInputStream dIn;
 	
 	public void run() {
 		try {
@@ -21,15 +21,19 @@ public class EcouteWifi extends Thread {
 			e1.printStackTrace();
 		}
       	try {
-       		str = dIn.readUTF();
-    		System.out.println(str);
+       		idVehicule = dIn.readUTF();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
+	
+	public String returnIdVehicule() {
+		return idVehicule;
+	}
+	
 	public void connect() throws UnknownHostException, IOException {
-		ip = "192.168.1.90"; //ip de la voiture qui veut rentrer
+		ip = "192.168.1.22"; //ip de la voiture qui veut rentrer
 		sock = new Socket(ip, 1234);//1234 port du vehicule qui veut rentré
 		System.out.println("Connected");
 		
