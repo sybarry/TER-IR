@@ -14,12 +14,8 @@ public class Controller{
 	private static int remoteControlCode = 0;
 	private static boolean app_alive;
 	
-	private static ContactSensor leftSensorOpen = new ContactSensor(SensorPort.S1);
-	private static ContactSensor doorSensorClosed = new ContactSensor(SensorPort.S3);
-
-	private static PresenceSensor presenceSensor = new PresenceSensor(SensorPort.S4);
+	private static ContactSensor sensorVehicle = new ContactSensor(SensorPort.S1);
 	
-
 	private static Door leftDoor = new Door(MotorPort.A);
 	private static Door rightDoor = new Door(MotorPort.B);
 
@@ -27,25 +23,26 @@ public class Controller{
 	private static ArrayList<State> stateList ;
 	
 	private static ArrayList<String> vehiculeAutorisation;
+	private static String vehiculeDemande;
+	
+	
+	private static boolean fermer = true;
+	
 
 	
 	public static void main(String[] args) throws InterruptedException{
 		
-		stateDoor = State.valueOf("INCONNU");
-
-		EcouteBT EBT = new EcouteBT();
-		EcouteWifi EWF = new EcouteWifi();
+		stateDoor = State.valueOf("FERME");
 		
-		initialisation();
-
+		vehiculeAutorisation.add("EV3");
+		
+		EcouteBT EBT = new EcouteBT();  //Connection télécommande
 		EBT.start();
-		EWF.start();
-
 		app_alive = true;
 		
 		while(app_alive){
-			
-			remoteControlCode = EBT.byteRecu;
+
+			remoteControlCode = EBT.byteRecu;  //Lecture de la commande via la télécommande
 			
 			switch(remoteControlCode){ // revoir ce switch car quand default, il ferme le portail alors qu'il ne devrait peut etre rien faire
 				
@@ -54,12 +51,10 @@ public class Controller{
 					partialOpening();
 					break;
 
-					//Ouvrir la porte
 				case 2: 
 					totalOpening();
 					break;	 
 					
-					//Fermer la porte
 				case 3 : 
 					totalClosing();
 					break;
@@ -67,26 +62,45 @@ public class Controller{
 				 default:
 					 TimeUnit.SECONDS.sleep(20);
 					 totalClosing();
-					 while(!doorSensorClosed.contact()) {}
+					 while(! (stateDoor == State.valueOf("FERME"))) {}
 					 break;
 			}
-			
-			if(/*le portail detecte un vehicule &&*/ vehiculeAutorisation.contains(EWF.returnIdVehicule())) {
-				totalOpening();
+			if(sensorVehicle.contact()) {
+				EcouteWifi EWF = new EcouteWifi(); //Connection Vehicule
+				EWF.start();
+				//vehiculeDemande = EWF.idVehicule;
+				vehiculeDemande= "EV3";
+				if(vehiculeAutorisation.contains(vehiculeDemande) 
+						&& (	fermer ||
+								(stateDoor == State.valueOf("FERME_PARTIELLE")) ||
+								(stateDoor == State.valueOf("OUVERT_PARTIELLE"))
+							)
+						){
+					totalOpening();
+				}
+				
 			}
+			
 		}
+		
+		
+
 	}
+	public synchronized static void controleTel() throws InterruptedException {
+		
+		
+	}
+
+	
+	
+	
 	
 	@SuppressWarnings("unlikely-arg-type")
 	public static void initialisation() {
 		
-		leftOpening();
-		partialClosing();
-	
-		if (doorSensorClosed.contact()) {
+		if (fermer) {
 			stateDoor = State.valueOf("FERME");
 		} 
-		// Si le capteur de position fermée du portail ne detecte pas de contact alors il y a une erreur
 		else {
 			LCD.clear();
 			LCD.drawString("Erreur lors de l'initialisation", 0, 5);
@@ -97,225 +111,176 @@ public class Controller{
 	
 	}
 	
+
 	public static void totalOpening() {
-	
 		if (stateDoor.name().equals("FERME")) {
-								
-			//capteur de contact ouvert
-			while(!leftSensorOpen.contact()) {
-				System.out.println("En ouverture totale.");
-				rightDoor.opened();
-				leftDoor.opened();
-				stateDoor = State.valueOf("EnOuvertureTotale");
-				
-				// capteur de presence 
-				while(presenceSensor.presence()) {
-					 leftDoor.stop(true);
-					 rightDoor.stop(true);    
-			        }
-			}
-			rightDoor.stop(true);
+			System.out.println("En ouverture totale.");
+			rightDoor.opened();
+			leftDoor.opened();
+			stateDoor = State.valueOf("EnOuvertureTotale");
+		    Delay.msDelay(2200);
 			leftDoor.stop(true);
+			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
+			fermer = false;
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
-			System.out.println("En fermeture.");
-			totalClosing();
-			stateDoor = State.valueOf("FERME");
-			saveState(stateDoor);
-		}
-		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
-			System.out.println("En fermeture.");
-			partialClosing();
-			stateDoor = State.valueOf("FERME");
-			saveState(stateDoor);
-		}
-		
-		else if(stateDoor.name().equals("EnOuvertureTotale")) {
-			System.out.println("En Pause.");
-			leftDoor.stop(true);
-			rightDoor.stop(true);
-			stateDoor = State.valueOf("ARRET");
-			saveState(stateDoor);
-		}
-		else if (stateDoor.name().equals("ARRET")) {
-			
-			//capteur de contact ouvert
-			while(!leftSensorOpen.contact()) {
-				System.out.println("En ouverture totale.");
-				rightDoor.opened();
-				leftDoor.opened();
-				stateDoor = State.valueOf("EnOuvertureTotale");
-				saveState(stateDoor);
-				
-				// capteur de presence 
-				while(presenceSensor.presence()) {
-					 leftDoor.stop(true);
-					 rightDoor.stop(true);    
-			        }
-			}
-			rightDoor.stop(true);
-			leftDoor.stop(true);
+			System.out.println("Déja ouvert");
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
+			fermer = false;
+		}
+		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
+			System.out.println("En ouverture.");
+			partialOpening();
+			stateDoor = State.valueOf("OUVERT");
+			saveState(stateDoor);
+			fermer = false;
+		}
+		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
+			System.out.println("En ouverture.");
+			partialOpening();
+			stateDoor = State.valueOf("OUVERT");
+			saveState(stateDoor);
+			fermer = false;
 		}
 			
 	}
 	
+	
+
 	public static void partialOpening() {
 
-		if ( stateDoor.name().equals("FERME")) {
-			
-			// capteur de contact en ouverture partielle
-			while(!leftSensorOpen.contact()) {
-				System.out.println("En ouverture partielle.");
-				leftDoor.opened();
-				stateDoor = State.valueOf("EnOuverturePartielle");
-				saveState(stateDoor);
-				
-				// capteur de presence 
-				while(presenceSensor.presence()) {
-					 leftDoor.stop(true);   
-			        }
-			}
+		if (stateDoor.name().equals("FERME")) {
+			System.out.println("En ouverture partielle.");
+			rightDoor.opened();
+			leftDoor.opened();
+			stateDoor = State.valueOf("EnOuverturePartielle");
+		    Delay.msDelay(1100);
 			leftDoor.stop(true);
+			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT_PARTIELLE");
 			saveState(stateDoor);
+			fermer = false;
 		}
-		else if (stateDoor.name().equals("OUVERT_PARTIELLE")) {
-			System.out.println("En fermeture.");
-			partialClosing();
-			stateDoor = State.valueOf("FERME");
+		else if(stateDoor.name().equals("OUVERT")) {
+			System.out.println("Déja ouvert totalement");
+			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
+			fermer = false;
 		}
-		else if (stateDoor.name().equals("OUVERT")) {
-			System.out.println("En fermeture.");
-			totalClosing();
-			stateDoor = State.valueOf("FERME");
-			saveState(stateDoor);
-		}
-		
-		else if(stateDoor.name().equals("EnOuverturePartielle")) {
-			System.out.println("En Pause.");
+		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
+			System.out.println("Ouverture totale.");
+			rightDoor.opened();
+			leftDoor.opened();
+			stateDoor = State.valueOf("EnOuvertureTotale");
+		    Delay.msDelay(1100);
 			leftDoor.stop(true);
-			stateDoor = State.valueOf("ARRET");
+			rightDoor.stop(true);    
+			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
+			fermer = false;
 		}
-		else if (stateDoor.name().equals("ARRET")) {
-			
-			// capteur de contact en ouverture partielle
-			while(!leftSensorOpen.contact()) {
-				System.out.println("En ouverture partielle.");
-				leftDoor.opened();
-				stateDoor = State.valueOf("EnOuverturePartielle");
-				saveState(stateDoor);
-				
-				// capteur de presence 
-				while(presenceSensor.presence()) {
-					 leftDoor.stop(true);   
-			        }
-			}
+		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
+			System.out.println("Ouverture totale.");
+			rightDoor.opened();
+			leftDoor.opened();
+			stateDoor = State.valueOf("EnOuvertureTotale");
+		    Delay.msDelay(1100);
 			leftDoor.stop(true);
-			stateDoor = State.valueOf("OUVERT_PARTIELLE");
+			rightDoor.stop(true);    
+			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
+			fermer = false;
 		}
 		
 	}
 	
-	public static void leftOpening() {
-		
-		// capteur de contact en ouverture gauche
-		while(!leftSensorOpen.contact()) {
-			leftDoor.opened();
-			
-			// capteur de presence 
-			while(presenceSensor.presence()) {
-				leftDoor.stop(true);    
-			    }
-		}
-		leftDoor.stop(true);
-			
-	}
+	
 	
 	public static void partialClosing() {
 		
-		// capteur de contact en fermeture partielle
-		while (!doorSensorClosed.contact()) {
-			leftDoor.closed();
-			
-			// capteur de presence 
-			while(presenceSensor.presence()) {
-				 leftDoor.stop(true);    
-		        }
+		if (stateDoor.name().equals("FERME")) {
+			System.out.println("Déja fermer."); 
+			stateDoor = State.valueOf("FERME");
+			saveState(stateDoor);
+			fermer = false;
 		}
-		leftDoor.stop(false);
+		else if(stateDoor.name().equals("OUVERT")) {
+			System.out.println("En fermeture partielle");
+			rightDoor.closed();
+			leftDoor.closed();
+			stateDoor = State.valueOf("EnFermeturePartielle");
+		    Delay.msDelay(1100);
+			leftDoor.stop(true);
+			rightDoor.stop(true);   
+			stateDoor = State.valueOf("FERME_PARTIELLE");
+			saveState(stateDoor);
+			fermer = false;
+		}
+		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
+			System.out.println("En fermeture totale");
+			rightDoor.closed();
+			leftDoor.closed();
+			stateDoor = State.valueOf("EnFermetureTotale");
+		    Delay.msDelay(1100);
+			leftDoor.stop(true);
+			rightDoor.stop(true);   
+			stateDoor = State.valueOf("FERME");
+			saveState(stateDoor);
+			fermer = true;
+		}
+		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
+			System.out.println("En fermeture totale");
+			rightDoor.closed();
+			leftDoor.closed();
+			stateDoor = State.valueOf("EnFermetureTotale");
+		    Delay.msDelay(1100);
+			leftDoor.stop(true);
+			rightDoor.stop(true);   
+			stateDoor = State.valueOf("FERME");
+			saveState(stateDoor);
+			fermer = true;
+		}
+		
 	}
 	
 	
 	public static void totalClosing() {
 		
-	if (stateDoor.name().equals("OUVERT")) {
-		
-		//capteur de contact ouvert
-		while(!doorSensorClosed.contact()) {
-			System.out.println("En fermeture totale.");
-			leftDoor.closed();
+		if (stateDoor.name().equals("FERME")) {
+			System.out.println("Déja fermé");
+			stateDoor = State.valueOf("FERME");
+			saveState(stateDoor);
+			fermer = true;
+		}
+		else if(stateDoor.name().equals("OUVERT")) {
+			System.out.println("En fermeture totale");
 			rightDoor.closed();
+			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
+		    Delay.msDelay(2200);
+			leftDoor.stop(true);
+			rightDoor.stop(true);   
+			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			
-			// capteur de presence 
-			while(presenceSensor.presence()) {
-				 leftDoor.stop(true);
-				 rightDoor.stop(true);    
-		        }
+			fermer = true;
 		}
-		rightDoor.stop(true);	
-		leftDoor.stop(true);
-		stateDoor = State.valueOf("FERME");
-		saveState(stateDoor);
-	}
-	else if (stateDoor.name().equals("FERME")) {
-		System.out.println("En Ouverture.");
-		//totalOpening();
-		stateDoor = State.valueOf("OUVERT");
-		saveState(stateDoor);
-	}
-	else if(stateDoor.name().equals("FERME_PARTIELLE")) {
-		System.out.println("En Ouverture.");
-		partialOpening();
-		stateDoor = State.valueOf("OUVERT");
-		saveState(stateDoor);
-	}
-	else if(stateDoor.name().equals("EnFermetureTotale")) {
-		System.out.println("En Pause.");
-		leftDoor.stop(true);
-		rightDoor.stop(true);
-		stateDoor = State.valueOf("ARRET");
-		saveState(stateDoor);
-	}
-	else if (stateDoor.name().equals("ARRET")) {
-		
-		//capteur de contact ouvert
-		while(!doorSensorClosed.contact()) {
-			System.out.println("En fermeture totale.");
-			rightDoor.opened();
-			leftDoor.opened();
-			stateDoor = State.valueOf("EnFermetureTotale");
+		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
+			System.out.println("En fermeture partielle.");
+			partialClosing();
+			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			
-			// capteur de presence 
-			while(presenceSensor.presence()) {
-				 leftDoor.stop(true);
-				 rightDoor.stop(true);    
-		        }
+			fermer = true;
 		}
-		rightDoor.stop(true);
-		leftDoor.stop(true);
-		stateDoor = State.valueOf("FERME");
-		saveState(stateDoor);
-	}
+		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
+			System.out.println("En fermeture partielle.");
+			partialClosing();
+			stateDoor = State.valueOf("FERME");
+			saveState(stateDoor);
+			fermer = true;
+		}
   }
 	
 	

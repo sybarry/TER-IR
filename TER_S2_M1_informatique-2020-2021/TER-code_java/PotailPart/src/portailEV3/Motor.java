@@ -1,24 +1,24 @@
 package portailEV3;
 
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
+
+import lejos.hardware.motor.UnregulatedMotor;
 import lejos.hardware.port.*;
 
 public class Motor {
 
-	EV3LargeRegulatedMotor motor;
+	UnregulatedMotor motor;
 
 	Motor(Port port) {
-		this.motor = new EV3LargeRegulatedMotor(port);
+		this.motor = new UnregulatedMotor(port);
+		this.motor.setPower(10);
 	}
 
 	void push() {
-		this.motor.setSpeed(30);
 		this.motor.forward();
 		//this.motor.rotate(5);
 	}
 
 	void pull() {
-		this.motor.setSpeed(30);
 		this.motor.backward();
 		//this.motor.rotate(-5);
 	}

@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class EcouteWifi extends Thread {
-	private String idVehicule = "";
+	volatile String idVehicule = "";
 	private String ip;
 	private Socket sock;
 	private InputStream in;
