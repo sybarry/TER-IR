@@ -11,6 +11,7 @@ public class Motor {
 	Motor(Port port) {
 		this.motor = new UnregulatedMotor(port);
 		this.motor.setPower(10);
+		this.motor.stop();
 	}
 
 	void push() {

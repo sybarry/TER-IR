@@ -31,18 +31,29 @@ public class Controller{
 
 	
 	public static void main(String[] args) throws InterruptedException{
-		
+
+
+		stateList = new ArrayList<State>();
 		stateDoor = State.valueOf("FERME");
+
 		
+		vehiculeAutorisation = new ArrayList<String>();
 		vehiculeAutorisation.add("EV3");
+
 		
-		EcouteBT EBT = new EcouteBT();  //Connection télécommande
-		EBT.start();
+		System.out.println("Connection BT a la telecommande");
+		
+		
+		//EcouteBT EBT = new EcouteBT();  //Connection télécommande
+		//EBT.start();
+		
+		System.out.println("Connection BT reussi");
+		
 		app_alive = true;
 		
 		while(app_alive){
 
-			remoteControlCode = EBT.byteRecu;  //Lecture de la commande via la télécommande
+			//remoteControlCode = EBT.byteRecu;  //Lecture de la commande via la télécommande
 			
 			switch(remoteControlCode){ // revoir ce switch car quand default, il ferme le portail alors qu'il ne devrait peut etre rien faire
 				
@@ -60,15 +71,20 @@ public class Controller{
 					break;
 					
 				 default:
-					 TimeUnit.SECONDS.sleep(20);
-					 totalClosing();
-					 while(! (stateDoor == State.valueOf("FERME"))) {}
+					 if(!fermer)
+					 {
+						 TimeUnit.SECONDS.sleep(20);
+						 totalClosing();
+					 }
+					 
 					 break;
 			}
 			if(sensorVehicle.contact()) {
-				EcouteWifi EWF = new EcouteWifi(); //Connection Vehicule
-				EWF.start();
+				System.out.println("Connection Wifi au véhicule");
+				//EcouteWifi EWF = new EcouteWifi(); //Connection Vehicule
+				//EWF.start();
 				//vehiculeDemande = EWF.idVehicule;
+				System.out.println("Connection Wifi reussi");
 				vehiculeDemande= "EV3";
 				if(vehiculeAutorisation.contains(vehiculeDemande) 
 						&& (	fermer ||
@@ -76,6 +92,7 @@ public class Controller{
 								(stateDoor == State.valueOf("OUVERT_PARTIELLE"))
 							)
 						){
+					System.out.println("Acces autorise");
 					totalOpening();
 				}
 				
@@ -86,11 +103,6 @@ public class Controller{
 		
 
 	}
-	public synchronized static void controleTel() throws InterruptedException {
-		
-		
-	}
-
 	
 	
 	
@@ -118,12 +130,14 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuvertureTotale");
-		    Delay.msDelay(2200);
+		    Delay.msDelay(1800);
 			leftDoor.stop(true);
-			rightDoor.stop(true);    
+			rightDoor.stop(true); 
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
+			Delay.msDelay(1800);
 			fermer = false;
+			Delay.msDelay(1800);
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
 			System.out.println("Déja ouvert");
@@ -157,7 +171,7 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuverturePartielle");
-		    Delay.msDelay(1100);
+		    Delay.msDelay(900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT_PARTIELLE");
@@ -175,7 +189,7 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuvertureTotale");
-		    Delay.msDelay(1100);
+		    Delay.msDelay(900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
@@ -187,7 +201,7 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuvertureTotale");
-		    Delay.msDelay(1100);
+		    Delay.msDelay(900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
@@ -212,7 +226,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermeturePartielle");
-		    Delay.msDelay(1100);
+		    Delay.msDelay(900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME_PARTIELLE");
@@ -224,7 +238,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
-		    Delay.msDelay(1100);
+		    Delay.msDelay(900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
@@ -236,7 +250,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
-		    Delay.msDelay(1100);
+		    Delay.msDelay(900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
@@ -260,7 +274,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
-		    Delay.msDelay(2200);
+		    Delay.msDelay(1800);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
