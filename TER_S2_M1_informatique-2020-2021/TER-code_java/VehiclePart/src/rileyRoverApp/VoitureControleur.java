@@ -78,7 +78,7 @@ public class VoitureControleur extends Thread{
 		VITESSE10=14;
 																		
 
-	private static int vitesse=0;
+	private static int vitesse=10;
 	private static boolean klaxon = false;
 	
 	
@@ -88,8 +88,8 @@ public class VoitureControleur extends Thread{
 	public static void main(String[] args) throws IOException {
 		
 		//Mise en place de la connexion bluetooth
-		bluetoothConnection();
-		wifiConnection();
+		bluetoothConnection();        
+		//wifiConnection();
 		
 		brick = (EV3) BrickFinder.getLocal();
 		nameLocal = brick.getName();
@@ -129,6 +129,7 @@ public class VoitureControleur extends Thread{
 		new Thread() {
             public void run() {
                	try {
+               		wifiConnection();
                		dOut.writeUTF(nameLocal);
             		dOut.flush();
     			} catch (IOException e) {
