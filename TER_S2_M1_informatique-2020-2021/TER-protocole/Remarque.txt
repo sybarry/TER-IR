@@ -1,0 +1,20 @@
+Eteindre le robot avant chaque capture de paquet car autrement la connexion est toujour active 
+
+Adresse IP de l'ordinateur correspond à l'adresse Ipv4 : 192.168.1.16
+
+Pour pouvoir capter les paquet avec wireshark entre les 2 ev3 faire :
+	1) vehicule(ev3) -> portail(ordinateur)
+	2) vehicule(ordinateur) -> portail(ev3)
+donc il faut recuperer l'ip de l'ordinateur pour pouvoir faire la deuxieme connexion (on peut utiliser
+le même port que celuui de l'ev3)
+
+Flags du protocole TCP :
+	- ECN/NS : signale la présence de congestion, voir RFC 31683 ; ou Nonce Signaling, voir RFC 35404
+	- CWR : Congestion Window Reduced : indique qu'un paquet avec ECE a été reçu et que la congestion a été traitée
+	- ECE : ECN-Echo : si SYN=1 indique la capacité de gestion ECN, si SYN=0 indique une congestion signalée par IP (voir RFC 3168)
+	- URG : Signale la présence de données urgentes
+	- ACK : signale que le paquet est un accusé de réception (acknowledgement)
+	- PSH : données à envoyer tout de suite (push)
+	- RST : rupture anormale de la connexion (reset)
+	- SYN : demande de synchronisation ou établissement de connexion
+	- FIN : demande la fin de la connexion

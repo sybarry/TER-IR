@@ -14,3 +14,9 @@ Wifi :
 
 https://lejos.sourceforge.io/forum/viewtopic.php?t=7731
 http://variantpress.com/books/maximum-lego-mindstorms-ev3/ 
+
+Connexion ordi-EV3 par USB pour recuperation de paquet :
+
+https://www.umpah.net/how-to-sniff-usb-traffic-reverse-engineer-usb-device-interactions/
+https://www.umpah.net/how-to-sniff-usb-traffic-reverse-engineer-usb-device-interactions/
+https://w0y.at/writeup/2018/10/22/hitcon-2018-ev3-basic.html
