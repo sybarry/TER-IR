@@ -42,15 +42,15 @@ public class mainWifi {
 		dOut.flush();*/
 
 		new Thread() {
-            public void run() {
-               	try {
-               		dOut.writeUTF(nameLocal1);
-    			} catch (IOException e) {
+            		public void run() {
+               			try {
+               				dOut.writeUTF(nameLocal1);
+    				} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			}	
-            }   
-        }.start();
+    					e.printStackTrace();
+    				}	
+            		}   
+        	}.start();
 		
 		while(true) {}
 

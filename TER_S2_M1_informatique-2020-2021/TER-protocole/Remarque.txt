@@ -8,6 +8,7 @@ Pour pouvoir capter les paquet avec wireshark entre les 2 ev3 faire :
 donc il faut recuperer l'ip de l'ordinateur pour pouvoir faire la deuxieme connexion (on peut utiliser
 le même port que celuui de l'ev3)
 
+Comprendre TCP : https://packetlife.net/blog/2010/jun/7/understanding-tcp-sequence-acknowledgment-numbers/
 Flags du protocole TCP :
 	- ECN/NS : signale la présence de congestion, voir RFC 31683 ; ou Nonce Signaling, voir RFC 35404
 	- CWR : Congestion Window Reduced : indique qu'un paquet avec ECE a été reçu et que la congestion a été traitée
@@ -18,3 +19,9 @@ Flags du protocole TCP :
 	- RST : rupture anormale de la connexion (reset)
 	- SYN : demande de synchronisation ou établissement de connexion
 	- FIN : demande la fin de la connexion
+
+Lors de l'établissement de la connexion TCP, MSS, WS et SACK_PERM corresppondent à des options :
+	- MSS = Maximum Segment Size 
+	- WS = Window Scale 
+	- SACK_PERM = SACK Permitted
+Mais a quoi correspondent ces options ?
