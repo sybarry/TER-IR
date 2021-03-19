@@ -2,6 +2,13 @@ A faire :
 	- compléter les fichiers protocoles dans le dossier protocole
 	- observer les protocoles wifi avec l'ordinateur en récéption entre les deux EV3
 	- compléter le fichier reflexion 
+	- réfléchir à une surcouche de communication
+		- primitives (et paramètres)
+		- protocole
+		- services => implémentation BT/Wifi
+	- client/service
+		- Paramètres : No ip, synchrone/asynchrone, Appairage
+	- Faire des vidéo des expérimentations AVANT intégration
 
 Si possible :
 	- commencer à compléter fichier DPMR 
