@@ -7,9 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 import lejos.hardware.Bluetooth;
 import lejos.hardware.BrickFinder;
+import lejos.hardware.Button;
+import lejos.hardware.Key;
 import lejos.hardware.Wifi;
 import lejos.hardware.ev3.EV3;
 import lejos.remote.nxt.BTConnection;
@@ -17,7 +20,7 @@ import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
 
 /*
- * pour l'ev3 D2
+ * pour l'ev3 D2, vehicule, serveur
  */
 
 public class mainWifi {
@@ -25,7 +28,7 @@ public class mainWifi {
 	private static EV3 brick;
 	public static final int port = 1234;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		brick = (EV3) BrickFinder.getLocal();
 		final String nameLocal1 = brick.getName();
@@ -38,22 +41,22 @@ public class mainWifi {
 		OutputStream out = client.getOutputStream();
 		final DataOutputStream dOut = new DataOutputStream(out);
 		
-		/*dOut.writeUTF(nameLocal1);
-		dOut.flush();*/
-
 		new Thread() {
-            		public void run() {
-               			try {
-               				dOut.writeUTF(nameLocal1);
-    				} catch (IOException e) {
-    				// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}	
-            		}   
-        	}.start();
+    		public void run() {
+    			for(;;) {
+	       			try {
+	       				Button.DOWN.waitForPressAndRelease();
+	       				dOut.writeUTF(nameLocal1);
+	       				dOut.flush();
+	       			} catch (IOException e) {
+	       				// TODO Auto-generated catch block
+	       				e.printStackTrace();
+	       			}	
+    			}
+    		}   
+		}.start();
 		
-		while(true) {}
-
-		
+		while(true) {
+		}		
 	}
 }

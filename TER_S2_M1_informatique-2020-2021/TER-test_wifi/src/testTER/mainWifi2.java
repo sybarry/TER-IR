@@ -12,34 +12,36 @@ import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
 
 /*
- * pour l'ev3 D4
+ * pour l'ev3 D4, portail, client
  */
 
 public class mainWifi2 {
 	
 	public static void main(String[] args) throws IOException {
 		
-		String ip = "192.168.1.22"; 
-		Socket sock = new Socket(ip, 1234);
+		String ip = "192.168.1.22"; // connexion ev3 
+		//String ip = "192.168.1.16"; // connexion ordinateur
+		Socket sock = new Socket(ip, 1234); // port ev3 et ordinateur
 		System.out.println("Connected");
 		
 		InputStream in = sock.getInputStream();
 		final DataInputStream dIn = new DataInputStream(in);
 		
-		/*String str = dIn.readUTF();
-		System.out.println(str);*/
-		
 		new Thread() {
             public void run() {
-               	try {
-               		String str = dIn.readUTF();
-            		System.out.println(str);
-    			} catch (IOException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			}	
+            	for(;;) {
+	               	try {
+	               		String str = dIn.readUTF();
+	            		System.out.println(str);
+	    			} catch (IOException e) {
+	    				// TODO Auto-generated catch block
+	    				e.printStackTrace();
+	    			}
+               	}            	
             }   
         }.start();
+        
+		//sock.close();
 		
 		while(true) {}
 	}

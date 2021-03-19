@@ -89,7 +89,6 @@ public class VoitureControleur extends Thread{
 		
 		//Mise en place de la connexion bluetooth
 		bluetoothConnection();        
-		//wifiConnection();
 		
 		brick = (EV3) BrickFinder.getLocal();
 		nameLocal = brick.getName();
@@ -126,18 +125,26 @@ public class VoitureControleur extends Thread{
             }   
         }.start();
         
-		new Thread() {
-            public void run() {
-               	try {
-               		wifiConnection();
-               		dOut.writeUTF(nameLocal);
-            		dOut.flush();
+        new Thread() {
+    		public void run() {
+    			try {
+	    			wifiConnection();
+	    			for(;;) {
+		       			try {
+		       				Button.DOWN.waitForPressAndRelease();
+		       				dOut.writeUTF(nameLocal);
+		       				dOut.flush();
+		       			} catch (IOException e) {
+		       				// TODO Auto-generated catch block
+		       				e.printStackTrace();
+		       			}	
+	    			}
     			} catch (IOException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			}	
-            }   
-        }.start();
+       				// TODO Auto-generated catch block
+       				e.printStackTrace();
+    			}
+    		}   
+		}.start();
 		
         
         new Thread() {
