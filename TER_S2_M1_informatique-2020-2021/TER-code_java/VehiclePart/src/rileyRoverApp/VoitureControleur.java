@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 import lejos.hardware.Bluetooth;
 import lejos.hardware.BrickFinder;
@@ -85,10 +86,15 @@ public class VoitureControleur extends Thread{
 	/*
 	 * Classe main, lanc�e au d�marrage de l'application
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		//Mise en place de la connexion bluetooth
-		bluetoothConnection();        
+		final EcouteBT EBT = new EcouteBT();  //Connection t�l�commande
+		EBT.start();      
+		
+		while(EBT.BTconnect == false) {}
+		
+		System.out.println("Connection BT reussi");
 		
 		brick = (EV3) BrickFinder.getLocal();
 		nameLocal = brick.getName();
@@ -110,20 +116,7 @@ public class VoitureControleur extends Thread{
 		moteurDroit.arret();
 		moteurGauche.arret();
 		
-		// Création d'un thread pour écouter la télécommande.
-        new Thread() {
-            public void run() {
-            	for(;;) {
-                	try {
-    					transmission = (int) donneeEntree.readByte();
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}	
-            	}
 
-            }   
-        }.start();
         
         new Thread() {
     		public void run() {
@@ -151,7 +144,7 @@ public class VoitureControleur extends Thread{
         	public void run() {
         		for(;;) {
     				try {
-						donneeSortie.writeInt(Battery.getVoltageMilliVolt());
+						EBT.dataOut.writeInt(Battery.getVoltageMilliVolt());
 //    					System.out.println(Battery.getVoltageMilliVolt());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -160,79 +153,95 @@ public class VoitureControleur extends Thread{
         		}
         	}
         }.start();
-		
+        
+        
+        
+        
+
 		//Boucle fonctionnant tant que l'application est en marche
 		while(appliReady) {
 			//Lecture des bytes envoy�s depuis l'application
-			//transmission = (int) donneeEntree.readByte();
+
+
+			transmission = EBT.byteRecu;
 			
 			//Se place dans un �tat en fonction du signal re�u
 			switch(transmission) {
-				case AVANCE:
+			
+				case 1:
 					avance();
 					break;
-				case RECUL:
+				case 2:
 					reculSecurise();
 					break;
-				case ARRET:
+				case 3:
 					arretMoteur();
 					break;
-				case VITESSE0:
+				case 4:
 					changementVitesse(0);
 					break;
-				case VITESSE1:
+				case 5:
 					changementVitesse(1);
 					break;
-				case VITESSE2:
+				case 6:
 					changementVitesse(2);
 					break;
-				case VITESSE3:
+				case 7:
 					changementVitesse(3);
 					break;
-				case VITESSE4:
+				case 8:
 					changementVitesse(4);
 					break;
-				case VITESSE5:
+				case 9:
 					changementVitesse(5);
 					break;
-				case VITESSE6:
+				case 10:
 					changementVitesse(6);
 					break;
-				case VITESSE7:
+				case 11:
 					changementVitesse(7);
 					break;
-				case VITESSE8:
+				case 12:
 					changementVitesse(8);
 					break;
-				case VITESSE9:
+				case 13:
 					changementVitesse(9);
 					break;
-				case VITESSE10:
+				case 14:
 					changementVitesse(10);
 					break;
-				case ARRET_APPLI:
+				case 15:
 					appliPreteAMarcher(false);
 					break;
-				case TOURNE_DROITE:
+				case 16:
 					tourneDroite();
 					break;
-				case TOURNE_GAUCHE:
+				case 17:
 					tourneGauche();
 					break;
-				case KLAXONNE:
+				case 18:
 					klaxonne();
 					break;
-				case MODE_AUTOMATIQUE:
+				case 19:
 					modeAuto();
 					break;
-				case MODE_MANUEL:
+				case 20:
 					arretMoteur();
 					break;
 				default:
+					System.out.println("breakdefault");
 					break;
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	/*
 	 * Permet l'�coute des p�riph�riques bluetooth et la connexion � l'application
 	 * Se base sur le boitier NXT (similaire � EV3) pour effectuer la connexion
@@ -253,7 +262,7 @@ public class VoitureControleur extends Thread{
 		dOut = new DataOutputStream(out);
 	}
 	
-	public static void modeAuto() {
+	public static void modeAuto() throws InterruptedException {
 		while(transmission == MODE_AUTOMATIQUE) {
 			if(!capteurPresence.obstacleDetect()) {
 //				vitesseLumininosite();
@@ -273,7 +282,7 @@ public class VoitureControleur extends Thread{
 	/*
 	 * Permet � la voiture d'avancer
 	 */
-	public static void avance() {
+	public static void avance() throws InterruptedException {
 		System.out.println("AVANCE");
 		moteurGauche.getUnMoteur().startSynchronization();
 		moteurDroit.accelere(vitesse);
@@ -281,8 +290,20 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(true);
 		moteurGauche.marche(true);
 		moteurGauche.getUnMoteur().endSynchronization();
+		TimeUnit.SECONDS.sleep(1);
+		arretMoteur();
+		TimeUnit.SECONDS.sleep(10);
+		System.out.println("AVANCE");
+		moteurGauche.getUnMoteur().startSynchronization();
+		moteurDroit.accelere(vitesse);
+		moteurGauche.accelere(vitesse);
+		moteurDroit.marche(true);
+		moteurGauche.marche(true);
+		moteurGauche.getUnMoteur().endSynchronization();
+		TimeUnit.SECONDS.sleep(2);
+		arretMoteur();
 	}
-	public static void reculSecurise() {
+	public static void reculSecurise() throws InterruptedException {
 		if(!capteurContact.contactDetected()) {
 			recul();
 		}else {
@@ -292,12 +313,14 @@ public class VoitureControleur extends Thread{
 	/*
 	 * Permet � la voiture de reculer
 	 */
-	public static void recul() {
+	public static void recul() throws InterruptedException {
 		System.out.println("RECUL");
 		moteurGauche.getUnMoteur().startSynchronization();
 		moteurDroit.marche(false);
 		moteurGauche.marche(false);
 		moteurGauche.getUnMoteur().endSynchronization();
+		TimeUnit.SECONDS.sleep(1);
+		arretMoteur();
 	}
 	/*
 	 * Arr�te les moteurs
@@ -326,22 +349,26 @@ public class VoitureControleur extends Thread{
 	/*
 	 * Tourne � droite
 	 */
-	public static void tourneDroite() {
+	public static void tourneDroite() throws InterruptedException {
 		System.out.println("DROITE");
 		moteurGauche.marche(true);
 		moteurDroit.marche(false);
 		moteurGauche.accelere(1);
 		moteurDroit.accelere(1);
+		TimeUnit.SECONDS.sleep(1);
+		arretMoteur();
 	}
 	/*
 	 * Tourne � gauche
 	 */
-	public static void tourneGauche() {
+	public static void tourneGauche() throws InterruptedException {
 		System.out.println("GAUCHE");
 		moteurDroit.marche(true);
 		moteurGauche.marche(false);
 		moteurDroit.accelere(1);
-		moteurGauche.accelere(1);	
+		moteurGauche.accelere(1);
+		TimeUnit.SECONDS.sleep(1);
+		arretMoteur();
 	}
 	/*
 	 * Permet � la voiture de klaxonner

@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.utility.Delay;
 
 
@@ -15,7 +16,7 @@ public class Controller{
 	private static int remoteControlCode = 0;
 	private static boolean app_alive;
 	
-	private static ContactSensor sensorVehicle = new ContactSensor(SensorPort.S1);
+	private static PresenceCapteur sensorDistance = new PresenceCapteur(SensorPort.S2);
 	
 	private static Door leftDoor = new Door(MotorPort.A);
 	private static Door rightDoor = new Door(MotorPort.B);
@@ -25,10 +26,11 @@ public class Controller{
 	
 	private static ArrayList<String> vehiculeAutorisation;
 	private static String vehiculeDemande;
+	private static EcouteWifi EWF;
 	
 	
 	private static boolean fermer = true;
-	
+
 
 	
 	public static void main(String[] args) throws InterruptedException{
@@ -36,6 +38,7 @@ public class Controller{
 
 		stateList = new ArrayList<State>();
 		stateDoor = State.valueOf("FERME");
+		
 
 		
 		vehiculeAutorisation = new ArrayList<String>();
@@ -52,7 +55,29 @@ public class Controller{
 		
 		System.out.println("Connection BT reussi");
 		
+		
 		app_alive = true;
+		new Thread() {
+			public void run() {
+				for(;;) {
+					if(sensorDistance.obstacleDetect()) {//sensorVehicle.contact()
+						System.out.println("Connection Wifi au véhicule");
+						EWF = new EcouteWifi(); //Connection Vehicule
+						EWF.start();
+						while(vehiculeDemande == "" || vehiculeDemande == null) {
+							vehiculeDemande = EWF.idVehicule;
+						}
+						
+
+						System.out.println("Connection Wifi reussi à "+ vehiculeDemande);
+					}
+					
+				}
+				
+			}
+		}.start();
+
+			
 		
 		while(app_alive){
 
@@ -76,45 +101,35 @@ public class Controller{
 				 default:	 
 					 break;
 			}
-			if(sensorVehicle.contact()) {
-				System.out.println("Connection Wifi au véhicule");
-				EcouteWifi EWF = new EcouteWifi(); //Connection Vehicule
-				EWF.start();
-				while(vehiculeDemande == "" || vehiculeDemande == null) {
-					vehiculeDemande = EWF.idVehicule;
-				}
+			
+			if(vehiculeAutorisation.contains(vehiculeDemande) 
+					&& (	fermer ||
+							(stateDoor == State.valueOf("FERME_PARTIELLE")) ||
+							(stateDoor == State.valueOf("OUVERT_PARTIELLE"))
+						)
+					){
+				System.out.println("Acces autorise");
+				totalOpening();
+				while(sensorDistance.obstacleDetect()) {}
+				TimeUnit.SECONDS.sleep(10);
+		   	    totalClosing();
+				vehiculeDemande = "";
+				EWF.setIdVehicule("");
 				
-
-				System.out.println("Connection Wifi reussi à "+ vehiculeDemande);
-				
-				if(vehiculeAutorisation.contains(vehiculeDemande) 
-						&& (	fermer ||
-								(stateDoor == State.valueOf("FERME_PARTIELLE")) ||
-								(stateDoor == State.valueOf("OUVERT_PARTIELLE"))
-							)
-						){
-					System.out.println("Acces autorise");
-					totalOpening();
-					TimeUnit.SECONDS.sleep(20);
-			   	    totalClosing();
-					vehiculeDemande = "";
-					EWF.setIdVehicule("");
-					
-					// Le client se déconnecte du serveur après 1 minutes
-					/*new Thread() {
-			            public void run() {
-			            	try {
-								TimeUnit.MINUTES.sleep(1);
-								EWF.disconnect();
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}           	
-			            }   
-			        }.start();*/
-				}
-				
+				// Le client se déconnecte du serveur après 1 minutes
+				/*new Thread() {
+		            public void run() {
+		            	try {
+							TimeUnit.MINUTES.sleep(1);
+							EWF.disconnect();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}           	
+		            }   
+		        }.start();*/
 			}
+				
 			
 		}
 		
@@ -148,14 +163,14 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuvertureTotale");
-		    Delay.msDelay(1800);
+		    Delay.msDelay(1900);
 			leftDoor.stop(true);
 			rightDoor.stop(true); 
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			Delay.msDelay(1800);
+			Delay.msDelay(1900);
 			fermer = false;
-			Delay.msDelay(1800);
+			Delay.msDelay(1900);
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
 			System.out.println("Déja ouvert");
@@ -189,7 +204,7 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuverturePartielle");
-		    Delay.msDelay(900);
+		    Delay.msDelay(950);
 			leftDoor.stop(true);
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT_PARTIELLE");
@@ -207,7 +222,7 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuvertureTotale");
-		    Delay.msDelay(900);
+		    Delay.msDelay(950);
 			leftDoor.stop(true);
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
@@ -219,7 +234,7 @@ public class Controller{
 			rightDoor.opened();
 			leftDoor.opened();
 			stateDoor = State.valueOf("EnOuvertureTotale");
-		    Delay.msDelay(900);
+		    Delay.msDelay(950);
 			leftDoor.stop(true);
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
@@ -244,7 +259,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermeturePartielle");
-		    Delay.msDelay(900);
+		    Delay.msDelay(950);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME_PARTIELLE");
@@ -256,7 +271,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
-		    Delay.msDelay(900);
+		    Delay.msDelay(950);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
@@ -268,7 +283,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
-		    Delay.msDelay(900);
+		    Delay.msDelay(950);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
@@ -292,7 +307,7 @@ public class Controller{
 			rightDoor.closed();
 			leftDoor.closed();
 			stateDoor = State.valueOf("EnFermetureTotale");
-		    Delay.msDelay(1800);
+		    Delay.msDelay(1900);
 			leftDoor.stop(true);
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
