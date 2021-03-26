@@ -14,7 +14,7 @@ import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
 
-public class main2 {
+public class mainBT2 {
 	private static DataOutputStream donneeSortie; 
 	private static DataInputStream donneeEntree;
 	private static BTConnection BTLink;

@@ -41,6 +41,9 @@ public class mainWifi {
 		OutputStream out = client.getOutputStream();
 		final DataOutputStream dOut = new DataOutputStream(out);
 		
+		/*InputStream in = client.getInputStream();
+		final DataInputStream dIn = new DataInputStream(in);*/
+		
 		new Thread() {
     		public void run() {
     			for(;;) {
@@ -55,6 +58,11 @@ public class mainWifi {
     			}
     		}   
 		}.start();
+		
+		/*String str = dIn.readUTF();
+		if(str == "disconect") {
+			client.close();
+		}*/
 		
 		while(true) {
 		}		

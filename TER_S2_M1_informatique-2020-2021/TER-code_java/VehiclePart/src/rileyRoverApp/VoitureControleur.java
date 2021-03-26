@@ -129,20 +129,20 @@ public class VoitureControleur extends Thread{
     		public void run() {
     			try {
 	    			wifiConnection();
-	    			for(;;) {
-		       			try {
-		       				Button.DOWN.waitForPressAndRelease();
-		       				dOut.writeUTF(nameLocal);
-		       				dOut.flush();
-		       			} catch (IOException e) {
-		       				// TODO Auto-generated catch block
-		       				e.printStackTrace();
-		       			}	
-	    			}
     			} catch (IOException e) {
        				// TODO Auto-generated catch block
        				e.printStackTrace();
     			}
+	    		for(;;) {
+		       		try {
+		       			Button.DOWN.waitForPressAndRelease();
+		       			dOut.writeUTF(nameLocal);
+		       			dOut.flush();
+		       		} catch (IOException e) {
+		       			// TODO Auto-generated catch block
+		       			e.printStackTrace();
+		       		}	
+	    		}
     		}   
 		}.start();
 		

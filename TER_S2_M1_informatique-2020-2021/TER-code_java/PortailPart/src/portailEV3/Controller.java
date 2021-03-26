@@ -1,4 +1,5 @@
 package portailEV3;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +39,7 @@ public class Controller{
 
 		
 		vehiculeAutorisation = new ArrayList<String>();
-		vehiculeAutorisation.add("EV3");
+		vehiculeAutorisation.add("ev3");
 
 		
 		System.out.println("Connection BT a la telecommande");
@@ -85,7 +86,7 @@ public class Controller{
 				//EWF.start();
 				//vehiculeDemande = EWF.idVehicule;
 				System.out.println("Connection Wifi reussi");
-				vehiculeDemande= "EV3";
+				vehiculeDemande= "ev3";
 				if(vehiculeAutorisation.contains(vehiculeDemande) 
 						&& (	fermer ||
 								(stateDoor == State.valueOf("FERME_PARTIELLE")) ||
@@ -94,6 +95,19 @@ public class Controller{
 						){
 					System.out.println("Acces autorise");
 					totalOpening();
+					
+					// Le client se déconnecte du serveur après 1 minutes
+					/*new Thread() {
+			            public void run() {
+			            	try {
+								TimeUnit.MINUTES.sleep(1);
+								EWF.disconnect();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}           	
+			            }   
+			        }.start();*/
 				}
 				
 			}

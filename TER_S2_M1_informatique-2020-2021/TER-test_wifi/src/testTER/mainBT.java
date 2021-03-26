@@ -22,7 +22,7 @@ import lejos.remote.nxt.NXTConnection;
  * pour l'ev3 D4
  */
 
-public class main {
+public class mainBT {
 	
 	private static EV3 brick;
 	private static DataOutputStream donneeSortie; 

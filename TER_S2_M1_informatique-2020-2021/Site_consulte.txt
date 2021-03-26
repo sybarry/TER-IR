@@ -20,3 +20,5 @@ Connexion ordi-EV3 par USB pour recuperation de paquet :
 https://www.umpah.net/how-to-sniff-usb-traffic-reverse-engineer-usb-device-interactions/
 https://www.umpah.net/how-to-sniff-usb-traffic-reverse-engineer-usb-device-interactions/
 https://w0y.at/writeup/2018/10/22/hitcon-2018-ev3-basic.html
+
+Définition asynchrone/synchrone : http://www.benhenda.com/hdr/documents/Manuels/2000_DUTICE_UTICEF/uv1_a/synch_asynch1.html#:~:text=Une%20communication%20synchrone%20se%20base,des%20échanges%20en%20temps%20réel.&text=Il%20est%20dit%20qu%27une,au%20systèmes%20de%20communication%20utilisé.

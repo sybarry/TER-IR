@@ -3,11 +3,11 @@ A faire :
 	- observer les protocoles wifi avec l'ordinateur en récéption entre les deux EV3
 	- compléter le fichier reflexion 
 	- réfléchir à une surcouche de communication
-		- primitives (et paramètres)
-		- protocole
+		- primitives (et paramètres) => id, port, (RAW/PACKET/LCP), ...
+		- protocole => TCP/IP(pour wifi)/
 		- services => implémentation BT/Wifi
-	- client/service
-		- Paramètres : No ip, synchrone/asynchrone, Appairage
+		- client/service
+			- Paramètres : No ip, synchrone/asynchrone, Appairage
 	- Faire des vidéo des expérimentations AVANT intégration
 
 Si possible :

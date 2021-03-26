@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.BTConnection;
@@ -17,21 +19,26 @@ import lejos.remote.nxt.NXTConnection;
 
 public class mainWifi2 {
 	
-	public static void main(String[] args) throws IOException {
+	static String str = "";
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		String ip = "192.168.1.22"; // connexion ev3 
 		//String ip = "192.168.1.16"; // connexion ordinateur
-		Socket sock = new Socket(ip, 1234); // port ev3 et ordinateur
+		Socket client = new Socket(ip, 1234); // port ev3 et ordinateur
 		System.out.println("Connected");
 		
-		InputStream in = sock.getInputStream();
+		InputStream in = client.getInputStream();
 		final DataInputStream dIn = new DataInputStream(in);
+		
+		/*OutputStream out = client.getOutputStream();
+		final DataOutputStream dOut = new DataOutputStream(out);*/
 		
 		new Thread() {
             public void run() {
             	for(;;) {
 	               	try {
-	               		String str = dIn.readUTF();
+	               		str = dIn.readUTF();
 	            		System.out.println(str);
 	    			} catch (IOException e) {
 	    				// TODO Auto-generated catch block
@@ -40,10 +47,21 @@ public class mainWifi2 {
                	}            	
             }   
         }.start();
-        
-		//sock.close();
+                
+        /*TimeUnit.MINUTES.sleep(1);
+        dOut.writeUTF("disconect");
+		dOut.flush();*/
 		
-		while(true) {}
+		//client.close();
+		
+		while(true) {
+			
+			/*if(str.contains("ev3")) {
+				TimeUnit.SECONDS.sleep(10);
+				str = "";
+				System.out.println("disconnect");
+				client.close();
+			}*/
+		}
 	}
-
 }

@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class EcouteWifi extends Thread {
-	volatile String idVehicule = "";
+	static String idVehicule = "";
 	private String ip;
 	private Socket sock;
 	private InputStream in;
@@ -20,12 +20,14 @@ public class EcouteWifi extends Thread {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-      	try {
-       		idVehicule = dIn.readUTF();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+      	for(;;){
+      		try {
+      			idVehicule = dIn.readUTF();
+      		} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+      		}	
+      	}
 	}
 	
 	public String returnIdVehicule() {
@@ -40,5 +42,8 @@ public class EcouteWifi extends Thread {
 		in = sock.getInputStream();
 		dIn = new DataInputStream(in);
 	}
-
+	
+	public void disconnect() throws IOException{
+		sock.close();
+	}
 }
