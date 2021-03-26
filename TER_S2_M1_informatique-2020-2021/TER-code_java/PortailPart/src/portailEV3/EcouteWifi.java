@@ -34,6 +34,9 @@ public class EcouteWifi extends Thread {
 		return idVehicule;
 	}
 	
+	public void setIdVehicule(String id) {
+		idVehicule = id;
+	}
 	public void connect() throws UnknownHostException, IOException {
 		ip = "192.168.1.22"; //ip de la voiture qui veut rentrer
 		sock = new Socket(ip, 1234);//1234 port du vehicule qui veut rentré

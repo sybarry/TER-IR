@@ -15,6 +15,7 @@ public class EcouteBT extends Thread {
 	private static DataInputStream dataIn;
 	private static BTConnection BTLink;
 	private static boolean app_alive;
+	static boolean BTconnect = false;
 	
 
 	volatile int byteRecu=0;
@@ -55,5 +56,6 @@ public class EcouteBT extends Thread {
 			BTLink = (BTConnection) ncc.waitForConnection(30, NXTConnection.RAW);
 			dataOut = BTLink.openDataOutputStream();
 			dataIn = BTLink.openDataInputStream();
+			BTconnect = true;
 		}
 }

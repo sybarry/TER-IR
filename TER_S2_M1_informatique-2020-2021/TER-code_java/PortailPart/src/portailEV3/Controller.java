@@ -45,8 +45,10 @@ public class Controller{
 		System.out.println("Connection BT a la telecommande");
 		
 		
-		//EcouteBT EBT = new EcouteBT();  //Connection télécommande
-		//EBT.start();
+		EcouteBT EBT = new EcouteBT();  //Connection télécommande
+		EBT.start();
+		
+		while(EBT.BTconnect == false) {}
 		
 		System.out.println("Connection BT reussi");
 		
@@ -54,7 +56,7 @@ public class Controller{
 		
 		while(app_alive){
 
-			//remoteControlCode = EBT.byteRecu;  //Lecture de la commande via la télécommande
+			remoteControlCode = EBT.byteRecu;  //Lecture de la commande via la télécommande
 			
 			switch(remoteControlCode){ // revoir ce switch car quand default, il ferme le portail alors qu'il ne devrait peut etre rien faire
 				
@@ -71,22 +73,20 @@ public class Controller{
 					totalClosing();
 					break;
 					
-				 default:
-					 if(!fermer)
-					 {
-						 TimeUnit.SECONDS.sleep(20);
-						 totalClosing();
-					 }
-					 
+				 default:	 
 					 break;
 			}
 			if(sensorVehicle.contact()) {
 				System.out.println("Connection Wifi au véhicule");
-				//EcouteWifi EWF = new EcouteWifi(); //Connection Vehicule
-				//EWF.start();
-				//vehiculeDemande = EWF.idVehicule;
-				System.out.println("Connection Wifi reussi");
-				vehiculeDemande= "ev3";
+				EcouteWifi EWF = new EcouteWifi(); //Connection Vehicule
+				EWF.start();
+				while(vehiculeDemande == "" || vehiculeDemande == null) {
+					vehiculeDemande = EWF.idVehicule;
+				}
+				
+
+				System.out.println("Connection Wifi reussi à "+ vehiculeDemande);
+				
 				if(vehiculeAutorisation.contains(vehiculeDemande) 
 						&& (	fermer ||
 								(stateDoor == State.valueOf("FERME_PARTIELLE")) ||
@@ -95,6 +95,10 @@ public class Controller{
 						){
 					System.out.println("Acces autorise");
 					totalOpening();
+					TimeUnit.SECONDS.sleep(20);
+			   	    totalClosing();
+					vehiculeDemande = "";
+					EWF.setIdVehicule("");
 					
 					// Le client se déconnecte du serveur après 1 minutes
 					/*new Thread() {
