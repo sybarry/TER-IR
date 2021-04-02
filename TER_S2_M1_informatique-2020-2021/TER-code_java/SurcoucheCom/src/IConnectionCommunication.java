@@ -9,8 +9,14 @@ public interface IConnectionCommunication {
 	void closeConnection() throws IOException;
 
 	// Methode qui permet d'envoyer un message entre deux appareils
-	void sendMessage(String message) throws IOException;
+	void sendMessage(Object message, int mode) throws IOException;
+	
+	// Methode qui permet d'envoyer un message entre deux appareils
+	boolean sendMessageWithACK(Object message, int mode) throws IOException, InterruptedException;
 	
 	// Methode qui permet de recevoir un message entre deux appareils
-	String receiveMessage() throws IOException;
+	Object receiveMessage(int mode) throws IOException;
+	
+	// Methode qui permet de recevoir un message entre deux appareils
+	Object receiveMessageWithACK(int mode) throws IOException;
 }
