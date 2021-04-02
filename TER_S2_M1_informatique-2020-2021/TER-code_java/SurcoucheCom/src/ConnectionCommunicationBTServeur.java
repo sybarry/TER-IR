@@ -1,0 +1,61 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import lejos.hardware.Bluetooth;
+import lejos.remote.nxt.BTConnection;
+import lejos.remote.nxt.BTConnector;
+import lejos.remote.nxt.NXTConnection;
+
+public class ConnectionCommunicationBTServeur implements IConnectionCommunication {
+	
+	private DataOutputStream donneeSortie; 
+	private DataInputStream donneeEntree;
+	private BTConnection BTLink;
+	/* Les differents mode de connexion qu'on peut mettre :
+	 * NXTConnection.RAW (pour appareil de type tablette, telephone, ...)
+	 * NXTConnection.PACKET (pour appareil de type brique NXT)
+	 * NXTConnection.LCP (pour accéder à distance au menus de la brique)
+	 */
+	private int modeConnexion; 
+	private int timeOut; // Time in ms to wait for the connection to be made
+
+	public ConnectionCommunicationBTServeur(int modeConnexion, int timeOut) {
+		this.modeConnexion = modeConnexion;
+		this.timeOut = timeOut;
+		this.donneeSortie = null;
+		this.donneeEntree = null;
+		this.BTLink = null;
+	}
+	
+	@Override
+	public void openConnection() throws IOException {
+		System.out.println("En ecoute");
+	    BTConnector nxtCommConnector = (BTConnector) Bluetooth.getNXTCommConnector();
+	    BTLink = (BTConnection) nxtCommConnector.waitForConnection(timeOut, modeConnexion);
+		
+		donneeSortie = BTLink.openDataOutputStream();
+		donneeEntree = BTLink.openDataInputStream();	
+		
+		System.out.println("Connexion effectue");	 
+	}
+
+	@Override
+	public void closeConnection() throws IOException {
+		BTLink.close();
+		/*donneeSortie.close();
+		donneeEntree.close();*/
+		System.out.println("Connection closed");
+	}
+
+	@Override
+	public void sendMessage(String message) throws IOException{
+		donneeSortie.writeUTF(message); 
+		donneeSortie.flush();
+	}
+
+	@Override
+	public String receiveMessage() throws IOException{
+		return donneeEntree.readUTF();		
+	}
+}
