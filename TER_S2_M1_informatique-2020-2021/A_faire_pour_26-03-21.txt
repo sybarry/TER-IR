@@ -1,6 +1,5 @@
 A faire :
 	- compléter les fichiers protocoles dans le dossier protocole
-	- observer les protocoles wifi avec l'ordinateur en récéption entre les deux EV3
 	- compléter le fichier reflexion 
 	- réfléchir à une surcouche de communication
 		- primitives (et paramètres) => id, port, (RAW/PACKET/LCP), ...
