@@ -1,6 +1,9 @@
 Robot EV3 : 
 	- https://fr.wikipedia.org/wiki/Lego_Mindstorms
 
+Lejos :
+	- https://en.wikipedia.org/wiki/LeJOS
+
 Bluetooth :
 
 	- http://www.juanantonio.info/docs/2008/LEJOS-BLUETOOTH.pdf

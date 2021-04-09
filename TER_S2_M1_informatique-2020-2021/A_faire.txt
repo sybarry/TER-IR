@@ -1,0 +1,17 @@
+A faire :
+	- Compléter les fichiers protocoles dans le dossier protocole
+	- Compléter le fichier reflexion 
+	- Améliorer surcouche communication
+	- Faire des vidéo des expérimentations AVANT intégration
+	- Diagramme UML
+		- diagramme de classe pour l'étude de cas
+		- diagramme de classe pour la surcouche de communication
+		- diagramme de séquence pour expliquer les communications de l'étude de cas
+		- diagramme de séquence pour expliquer les communocations dans la surcouche de communication
+
+Si possible :
+	- commencer à compléter fichier DPMR 
+	- commencer à compléter fichier DPMU (moins important)
+
+Prolème envoie de plusieurs messages entre télécommande-véhicule peut être dû à la concurrence de 
+thread
