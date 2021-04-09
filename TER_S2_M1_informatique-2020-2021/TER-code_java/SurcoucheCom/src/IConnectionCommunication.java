@@ -12,7 +12,7 @@ public interface IConnectionCommunication {
 	void sendMessage(Object message, int mode) throws IOException;
 	
 	// Methode qui permet d'envoyer un message entre deux appareils
-	boolean sendMessageWithACK(Object message, int mode) throws IOException, InterruptedException;
+	boolean sendMessageSynchronized(Object message, int mode) throws IOException, InterruptedException;
 	
 	// Methode qui permet de recevoir un message entre deux appareils
 	Object receiveMessage(int mode) throws IOException;
