@@ -1,4 +1,4 @@
-
+package ConnectionCommunication;
 import java.io.IOException;
 
 import lejos.hardware.Bluetooth;

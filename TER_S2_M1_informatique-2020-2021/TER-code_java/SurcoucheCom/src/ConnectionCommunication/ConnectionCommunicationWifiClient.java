@@ -1,20 +1,20 @@
+package ConnectionCommunication;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ConnectionCommunicationWifiServeur extends AConnectionCommunication {
-	
-	private ServerSocket server;
+public class ConnectionCommunicationWifiClient extends AConnectionCommunication {
+
 	private Socket client;
 	private int port;
+	private String ip;
 	
-	public ConnectionCommunicationWifiServeur(int port) {
+	public ConnectionCommunicationWifiClient(int port, String ip) {
 		this.port = port;
-		this.server = null;
+		this.ip = ip;
 		this.client = null;
 		this.dOut = null;
 		this.dIn = null;
@@ -22,10 +22,8 @@ public class ConnectionCommunicationWifiServeur extends AConnectionCommunication
 	
 	@Override
 	public void openConnection() throws IOException {
-		server = new ServerSocket(port);
-		System.out.println("Awaiting client..");
-		client = server.accept();
-		System.out.println("CONNECTED");
+		client = new Socket(ip, port); 
+		System.out.println("Connected");
 		
 		InputStream in = client.getInputStream();
 		OutputStream out = client.getOutputStream();
