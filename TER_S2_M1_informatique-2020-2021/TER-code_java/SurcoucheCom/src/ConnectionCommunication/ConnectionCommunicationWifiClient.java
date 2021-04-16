@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import Divers.InfoConnection;
+
 public class ConnectionCommunicationWifiClient extends AConnectionCommunication {
 
 	private Socket client;
@@ -30,6 +32,8 @@ public class ConnectionCommunicationWifiClient extends AConnectionCommunication 
 		
 		dIn = new DataInputStream(in);
 		dOut = new DataOutputStream(out);
+		
+		infoConnection = new InfoConnection(client.getLocalAddress().getHostAddress(), ip);
 	}
 
 	@Override

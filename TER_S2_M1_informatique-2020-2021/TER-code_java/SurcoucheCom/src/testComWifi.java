@@ -2,12 +2,14 @@
 
 import java.io.IOException;
 
+import ConnectionCommunication.ConnectionCommunicationBTServeur;
 import ConnectionCommunication.ConnectionCommunicationWifiServeur;
 import Exception.MessageException;
 import Message.MessageString;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.EV3;
+import lejos.remote.nxt.NXTConnection;
 
 /*
  * pour l'ev3 D2, vehicule, serveur
@@ -24,15 +26,17 @@ public class testComWifi {
 		final String nameLocal1 = brick.getName();
 
 		final ConnectionCommunicationWifiServeur comWifi = new ConnectionCommunicationWifiServeur(port);
+		//final ConnectionCommunicationBTServeur comBT = new ConnectionCommunicationBTServeur(60000, NXTConnection.RAW);
 		
 		comWifi.openConnection();
+		//comBT.openConnection();
 		
 		new Thread() {
     		public void run() {
     			for(;;) {
 	       			try {
 	       				Button.DOWN.waitForPressAndRelease();
-	       				comWifi.sendMessageGen(new MessageString(nameLocal1));
+	       				comWifi.sendMessage(new MessageString(nameLocal1));
 	       			} catch (IOException | MessageException e) {
 	       				// TODO Auto-generated catch block
 	       				e.printStackTrace();

@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import Divers.InfoConnection;
+
 public class ConnectionCommunicationWifiServeur extends AConnectionCommunication {
 	
 	private ServerSocket server;
@@ -33,6 +35,12 @@ public class ConnectionCommunicationWifiServeur extends AConnectionCommunication
 		
 		dIn = new DataInputStream(in);
 		dOut = new DataOutputStream(out);
+		
+		//System.out.println("sender : "+server.getInetAddress().getHostAddress()); // renvoie 0.0.0.0 au lieu de 192.168.1.22 (je ne vois pas de solution)
+		// comprendre pq ca renoie 0.0.0.0, parce que c'est pas une bonne pratique de passer par le client pour avoir l'adresse sur server
+		// alors que this est le serveur
+		
+		infoConnection = new InfoConnection(client.getLocalAddress().getHostAddress(), client.getInetAddress().getHostAddress());
 	}
 
 	@Override

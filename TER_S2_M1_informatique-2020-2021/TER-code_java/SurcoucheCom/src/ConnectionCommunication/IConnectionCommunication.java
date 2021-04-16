@@ -2,8 +2,8 @@ package ConnectionCommunication;
 
 import java.io.IOException;
 
-import Message.IMessage;
 import Exception.MessageException;
+import Message.IMessage;
 
 public interface IConnectionCommunication {
 	
@@ -13,16 +13,25 @@ public interface IConnectionCommunication {
 	// Methode qui permet de fermer la connexion entre deux appareils
 	void closeConnection() throws IOException;
 	
+	// Methode qui permet d'envoyer un accusé de récéption d'un message à l'appareil source
+	void sendACK(int idMessage) throws IOException;
+	
+	// Methode qui permet de savoir si on à recu un accusé de récéption pour le message d'identifiant idMessage
+	boolean receiveACK(int idMessage) throws IOException;
+	
 	// Methode qui permet d'envoyer un message entre deux appareils
 	void sendMessage(IMessage<?> msg) throws IOException, MessageException;
 	
-	// Methode qui permet de recevoir un message entre deux appareils
-	Object receiveMessage(IMessage<?> msg) throws IOException, MessageException;
-
-	//boolean sendMessageSynchronizedGen(IMessage<?> msg) throws IOException, InterruptedException;
+	// Methode qui permet de recevoir un message
+	IMessage<?> receiveMessage() throws IOException, MessageException;
 	
-	// Methode qui permet d'envoyer un message entre deux appareils
-	boolean sendMessageSynchronized(Object message, int mode) throws IOException, InterruptedException;
+	// Methode qui permet d'envoyer un message entre deux appareils de manière synchrone
+	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
+	
+	
+	
+	void sendMessageAsynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
+	
 	
 	// Methode qui permet de recevoir un message entre deux appareils
 	Object receiveMessageWithACK(int mode) throws IOException;

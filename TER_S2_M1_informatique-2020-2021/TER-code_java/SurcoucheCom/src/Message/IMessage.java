@@ -1,21 +1,15 @@
 package Message;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
-import Exception.MessageException;
+import Divers.InfoConnection;
 
 public interface IMessage<T> {
-	
-	DataOutputStream getOutput();
-	
-	DataInputStream getInput();
-	
-	void setOutput(DataOutputStream newOutput);
-	
-	void setInput(DataInputStream newInput);
-	
-	void write() throws IOException, MessageException;
-	
-	T read() throws IOException, MessageException;
+
+	int getIdMessage();
+	InfoConnection getInfoConnection();
+	String getTypeMessage();
+	T getMessage();
+	void setIdMessage(int newIdMessage);
+	void setInfoConnection(InfoConnection newInfoConnection);
+	void setTypeMessage(String newTypeMessage);
+	void setMessage(T newMessage);
 }

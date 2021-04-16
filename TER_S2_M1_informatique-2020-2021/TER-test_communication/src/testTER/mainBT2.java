@@ -27,7 +27,7 @@ public class mainBT2 {
 	    BTLink = (BTConnection) nxtCommConnector.waitForConnection(600000, NXTConnection.PACKET);
 	    
 		//donneeSortie = BTLink.openDataOutputStream();
-		//donneeEntree = BTLink.openDataInputStream();
+		//donneeEntree = BTLink.openDataInputStream(); 
 		    
 	    if (BTLink != null) {
 	    	

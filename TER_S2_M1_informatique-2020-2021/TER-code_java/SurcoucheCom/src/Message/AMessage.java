@@ -1,38 +1,55 @@
 package Message;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import Exception.MessageException;
+import Divers.InfoConnection;
 
 public abstract class AMessage<T> implements IMessage<T> {
 
-	protected DataOutputStream dOut;
-	protected DataInputStream dIn;
+	private int idMessage;
+	private String typeMessage;
 	
-	public AMessage() {
-		this.dOut = null;
-		this.dIn = null;
+	private InfoConnection infoConnection;
+	
+	public AMessage(String typeMessage) {
+		this.idMessage = -1;
+		this.infoConnection = null;
+		this.typeMessage = typeMessage;
 	}
 	
-	public DataOutputStream getOutput() {
-		return this.dOut;
+	public AMessage(int idMessage, String sender, String receiver, String typeMessage) { // Constructeur utilisé pour creer l'objet Message lors d'un receiveMessage()
+		this.idMessage = idMessage;
+		this.infoConnection.setReceiver(receiver);
+		this.infoConnection.setSender(sender);
+		this.typeMessage = typeMessage;
 	}
 	
-	public DataInputStream getInput() {
-		return this.dIn;
+	public int getIdMessage() {
+		return this.idMessage;
 	}
 	
-	public void setOutput(DataOutputStream newOutput) {
-		this.dOut = newOutput;
+	public InfoConnection getInfoConnection() {
+		return this.infoConnection;
 	}
 	
-	public void setInput(DataInputStream newInput) {
-		this.dIn = newInput;
+	public String getTypeMessage() {
+		return this.typeMessage;
 	}
 	
-	public abstract void write() throws IOException, MessageException;
+	public abstract T getMessage();	
 	
-	public abstract T read() throws IOException, MessageException;
+	@Override
+	public void setIdMessage(int newIdMessage) {
+		this.idMessage = newIdMessage;
+	}
+	
+	@Override
+	public void setInfoConnection(InfoConnection newInfoConnection) {
+		this.infoConnection = newInfoConnection;
+	}
+
+	@Override
+	public void setTypeMessage(String newTypeMessage) {
+		this.typeMessage = newTypeMessage;
+	}
+	
+	public abstract void setMessage(T newMessage);
 }
