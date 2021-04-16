@@ -1,0 +1,36 @@
+package Surcouche;
+
+import java.io.IOException;
+import Message.IMessage;
+
+public interface InterSurcouche {
+	
+	// Methode qui permet d'etablir une connexion entre deux appareils
+	void openConnection() throws IOException;
+	
+	// Methode qui permet de fermer la connexion entre deux appareils
+	void closeConnection() throws IOException;
+	
+	// Methode qui permet d'envoyer un accusé de récéption d'un message à l'appareil source
+	void sendACK(int idMessage) throws IOException;
+	
+	// Methode qui permet de savoir si on à recu un accusé de récéption pour le message d'identifiant idMessage
+	boolean receiveACK(int idMessage) throws IOException;
+	
+	// Methode qui permet d'envoyer un message entre deux appareils
+	void sendMessage(IMessage<?> msg) throws IOException;
+	
+	// Methode qui permet de recevoir un message
+	IMessage<?> receiveMessage() throws IOException;
+	
+	// Methode qui permet d'envoyer un message entre deux appareils de manière synchrone
+	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException;
+	
+	
+	
+	void sendMessageAsynchronized(final IMessage<?> msg) throws IOException, InterruptedException;
+	
+	
+	// Methode qui permet de recevoir un message entre deux appareils
+	Object receiveMessageWithACK(int mode) throws IOException;
+}
