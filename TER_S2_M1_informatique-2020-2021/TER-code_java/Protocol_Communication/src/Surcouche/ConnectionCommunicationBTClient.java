@@ -47,4 +47,5 @@ public class ConnectionCommunicationBTClient extends AbstSurcouche {
 		donneeEntree.close();*/
 		System.out.println("Connection closed");
 	}
+
 }

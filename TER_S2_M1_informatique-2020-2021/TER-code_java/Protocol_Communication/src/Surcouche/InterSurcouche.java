@@ -27,10 +27,6 @@ public interface InterSurcouche {
 	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException;
 	
 	
-	
 	void sendMessageAsynchronized(final IMessage<?> msg) throws IOException, InterruptedException;
 	
-	
-	// Methode qui permet de recevoir un message entre deux appareils
-	Object receiveMessageWithACK(int mode) throws IOException;
 }
