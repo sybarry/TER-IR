@@ -89,9 +89,9 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 		if(dIn != null) {
 			
 			/////////////////////////////// Pour le DecoderMessage /////////////////////////////////
-			
-			while(dIn.available() == 0) {}
-			byte[] convertedMessage = new byte[dIn.available()]; //pour ne pas allouer plus de case qu'il n'en faut car autrement ca peut créer des problème
+			int streamSize = dIn.available();
+			while(streamSize == 0) { streamSize = dIn.available();} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
+			byte[] convertedMessage = new byte[streamSize]; //pour ne pas allouer plus de case qu'il n'en faut car autrement ca peut créer des problème
 			dIn.read(convertedMessage); //contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
 			MessageString message = Encodeur_Decodeur.decoderMessage(convertedMessage);
 			if(message.getWithACK() == true) sendACK(message.getIdMessage()); 
@@ -99,8 +99,9 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 			
 			/////////////////////////////// Pour le DecoderString /////////////////////////////////
 			
-			/*while(dIn.available() == 0) {} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
-			byte[] convertedMessage = new byte[dIn.available()]; //pour ne pas allouer plus de case qu'il n'en faut car autrement ca peut créer des problème
+			/*int streamSize = dIn.available();
+			while(streamSize == 0) { streamSize = dIn.available();} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
+			byte[] convertedMessage = new byte[streamSize]; //pour ne pas allouer plus de case qu'il n'en faut car autrement ca peut créer des problème
 			dIn.read(convertedMessage); 
 			String[] message = Encoder_Decoder.decoderString(convertedMessage).split("@@");*/
 			
