@@ -4,6 +4,7 @@ import java.io.IOException;
 import ConnectionCommunication.ConnectionCommunicationBTClient;
 import ConnectionCommunication.ConnectionCommunicationWifiClient;
 import Exception.MessageException;
+import Message.IMessage;
 import Message.MessageString;
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.NXTConnection;
@@ -30,12 +31,8 @@ public class testComWifi2 {
             public void run() {
             	for(;;) {
 	               	try {
-	               		MessageString str = (MessageString) comWifi.receiveMessage();
-	               		//IMessage2<?> str = comWifi.receiveMessageGen();  prototype 3
+	               		IMessage<?> str = comWifi.receiveMessage();  //prototype 3
 	               		System.out.println(str.getMessage()); 
-	               		
-	               		/*str = (String) comWifi.receiveMessage(new MessageString()); prototype 2
-	            		System.out.println(str);*/
 	    			} catch (IOException | MessageException e) {
 	    				// TODO Auto-generated catch block
 	    				e.printStackTrace();

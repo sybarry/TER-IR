@@ -6,20 +6,28 @@ public abstract class AMessage<T> implements IMessage<T> {
 
 	private int idMessage;
 	private String typeMessage;
-	
+	private boolean withACK;	
 	private InfoConnection infoConnection;
 	
 	public AMessage(String typeMessage) {
 		this.idMessage = -1;
 		this.infoConnection = null;
 		this.typeMessage = typeMessage;
+		this.withACK = false;
 	}
 	
-	public AMessage(int idMessage, String sender, String receiver, String typeMessage) { // Constructeur utilisé pour creer l'objet Message lors d'un receiveMessage()
+	public AMessage(int idMessage, String sender, String receiver, String typeMessage, boolean withACK) { // Constructeur utilisé pour creer l'objet Message lors d'un receiveMessage()
 		this.idMessage = idMessage;
-		this.infoConnection.setReceiver(receiver);
-		this.infoConnection.setSender(sender);
+		this.infoConnection = new InfoConnection(sender, receiver);
 		this.typeMessage = typeMessage;
+		this.withACK = withACK;
+	}
+	
+	public AMessage(int idMessage, InfoConnection infoConnection, String typeMessage, boolean withACK) { //Constructeur utilisé lorsqu'on utilise decoderMessage
+		this.idMessage = idMessage;
+		this.infoConnection = infoConnection;
+		this.typeMessage = typeMessage;
+		this.withACK = withACK;
 	}
 	
 	public int getIdMessage() {
@@ -52,4 +60,14 @@ public abstract class AMessage<T> implements IMessage<T> {
 	}
 	
 	public abstract void setMessage(T newMessage);
+	
+	@Override
+	public boolean getWithACK() {
+		return this.withACK;
+	}
+	
+	@Override
+	public void setWithACK(boolean newWithACK) {
+		this.withACK = newWithACK;
+	}
 }

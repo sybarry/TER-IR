@@ -1,7 +1,9 @@
 package ConnectionCommunication;
 import java.io.IOException;
 
+import Divers.InfoConnection;
 import lejos.hardware.Bluetooth;
+import lejos.hardware.BrickFinder;
 import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 
@@ -33,7 +35,16 @@ public class ConnectionCommunicationBTServeur extends AConnectionCommunication {
 	    dOut = BTLink.openDataOutputStream();
 	    dIn = BTLink.openDataInputStream();	
 		
-		System.out.println("Connexion effectue");	 
+		System.out.println("Connexion effectue");	
+		
+		// pas sur que ca marche 
+		String nameSender = BrickFinder.getLocal().getName();
+		//BrickInfo[] brikeSender = BrickFinder.find(nameSender);
+		//String ipSender = brikeSender[0].getIPAddress();
+		
+		String nameReceiver = BrickFinder.getLocal().getBluetoothDevice().getFriendlyName();
+		
+		infoConnection = new InfoConnection(nameSender, nameReceiver);
 	}
 
 	@Override

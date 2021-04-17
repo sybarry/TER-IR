@@ -5,6 +5,8 @@ import java.io.IOException;
 import ConnectionCommunication.ConnectionCommunicationBTServeur;
 import ConnectionCommunication.ConnectionCommunicationWifiServeur;
 import Exception.MessageException;
+import Message.MessageBoolean;
+import Message.MessageInt;
 import Message.MessageString;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
@@ -36,7 +38,7 @@ public class testComWifi {
     			for(;;) {
 	       			try {
 	       				Button.DOWN.waitForPressAndRelease();
-	       				comWifi.sendMessage(new MessageString(nameLocal1));
+	       				comWifi.sendMessage(new MessageBoolean(true));
 	       			} catch (IOException | MessageException e) {
 	       				// TODO Auto-generated catch block
 	       				e.printStackTrace();

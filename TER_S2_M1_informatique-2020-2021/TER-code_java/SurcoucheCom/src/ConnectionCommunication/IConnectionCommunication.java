@@ -28,11 +28,6 @@ public interface IConnectionCommunication {
 	// Methode qui permet d'envoyer un message entre deux appareils de manière synchrone
 	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
 	
-	
-	
+	// Methode qui permet d'envoyer un message entre deux appareils de manière asynchrone
 	void sendMessageAsynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
-	
-	
-	// Methode qui permet de recevoir un message entre deux appareils
-	Object receiveMessageWithACK(int mode) throws IOException;
 }
