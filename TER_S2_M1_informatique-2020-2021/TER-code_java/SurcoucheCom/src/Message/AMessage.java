@@ -45,6 +45,11 @@ public abstract class AMessage<T> implements IMessage<T> {
 	public abstract T getMessage();	
 	
 	@Override
+	public boolean getWithACK() {
+		return this.withACK;
+	}
+	
+	@Override
 	public void setIdMessage(int newIdMessage) {
 		this.idMessage = newIdMessage;
 	}
@@ -62,12 +67,23 @@ public abstract class AMessage<T> implements IMessage<T> {
 	public abstract void setMessage(T newMessage);
 	
 	@Override
-	public boolean getWithACK() {
-		return this.withACK;
-	}
-	
-	@Override
 	public void setWithACK(boolean newWithACK) {
 		this.withACK = newWithACK;
 	}
+	
+	@Override
+	public String toString() {
+		return this.idMessage+"@@"+this.infoConnection.toString()+"&&"+this.typeMessage+"##"+this.withACK+"##"+this.getMessage();
+	}
+	
+	
+	public static MessageString toMessageString(String message){ // return MessageString car c'est le seul type (avec Byte) qui peut etre convertie dans tout les autres type 
+		String[] messageSplit1 =  message.split("@@");
+		String[] messageSplit2 =  messageSplit1[1].split("&&");
+		String[] messageSplit3 =  messageSplit2[1].split("##");
+		
+		return new MessageString(Integer.parseInt(messageSplit1[0]), messageSplit2[0], messageSplit3[0], Boolean.parseBoolean(messageSplit3[1]), messageSplit3[2]);
+	}
 }
+
+//la methode toMessageString permet de ne plus se préocupé de la longueur de infoConnection donc l'ajout de parametre dans infoConnection n'entrainera pas de grande modification dans le code

@@ -15,6 +15,8 @@ public class MessageFactory {
 			return  new MessageBoolean(Integer.parseInt(message[0]), message[1], message[2], message[3], Boolean.parseBoolean(message[4]), Boolean.parseBoolean(message[5]));
 		case "byte":
 			return  new MessageByte(Integer.parseInt(message[0]), message[1], message[2], message[3], Boolean.parseBoolean(message[4]), Byte.parseByte(message[5]));
+		case "double":
+			return  new MessageDouble(Integer.parseInt(message[0]), message[1], message[2], message[3], Boolean.parseBoolean(message[4]), Double.parseDouble(message[5]));
 		}
 		
 		return null;
@@ -25,7 +27,7 @@ public class MessageFactory {
 		
 		switch(message.getTypeMessage()) {
 		case "String":
-			return  new MessageString(message);
+			return  message;
 		case "int":
 			return  new MessageInt(message);
 		case "float":
@@ -34,6 +36,8 @@ public class MessageFactory {
 			return  new MessageBoolean(message);
 		case "byte":
 			return  new MessageByte(message);
+		case "double":
+			return  new MessageDouble(message);
 		}
 		
 		return null;

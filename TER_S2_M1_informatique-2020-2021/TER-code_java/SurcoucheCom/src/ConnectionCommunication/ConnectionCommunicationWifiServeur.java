@@ -29,7 +29,7 @@ public class ConnectionCommunicationWifiServeur extends AConnectionCommunication
 		System.out.println("Awaiting client..");
 		client = server.accept();
 		System.out.println("CONNECTED");
-		
+
 		InputStream in = client.getInputStream();
 		OutputStream out = client.getOutputStream();
 		

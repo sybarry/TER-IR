@@ -1,5 +1,7 @@
 package Message;
 
+import Divers.InfoConnection;
+
 public class MessageString extends AMessage<String> {
 
 	private String message;
@@ -14,9 +16,14 @@ public class MessageString extends AMessage<String> {
 		this.message = message;
 	}
 	
-	public MessageString(MessageString message) { //Constructeur utilisé lorsqu'on utilise decoderMessage
+	public MessageString(MessageString message) { //Constructeur utilisé lorsqu'on utilise la factory dans receiveMessage
 		super(message.getIdMessage(), message.getInfoConnection(), message.getTypeMessage(), message.getWithACK());
 		this.message = message.getMessage();
+	}
+	
+	public MessageString(int idMessage, String infoConnection, String typeMessage, boolean withACK, String message) { // Constructeur utilisé lorsqu'on utilise toMessageString dans decoderMessagee
+		super(idMessage, InfoConnection.toInfoConnection(infoConnection), typeMessage, withACK);
+		this.message = message;
 	}
 
 	@Override

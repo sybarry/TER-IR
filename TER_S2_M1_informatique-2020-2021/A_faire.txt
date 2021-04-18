@@ -5,9 +5,9 @@ A faire :
 	- Faire des vidéo des expérimentations AVANT intégration
 	- Diagramme UML
 		- diagramme de classe pour l'étude de cas
-		- diagramme de classe pour la surcouche de communication
-		- diagramme de séquence pour expliquer les communications de l'étude de cas
-		- diagramme de séquence pour expliquer les communocations dans la surcouche de communication
+		- diagramme de classe pour la surcouche de communication (fait -> feuille jaune)
+		- diagramme de séquence pour expliquer les communications de l'étude de cas (fait -> feuille jaune)
+		- diagramme de séquence pour expliquer les communocations dans la surcouche de communication (fait -> feuille jaune)
 
 Si possible :
 	- commencer à compléter fichier DPMR 

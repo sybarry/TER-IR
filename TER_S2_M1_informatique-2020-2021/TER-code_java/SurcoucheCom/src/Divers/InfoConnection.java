@@ -25,4 +25,13 @@ public class InfoConnection {
 	public void setReceiver(String newReceiver) {
 		this.receiver = newReceiver;
 	}
+	
+	public String toString() {
+		return this.sender+"--"+this.receiver;
+	}
+	
+	public static InfoConnection toInfoConnection(String infoConnection) {
+		String[] infoConnectionSplit = infoConnection.split("--");
+		return new InfoConnection(infoConnectionSplit[0], infoConnectionSplit[1]);
+	}
 }

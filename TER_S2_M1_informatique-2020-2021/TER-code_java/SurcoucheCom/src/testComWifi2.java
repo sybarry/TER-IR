@@ -32,7 +32,7 @@ public class testComWifi2 {
             	for(;;) {
 	               	try {
 	               		IMessage<?> str = comWifi.receiveMessage();  //prototype 3
-	               		System.out.println(str.getMessage()); 
+	               		System.out.println("Message : "+str.getMessage()+"  Type du message : "+str.getMessage().getClass()); 
 	    			} catch (IOException | MessageException e) {
 	    				// TODO Auto-generated catch block
 	    				e.printStackTrace();
