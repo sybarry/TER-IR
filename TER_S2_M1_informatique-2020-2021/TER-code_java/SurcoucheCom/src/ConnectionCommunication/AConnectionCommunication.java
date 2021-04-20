@@ -75,7 +75,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 	public IMessage<?> receiveMessage() throws IOException, MessageException{
 		if(dIn != null) {
 			int streamSize = dIn.available();
-			while(streamSize == 0) { streamSize = dIn.available();} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
+			while(streamSize == 0) { streamSize = dIn.available();} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée, donc si on laisse le read passé sans rien dedans , cela renvoie une erreur
 			byte[] convertedMessage = new byte[streamSize]; //pour ne pas allouer plus de case qu'il n'en faut car autrement ca peut créer des problème
 			
 			dIn.read(convertedMessage); //contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
