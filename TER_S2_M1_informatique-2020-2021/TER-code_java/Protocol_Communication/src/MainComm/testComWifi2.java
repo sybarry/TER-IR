@@ -2,9 +2,10 @@ package MainComm;
 
 import java.io.IOException;
 
-import Surcouche.ConnectionCommunicationBTClient;
-import Surcouche.ConnectionCommunicationWifiClient;
+import Exception.MessageException;
 import Message.MessageString;
+import Overlay.OverlayBTClient;
+import Overlay.OverlayWifiClient;
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.NXTConnection;
 
@@ -20,7 +21,7 @@ public class testComWifi2 {
 		String ip = "192.168.43.144"; // connexion ev3 
 		int port = 1234;
 
-		final ConnectionCommunicationWifiClient comWifi = new ConnectionCommunicationWifiClient(port, ip);
+		final OverlayWifiClient comWifi = new OverlayWifiClient(port, ip);
 		//final ConnectionCommunicationBTClient comBT = new ConnectionCommunicationBTClient("ev3", NXTConnection.PACKET);
 		
 		comWifi.openConnection();
@@ -39,7 +40,10 @@ public class testComWifi2 {
 	    			} catch (IOException e) {
 	    				// TODO Auto-generated catch block
 	    				e.printStackTrace();
-	    			}
+	    			} catch (MessageException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                	}            	
             }   
         }.start();

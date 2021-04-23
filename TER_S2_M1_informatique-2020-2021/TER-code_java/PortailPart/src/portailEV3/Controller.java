@@ -1,71 +1,90 @@
+/**
+  * @file Controller.java
+  *
+  * @brief PortailPart
+  * @package portailEV3
+  * @author Gicquel, Guérin, Rozen
+  * @since 2/01/2021
+  * @version 1.0
+  * @date 23/04/2021
+  *
+*/
 package portailEV3;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.utility.Delay;
 
 
 
 public class Controller{
 
+	//Attributs of application
 	private static int remoteControlCode = 0;
 	private static boolean app_alive;
 	
-	private static PresenceCapteur sensorDistance = new PresenceCapteur(SensorPort.S2);
+	//Distance sensor
+	private static PresenceSensor sensorDistance = new PresenceSensor(SensorPort.S2);
 	
+	//Motors of door
 	private static Door leftDoor = new Door(MotorPort.A);
 	private static Door rightDoor = new Door(MotorPort.B);
 
+	//State of door
 	private static State stateDoor;
 	private static ArrayList<State> stateList ;
+	private static boolean close = true;
 	
+	//Attributs for vehicle
 	private static ArrayList<String> vehiculeAutorisation;
 	private static String vehiculeDemande;
-	private static EcouteWifi EWF;
+	private static ListenWifi EWF;
+	private static ListenBT EBT;
 	
 	
-	private static boolean fermer = true;
-
-
 	
+	/*---------------------------------------------------------------------
+    |  @Method main(String[] args) 
+    |
+    |  @Purpose: This method is the "main" of the portal part, it is this class that must be launched on the EV3
+    |
+    |  @Parameters:
+    |      args -- This parameter is the default parameter
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void main(String[] args) throws InterruptedException{
 
-
+		//Initialisation of attributs
 		stateList = new ArrayList<State>();
 		stateDoor = State.valueOf("FERME");
 		
 
-		
 		vehiculeAutorisation = new ArrayList<String>();
 		vehiculeAutorisation.add("ev3");
 
 		
+		//Thread : Connexion BT for the control remote
 		System.out.println("Connection BT a la telecommande");
-		
-		
-		EcouteBT EBT = new EcouteBT();  //Connection télécommande
+		EBT = new ListenBT();
 		EBT.start();
-		
-		while(EBT.BTconnect == false) {}
-		
+		while(ListenBT.BTconnect == false) {}
 		System.out.println("Connection BT reussi");
-		
-		
 		app_alive = true;
+		
+		//Thread : Connxion WiFi for the vehicle
 		new Thread() {
 			public void run() {
 				for(;;) {
 					if(sensorDistance.obstacleDetect()) {//sensorVehicle.contact()
 						System.out.println("Connection Wifi au véhicule");
-						EWF = new EcouteWifi(); //Connection Vehicule
+						EWF = new ListenWifi(); //Connection Vehicule
 						EWF.start();
 						while(vehiculeDemande == "" || vehiculeDemande == null) {
-							vehiculeDemande = EWF.idVehicule;
+							vehiculeDemande = ListenWifi.idVehicle;
 						}
 						
 
@@ -78,7 +97,7 @@ public class Controller{
 		}.start();
 
 			
-		
+		//Remote control management
 		while(app_alive){
 
 			remoteControlCode = EBT.byteRecu;  //Lecture de la commande via la télécommande
@@ -103,7 +122,7 @@ public class Controller{
 			}
 			
 			if(vehiculeAutorisation.contains(vehiculeDemande) 
-					&& (	fermer ||
+					&& (	close ||
 							(stateDoor == State.valueOf("FERME_PARTIELLE")) ||
 							(stateDoor == State.valueOf("OUVERT_PARTIELLE"))
 						)
@@ -114,9 +133,9 @@ public class Controller{
 				TimeUnit.SECONDS.sleep(10);
 		   	    totalClosing();
 				vehiculeDemande = "";
-				EWF.setIdVehicule("");
+				EWF.setIdVehicle("");
 				
-				// Le client se déconnecte du serveur après 1 minutes
+				// The client disconnects from the server after 1 minutes
 				/*new Thread() {
 		            public void run() {
 		            	try {
@@ -139,11 +158,18 @@ public class Controller{
 	
 	
 	
-	
-	@SuppressWarnings("unlikely-arg-type")
+	/*---------------------------------------------------------------------
+    |  @Method initialisation() 
+    |
+    |  @Purpose: This method initializes the portal in the closed state.
+    |
+    |  @Parameters: None.
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void initialisation() {
 		
-		if (fermer) {
+		if (close) {
 			stateDoor = State.valueOf("FERME");
 		} 
 		else {
@@ -157,6 +183,16 @@ public class Controller{
 	}
 	
 
+
+	/*---------------------------------------------------------------------
+    |  @Method totalOpening() 
+    |
+    |  @Purpose: This method opens the entire portal.
+    |
+    |  @Parameters: None.
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void totalOpening() {
 		if (stateDoor.name().equals("FERME")) {
 			System.out.println("En ouverture totale.");
@@ -169,34 +205,42 @@ public class Controller{
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
 			Delay.msDelay(1900);
-			fermer = false;
+			close = false;
 			Delay.msDelay(1900);
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
 			System.out.println("Déja ouvert");
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
 			System.out.println("En ouverture.");
 			partialOpening();
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
 			System.out.println("En ouverture.");
 			partialOpening();
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 			
 	}
 	
 	
-
+	/*---------------------------------------------------------------------
+    |  @Method partialOpening() 
+    |
+    |  @Purpose: This method allows the portal to be partially opened
+    |
+    |  @Parameters: None.
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void partialOpening() {
 
 		if (stateDoor.name().equals("FERME")) {
@@ -209,13 +253,13 @@ public class Controller{
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT_PARTIELLE");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
 			System.out.println("Déja ouvert totalement");
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
 			System.out.println("Ouverture totale.");
@@ -227,7 +271,7 @@ public class Controller{
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
 			System.out.println("Ouverture totale.");
@@ -239,20 +283,28 @@ public class Controller{
 			rightDoor.stop(true);    
 			stateDoor = State.valueOf("OUVERT");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		
 	}
 	
 	
-	
+	/*---------------------------------------------------------------------
+    |  @Method partialClosing() 
+    |
+    |  @Purpose: This method allows the portal to be partially closed
+    |
+    |  @Parameters: None.
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void partialClosing() {
 		
 		if (stateDoor.name().equals("FERME")) {
 			System.out.println("Déja fermer."); 
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
 			System.out.println("En fermeture partielle");
@@ -264,7 +316,7 @@ public class Controller{
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME_PARTIELLE");
 			saveState(stateDoor);
-			fermer = false;
+			close = false;
 		}
 		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
 			System.out.println("En fermeture totale");
@@ -276,7 +328,7 @@ public class Controller{
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = true;
+			close = true;
 		}
 		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
 			System.out.println("En fermeture totale");
@@ -288,19 +340,27 @@ public class Controller{
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = true;
+			close = true;
 		}
 		
 	}
 	
-	
+	/*---------------------------------------------------------------------
+    |  @Method totalClosing() 
+    |
+    |  @Purpose: This method closes the entire portal.
+    |
+    |  @Parameters: None.
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void totalClosing() {
 		
 		if (stateDoor.name().equals("FERME")) {
 			System.out.println("Déja fermé");
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = true;
+			close = true;
 		}
 		else if(stateDoor.name().equals("OUVERT")) {
 			System.out.println("En fermeture totale");
@@ -312,29 +372,47 @@ public class Controller{
 			rightDoor.stop(true);   
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = true;
+			close = true;
 		}
 		else if(stateDoor.name().equals("OUVERT_PARTIELLE")) {
 			System.out.println("En fermeture partielle.");
 			partialClosing();
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = true;
+			close = true;
 		}
 		else if(stateDoor.name().equals("FERME_PARTIELLE")) {
 			System.out.println("En fermeture partielle.");
 			partialClosing();
 			stateDoor = State.valueOf("FERME");
 			saveState(stateDoor);
-			fermer = true;
+			close = true;
 		}
   }
 	
-	
+	/*---------------------------------------------------------------------
+    |  @Method saveState(State st)
+    |
+    |  @Purpose: This method saves the state
+    |
+    |  @Parameters: 
+ 	|		args -- This parameter is the default parameter
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public static void saveState(State st) {
 		stateList.add(st);
 	}
 
+	/*---------------------------------------------------------------------
+    |  @Method displayStateList()
+    |
+    |  @Purpose: This method display the state 
+    |
+    |  @Parameters: None.
+    |
+    |  @Returns:  None.
+    -------------------------------------------------------------------*/
 	public void displayStateList() {
 		for (int i =0 ; i<stateList.size();i++) {
 		

@@ -1,21 +1,26 @@
-package ConnectionCommunication;
+package Overlay;
+
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import Divers.InfoConnection;
-import Exception.MessageException;
-import Message.Encodeur_Decodeur;
 import Message.IMessage;
+import Exception.MessageException;
+import Layers.DataLinkLayer;
 
-public abstract class AConnectionCommunication implements IConnectionCommunication{
+
+public abstract class AOverlay implements IOverlay{
+	
+	protected String addressReceiver;
+	protected String addressSender;
+	
+	protected DataLinkLayer trameSender = new DataLinkLayer();
+	protected DataLinkLayer trameReceiver =new DataLinkLayer();;
 	
 	protected static int timeOut = 30000;
 	protected DataOutputStream dOut;
 	protected DataInputStream dIn;
 	
-	protected InfoConnection infoConnection;
 	protected int idMessage = 0;
 	
 	@Override 
@@ -24,25 +29,22 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 	@Override
 	public abstract void closeConnection() throws IOException;
 	
-	private void writeMessage(IMessage<?> msg) throws IOException {
-		byte[] messageConverted = Encodeur_Decodeur.encoderMessage(msg);
-		dOut.write(messageConverted);
+	private void writeMessage( IMessage<?> msg) throws IOException {
+		dOut.writeUTF(trameSender.sendFrameDataLink(msg,this));
 		dOut.flush();
 	}
 	
-	@Override
 	public void sendACK(int idMessage) throws IOException {
 		dOut.writeUTF("received message "+idMessage); 
 		dOut.flush();
 	}
+	
 	@Override
 	public boolean receiveACK(int idMessage) throws IOException { 
 		if(dIn.available() == 0) return false; // pour savoir si il y a des octets qui ont été envoyé dans le flux d'entrée car le readUTF() attend qu'on lui envoie quelque chose avant de continuer le code
 		return dIn.readUTF().contentEquals("received message "+idMessage); // regarder si le read supprime le message ou le laisse 
 	}
 	
-	
-
 	private void ACK(IMessage<?> msg, int timeOut) throws IOException {
 		boolean ack = receiveACK(msg.getIdMessage());
 		long chrono = java.lang.System.currentTimeMillis();
@@ -56,12 +58,14 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 		}
 	}
 	
+	
 	private void initialisationInfoMessage(IMessage<?> msg, boolean withACK) {
 		idMessage = idMessage + 1;
-		msg.setIdMessage(idMessage);		
-		msg.setInfoConnection(this.infoConnection);
+		msg.setAddressReceiver(this.addressReceiver);
+		msg.setAddressSender(this.addressSender);
 		msg.setWithACK(withACK);
 	}
+	
 	
 	public void sendMessage(IMessage<?> msg) throws IOException, MessageException{
 		initialisationInfoMessage(msg, false);
@@ -71,24 +75,25 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 		}else {
 			throw new MessageException("Le flux de sortie à été mal initialisé");
 		}
+		
 	}
 	
 	public IMessage<?> receiveMessage() throws IOException, MessageException{
 		if(dIn != null) {
 			int streamSize = dIn.available();
 			while(streamSize == 0) { streamSize = dIn.available();} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée, donc si on laisse le read passé sans rien dedans , cela renvoie une erreur
-			byte[] convertedMessage = new byte[streamSize]; //pour ne pas allouer plus de case qu'il n'en faut car autrement ca peut créer des problème
-			
-			dIn.read(convertedMessage); //contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée
-			
-			IMessage<?> message = Encodeur_Decodeur.decoderMessage(convertedMessage);
+			IMessage<?> msg = trameReceiver.receiveFrameDataLink(dIn.readUTF(),this);
+			msg.setAddressReceiver(this.addressReceiver);
+			msg.setAddressSender(this.addressSender);
 
-			if(message.getWithACK() == true) sendACK(message.getIdMessage()); 
+			if(msg.getWithACK() == true) sendACK(msg.getIdMessage()); 
 			
-			return message;
+			return msg;
 		}else {
 			throw new MessageException("Le flux d'entrée à été mal initialisé");
 		}
+
+		
 	}
 	
 	@Override
@@ -126,4 +131,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 			throw new MessageException("Le flux de sortie à été mal initialisé");
 		}
 	}
+	
+	public String get_addressReceiver() {return addressReceiver;}
+	public String get_addressSender() {return addressSender;}
 }

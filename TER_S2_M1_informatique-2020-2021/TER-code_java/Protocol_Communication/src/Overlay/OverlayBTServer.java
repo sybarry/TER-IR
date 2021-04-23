@@ -1,11 +1,11 @@
-package Surcouche;
+package Overlay;
 import java.io.IOException;
 
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 
-public class ConnectionCommunicationBTServeur extends AbstSurcouche {
+public class OverlayBTServer extends AOverlay {
 
 	private BTConnection BTLink;
 	/* Les differents mode de connexion qu'on peut mettre :
@@ -16,7 +16,7 @@ public class ConnectionCommunicationBTServeur extends AbstSurcouche {
 	private int modeConnexion; 
 	private int timeOut; // Time in ms to wait for the connection to be made
 
-	public ConnectionCommunicationBTServeur(int modeConnexion, int timeOut) {
+	public OverlayBTServer(int modeConnexion, int timeOut) {
 		this.modeConnexion = modeConnexion;
 		this.timeOut = timeOut;
 		this.dOut = null;

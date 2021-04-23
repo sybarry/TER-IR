@@ -1,9 +1,11 @@
-package Surcouche;
+package Overlay;
 
 import java.io.IOException;
+
+import Exception.MessageException;
 import Message.IMessage;
 
-public interface InterSurcouche {
+public interface IOverlay {
 	
 	// Methode qui permet d'etablir une connexion entre deux appareils
 	void openConnection() throws IOException;
@@ -18,15 +20,15 @@ public interface InterSurcouche {
 	boolean receiveACK(int idMessage) throws IOException;
 	
 	// Methode qui permet d'envoyer un message entre deux appareils
-	void sendMessage(IMessage<?> msg) throws IOException;
+	void sendMessage(IMessage<?> msg) throws IOException, MessageException;
 	
 	// Methode qui permet de recevoir un message
-	IMessage<?> receiveMessage() throws IOException;
+	IMessage<?> receiveMessage() throws IOException, MessageException;
 	
 	// Methode qui permet d'envoyer un message entre deux appareils de manière synchrone
-	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException;
+	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
 	
 	
-	void sendMessageAsynchronized(final IMessage<?> msg) throws IOException, InterruptedException;
+	void sendMessageAsynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
 	
 }

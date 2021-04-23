@@ -3,9 +3,10 @@ package MainComm;
 
 import java.io.IOException;
 
-import Surcouche.ConnectionCommunicationBTServeur;
-import Surcouche.ConnectionCommunicationWifiServeur;
+import Exception.MessageException;
 import Message.MessageString;
+import Overlay.OverlayBTServer;
+import Overlay.OverlayWifiServer;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.EV3;
@@ -25,7 +26,7 @@ public class testComWifi {
 		brick = (EV3) BrickFinder.getLocal();
 		final String nameLocal1 = brick.getName();
 
-		final ConnectionCommunicationWifiServeur comWifi = new ConnectionCommunicationWifiServeur(port);
+		final OverlayWifiServer comWifi = new OverlayWifiServer(port);
 		//final ConnectionCommunicationBTServeur comBT = new ConnectionCommunicationBTServeur(60000, NXTConnection.RAW);
 		
 		comWifi.openConnection();
@@ -40,7 +41,10 @@ public class testComWifi {
 	       			} catch (IOException  e) {
 	       				// TODO Auto-generated catch block
 	       				e.printStackTrace();
-	       			}	
+	       			} catch (MessageException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
     			}
     		}   
 		}.start();

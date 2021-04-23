@@ -55,4 +55,5 @@ public class ConnectionCommunicationBTClient extends AConnectionCommunication {
 		donneeEntree.close();*/
 		System.out.println("Connection closed");
 	}
+
 }

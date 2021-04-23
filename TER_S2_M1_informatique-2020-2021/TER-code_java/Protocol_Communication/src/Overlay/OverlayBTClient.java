@@ -1,11 +1,11 @@
-package Surcouche;
+package Overlay;
 import java.io.IOException;
 
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 
-public class ConnectionCommunicationBTClient extends AbstSurcouche {
+public class OverlayBTClient extends AOverlay {
 
 	private BTConnection BTLink;
 	private String nomAppareil;
@@ -16,7 +16,7 @@ public class ConnectionCommunicationBTClient extends AbstSurcouche {
 	 */
 	private int modeConnexion; 
 
-	public ConnectionCommunicationBTClient(String nomAppareil, int modeConnexion) {
+	public OverlayBTClient(String nomAppareil, int modeConnexion) {
 		this.nomAppareil = nomAppareil;
 		this.modeConnexion = modeConnexion;
 		this.dOut = null;

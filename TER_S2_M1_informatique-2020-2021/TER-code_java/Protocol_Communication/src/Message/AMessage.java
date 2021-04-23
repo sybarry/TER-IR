@@ -7,6 +7,7 @@ public abstract class AMessage<T> implements IMessage<T> {
 	private String typeMessage;
 	protected String addressReceiver;
 	protected String addressSender;
+	private boolean withACK;	
 	
 	
 	public AMessage(String typeMessage) {
@@ -40,6 +41,18 @@ public abstract class AMessage<T> implements IMessage<T> {
 	
 	
 	public abstract T getMessage();	
+	
+	@Override
+	public boolean getWithACK() {
+		return this.withACK;
+	}
+	
+	
+	
+	@Override
+	public void setWithACK(boolean ack) {
+		withACK = ack;
+	}  
 	
 	@Override
 	public void setIdMessage(int newIdMessage) {

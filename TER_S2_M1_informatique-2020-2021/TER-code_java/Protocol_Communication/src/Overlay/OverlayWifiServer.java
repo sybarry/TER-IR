@@ -1,4 +1,4 @@
-package Surcouche;
+package Overlay;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,13 +8,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class ConnectionCommunicationWifiServeur extends AbstSurcouche {
+public class OverlayWifiServer extends AOverlay {
 	
 	private ServerSocket server;
 	private Socket client;
 	private int port;
 	
-	public ConnectionCommunicationWifiServeur(int port) {
+	public OverlayWifiServer(int port) {
 		this.port = port;
 		this.server = null;
 		this.client = null;

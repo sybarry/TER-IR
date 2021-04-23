@@ -11,4 +11,6 @@ public interface IMessage<T> {
 	void setMessage(T newMessage);
 	void setAddressSender(String newAddressSender);
 	void setAddressReceiver(String newAddressReceiver);
+	void setWithACK(boolean ack);
+	boolean getWithACK();
 }

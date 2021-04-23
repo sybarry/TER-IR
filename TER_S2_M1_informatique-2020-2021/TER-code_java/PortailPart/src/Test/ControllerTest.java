@@ -1,3 +1,15 @@
+
+/**
+  * @file ControllerTest.java
+  *
+  * @brief PortailPart
+  * @package Test
+  * @author Gicquel, Guérin, Rozen
+  * @since 2/01/2021
+  * @version 1.0
+  * @date 23/04/2021
+  *
+*/
 package Test;
 
 
@@ -5,11 +17,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import exceptions.NoBrickFound;
-import lejos.hardware.port.SensorPort;
-import portailEV3.ContactSensor;
+
 import portailEV3.Controller;
-import portailEV3.Door;
 import portailEV3.State;
 
 public class ControllerTest {
@@ -30,19 +39,29 @@ public class ControllerTest {
 		fail("Not yet implemented");
 	} */
 	
+	private Controller brique;
+
 	@Test 
 	public void testTotalOpening() {
-		Controller brique = new Controller();
+		setBrique(new Controller());
 		State stateDoor = State.FERME;
 		State stateTest = State.OUVERT;
 		
-		brique.totalOpening();
+		Controller.totalOpening();
 		assertEquals(stateTest, stateDoor );
 		
 		State stateDoor1 = State.OUVERT;
 		State stateTest1 = State.FERME;
-		brique.totalOpening();
+		Controller.totalOpening();
 		assertEquals(stateTest1, stateDoor1 );
+	}
+
+	public Controller getBrique() {
+		return brique;
+	}
+
+	public void setBrique(Controller brique) {
+		this.brique = brique;
 	}
 
 	/*@Test
