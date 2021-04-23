@@ -59,7 +59,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 		idMessage = idMessage + 1;
 		msg.setIdMessage(idMessage);		
 		msg.setInfoConnection(this.infoConnection);
-		msg.setWithACK(true);
+		msg.setWithACK(withACK);
 	}
 	
 	public void sendMessage(IMessage<?> msg) throws IOException, MessageException{

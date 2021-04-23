@@ -5,6 +5,7 @@ import java.io.IOException;
 import ConnectionCommunication.ConnectionCommunicationBTServeur;
 import ConnectionCommunication.ConnectionCommunicationWifiServeur;
 import Exception.MessageException;
+import Message.IMessage;
 import Message.MessageBoolean;
 import Message.MessageByte;
 import Message.MessageDouble;

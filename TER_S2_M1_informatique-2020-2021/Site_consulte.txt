@@ -5,26 +5,23 @@ Lejos :
 	- https://en.wikipedia.org/wiki/LeJOS
 
 Bluetooth :
-
 	- http://www.juanantonio.info/docs/2008/LEJOS-BLUETOOTH.pdf
-
 	- http://www.lejos.org/ev3/docs/index.html?lejos/hardware/Bluetooth.html
-
 	- https://lejosnews.wordpress.com/2015/02/11/pan-configuration/
 
 USB :
-
 	- http://www.lejos.org/nxt/nxj/tutorial/Communications/Communications.htm
 
 Wifi :
-
 	- https://lejos.sourceforge.io/forum/viewtopic.php?t=7731
 	- http://variantpress.com/books/maximum-lego-mindstorms-ev3/ 
 
 Connexion ordi-EV3 par USB pour recuperation de paquet :
-
 	- https://www.umpah.net/how-to-sniff-usb-traffic-reverse-engineer-usb-device-interactions/
 	- https://www.umpah.net/how-to-sniff-usb-traffic-reverse-engineer-usb-device-interactions/
 	- https://w0y.at/writeup/2018/10/22/hitcon-2018-ev3-basic.html
 
 Définition asynchrone/synchrone : http://www.benhenda.com/hdr/documents/Manuels/2000_DUTICE_UTICEF/uv1_a/synch_asynch1.html#:~:text=Une%20communication%20synchrone%20se%20base,des%20échanges%20en%20temps%20réel.&text=Il%20est%20dit%20qu%27une,au%20systèmes%20de%20communication%20utilisé.
+
+Code utile :
+	- https://koor.fr/Java/Tutorial/java_methodes_parametres_variable.wp
