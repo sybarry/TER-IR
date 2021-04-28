@@ -16,13 +16,6 @@ public abstract class AMessage<T> implements IMessage<T> {
 		this.withACK = false;
 	}
 	
-	public AMessage(int idMessage, String sender, String receiver, String typeMessage, boolean withACK) { // Constructeur utilisé pour creer l'objet Message lors d'un receiveMessage()
-		this.idMessage = idMessage;
-		this.infoConnection = new InfoConnection(sender, receiver);
-		this.typeMessage = typeMessage;
-		this.withACK = withACK;
-	}
-	
 	public AMessage(int idMessage, InfoConnection infoConnection, String typeMessage, boolean withACK) { //Constructeur utilisé lorsqu'on utilise decoderMessage
 		this.idMessage = idMessage;
 		this.infoConnection = infoConnection;

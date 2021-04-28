@@ -45,7 +45,7 @@ public class ConnectionCommunicationWifiServeur extends AConnectionCommunication
 
 	@Override
 	public void closeConnection() throws IOException {
-		client.close();
+		server.close();
 		/*dOut.close();
 		dIn.close();*/
 		System.out.println("Connection closed");

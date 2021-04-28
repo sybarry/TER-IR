@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Remote Vehicle</string>
+    <string name="ouverture_partielle">Ouverture partielle</string>
+    <string name="ouverture_totale">Ouverture totale</string>
+    <string name="fermeture">Fermeture</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="nav_remote">Remote</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="flush_tasks">Flush tasks</string>
+</resources>
