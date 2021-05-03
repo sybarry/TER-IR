@@ -74,11 +74,12 @@ public class VoitureControleur extends Thread{
 	 */
 	public static void main(String[] args) throws IOException, InterruptedException, MessageException {
 		
-		btServer = new ConnectionCommunicationBTServer(30000, NXTConnection.RAW);
+		//btServer = new ConnectionCommunicationBTServer(30000, NXTConnection.RAW);
 		wifiServer = new ConnectionCommunicationWifiServer(1234);
+		transmission = new MessageInt(0);
 		
 		//Mise en place de la connexion bluetooth
-		btServer.openConnection();
+		////btServer.openConnection();
 		
 		System.out.println("Connection BT reussi");
 		
@@ -86,7 +87,7 @@ public class VoitureControleur extends Thread{
 		nameLocal = brick.getName();
 		
 		//Signalement que l'application est pr�te
-		appliPreteAMarcher(true);
+		//appliPreteAMarcher(true);
 		
 		//Initialisation des diff�rents composants de l'application
 		moteurDroit = new Moteur(MotorPort.C);
@@ -123,9 +124,8 @@ public class VoitureControleur extends Thread{
 	    		}
     		}   
 		}.start();
-		
-        
-        new Thread() {
+
+        /*new Thread() {
         	public void run() {
         		for(;;) {
     				try {
@@ -137,18 +137,24 @@ public class VoitureControleur extends Thread{
 					}
         		}
         	}
-        }.start();
+        }.start();*/
         
-        
-        
+        new Thread() {
+        	public void run() {
+        		for(;;) {
+    				try {
+    					transmission = (MessageInt) btServer.receiveMessage();
+					} catch (IOException | MessageException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        	}
+        }.start();           
         
 
 		//Boucle fonctionnant tant que l'application est en marche
 		while(appliReady) {
-			//Lecture des bytes envoy�s depuis l'application
-
-
-			transmission = (MessageInt) btServer.receiveMessage();
 			
 			//Se place dans un �tat en fonction du signal re�u
 			switch(transmission.getMessage()) {
@@ -214,7 +220,6 @@ public class VoitureControleur extends Thread{
 					arretMoteur();
 					break;
 				default:
-					System.out.println("breakdefault");
 					break;
 			}
 		}
@@ -248,18 +253,6 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(true);
 		moteurGauche.marche(true);
 		moteurGauche.getUnMoteur().endSynchronization();
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
-		TimeUnit.SECONDS.sleep(10);
-		System.out.println("AVANCE");
-		moteurGauche.getUnMoteur().startSynchronization();
-		moteurDroit.accelere(vitesse);
-		moteurGauche.accelere(vitesse);
-		moteurDroit.marche(true);
-		moteurGauche.marche(true);
-		moteurGauche.getUnMoteur().endSynchronization();
-		TimeUnit.SECONDS.sleep(2);
-		arretMoteur();
 	}
 	public static void reculSecurise() throws InterruptedException {
 		if(!capteurContact.contactDetected()) {
@@ -277,8 +270,6 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(false);
 		moteurGauche.marche(false);
 		moteurGauche.getUnMoteur().endSynchronization();
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
 	}
 	/*
 	 * Arr�te les moteurs
@@ -313,8 +304,6 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(false);
 		moteurGauche.accelere(1);
 		moteurDroit.accelere(1);
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
 	}
 	/*
 	 * Tourne � gauche
@@ -325,8 +314,6 @@ public class VoitureControleur extends Thread{
 		moteurGauche.marche(false);
 		moteurDroit.accelere(1);
 		moteurGauche.accelere(1);
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
 	}
 	/*
 	 * Permet � la voiture de klaxonner

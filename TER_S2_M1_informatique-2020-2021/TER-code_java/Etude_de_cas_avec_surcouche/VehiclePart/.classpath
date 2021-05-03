@@ -5,6 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="VoitureControleur.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SurcoucheCom_amelioré"/>
+	<classpathentry kind="lib" path="C:/Users/anthony/Documents/M1/TER/transfo-protocoles/TER_S2_M1_informatique-2020-2021/SurcoucheCom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

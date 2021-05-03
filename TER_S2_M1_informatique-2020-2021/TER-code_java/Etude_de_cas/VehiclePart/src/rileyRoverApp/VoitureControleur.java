@@ -161,8 +161,7 @@ public class VoitureControleur extends Thread{
 		//Boucle fonctionnant tant que l'application est en marche
 		while(appliReady) {
 			//Lecture des bytes envoy�s depuis l'application
-
-
+			
 			transmission = EBT.byteRecu;
 			
 			//Se place dans un �tat en fonction du signal re�u
@@ -229,7 +228,6 @@ public class VoitureControleur extends Thread{
 					arretMoteur();
 					break;
 				default:
-					System.out.println("breakdefault");
 					break;
 			}
 		}
@@ -290,18 +288,7 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(true);
 		moteurGauche.marche(true);
 		moteurGauche.getUnMoteur().endSynchronization();
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
-		TimeUnit.SECONDS.sleep(10);
-		System.out.println("AVANCE");
-		moteurGauche.getUnMoteur().startSynchronization();
-		moteurDroit.accelere(vitesse);
-		moteurGauche.accelere(vitesse);
-		moteurDroit.marche(true);
-		moteurGauche.marche(true);
-		moteurGauche.getUnMoteur().endSynchronization();
-		TimeUnit.SECONDS.sleep(2);
-		arretMoteur();
+		//TimeUnit.SECONDS.sleep(1);
 	}
 	public static void reculSecurise() throws InterruptedException {
 		if(!capteurContact.contactDetected()) {
@@ -319,8 +306,7 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(false);
 		moteurGauche.marche(false);
 		moteurGauche.getUnMoteur().endSynchronization();
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
+		//TimeUnit.SECONDS.sleep(1);
 	}
 	/*
 	 * Arr�te les moteurs
@@ -355,8 +341,7 @@ public class VoitureControleur extends Thread{
 		moteurDroit.marche(false);
 		moteurGauche.accelere(1);
 		moteurDroit.accelere(1);
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
+		//TimeUnit.SECONDS.sleep(1);
 	}
 	/*
 	 * Tourne � gauche
@@ -367,8 +352,7 @@ public class VoitureControleur extends Thread{
 		moteurGauche.marche(false);
 		moteurDroit.accelere(1);
 		moteurGauche.accelere(1);
-		TimeUnit.SECONDS.sleep(1);
-		arretMoteur();
+		//TimeUnit.SECONDS.sleep(1);
 	}
 	/*
 	 * Permet � la voiture de klaxonner

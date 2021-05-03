@@ -10,7 +10,7 @@ public class PresenceCapteur {
 	public EV3UltrasonicSensor unCapteur;
 	
 	//Distance choisie (en mètres) pour la détection d'un obstacle
-	public final double DISTANCE_PRESENCE=0.30;
+	public final double DISTANCE_PRESENCE=0.05;
 	
 	/*
 	 * Constructeur de la classe presenceCapteur

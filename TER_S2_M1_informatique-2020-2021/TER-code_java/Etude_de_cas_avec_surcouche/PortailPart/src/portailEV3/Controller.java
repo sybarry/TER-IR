@@ -52,8 +52,11 @@ public class Controller{
 	private static ConnectionCommunicationBTServer btServer;
 	private static ConnectionCommunicationWifiClient wifiClient;
 	
-	
-	
+	//Constante in the main
+	private static int port = 1234;
+	private static String ip = "192.168.1.22";
+	private static int timeOut = 30;
+		
 	/*---------------------------------------------------------------------
     |  @Method main(String[] args) 
     |
@@ -66,8 +69,10 @@ public class Controller{
     -------------------------------------------------------------------*/
 	public static void main(String[] args) throws InterruptedException, IOException, MessageException{
 		
-		btServer = new ConnectionCommunicationBTServer(30, NXTConnection.RAW);
-		wifiClient = new ConnectionCommunicationWifiClient(1234, "192.168.1.22");
+		btServer = new ConnectionCommunicationBTServer(timeOut, NXTConnection.RAW);
+		wifiClient = new ConnectionCommunicationWifiClient(port, ip);
+		vehiculeDemande = new MessageString("");
+		remoteControlCode = new MessageInt(0);
 
 		//Initialisation of attributs
 		stateList = new ArrayList<State>();
@@ -105,12 +110,23 @@ public class Controller{
 				}
 			}
 		}.start();
+		
+        new Thread() {
+        	public void run() {
+        		for(;;) {
+    				try {
+    					remoteControlCode = (MessageInt) btServer.receiveMessage();  //Lecture de la commande via la télécommande
+					} catch (IOException | MessageException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        	}
+        }.start(); 
 
 			
 		//Remote control management
 		while(app_alive){
-
-			remoteControlCode = (MessageInt) btServer.receiveMessage();  //Lecture de la commande via la télécommande
 			
 			switch(remoteControlCode.getMessage()){ // revoir ce switch car quand default, il ferme le portail alors qu'il ne devrait peut etre rien faire
 				
