@@ -62,6 +62,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 		msg.setWithACK(withACK);
 	}
 	
+	@Override
 	public void sendMessage(IMessage<?> msg) throws IOException, MessageException{
 		initialisationInfoMessage(msg, false);
 		
@@ -72,7 +73,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 		}
 	}
 	
-	public IMessage<?> receiveMessage() throws IOException, MessageException{
+	public IMessage<?> receiveMessage(String... ipReceiver) throws IOException, MessageException{
 		if(dIn != null) {
 			int streamSize = dIn.available();
 			while(streamSize == 0) { streamSize = dIn.available();} // car contrairement a readUTF, readFully() et read() termine meme si il y a rien dans le flux de donnée, donc si on laisse le read passé sans rien dedans , cela renvoie une erreur

@@ -23,7 +23,7 @@ public interface IConnectionCommunication {
 	void sendMessage(IMessage<?> msg) throws IOException, MessageException;
 	
 	// Methode qui permet de recevoir un message
-	IMessage<?> receiveMessage() throws IOException, MessageException;
+	IMessage<?> receiveMessage(String... ipReceiver) throws IOException, MessageException;
 	
 	// Methode qui permet d'envoyer un message entre deux appareils de manière synchrone
 	void sendMessageSynchronized(final IMessage<?> msg) throws IOException, InterruptedException, MessageException;
