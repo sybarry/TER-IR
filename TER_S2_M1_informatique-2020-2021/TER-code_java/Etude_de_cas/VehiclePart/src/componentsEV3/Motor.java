@@ -1,10 +1,10 @@
-package composantsEV3;
+package componentsEV3;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.*;
 
 
-public class Moteur {
+public class Motor {
 	
 	//Module correspondant au moteur connecté à la voiture
 	private EV3LargeRegulatedMotor unMoteur;
@@ -13,7 +13,7 @@ public class Moteur {
 	 * Constructeur de la classe moteur
 	 * @param port : le port de la brique EV3
 	 */
-	public Moteur(Port port) {
+	public Motor(Port port) {
 		this.unMoteur = new EV3LargeRegulatedMotor(port);
 	}
 	
@@ -68,7 +68,7 @@ public class Moteur {
 		return this.unMoteur.isStalled();
 	}
 
-	public EV3LargeRegulatedMotor getUnMoteur() {
+	public EV3LargeRegulatedMotor getOneMotor() {
 		return unMoteur;
 	}
 	

@@ -3,7 +3,7 @@ package rileyRoverTestJUnit;
 import static org.junit.Assert.*;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
-import rileyRoverApp.VoitureControleur;
+import rileyRoverApp.VehicleController;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import composantsEV3.Moteur;
 import composantsEV3.PresenceCapteur;
 
 
-public class VoitureControleurTest extends Thread{
+public class VehicleControllerTest extends Thread{
 	
 	
 	@Test
@@ -22,7 +22,7 @@ public class VoitureControleurTest extends Thread{
 		Moteur moteurGauche = new Moteur(MotorPort.B);
 		PresenceCapteur capteurPresence = new PresenceCapteur(SensorPort.S1);
 		
-		VoitureControleur.avance();
+		VehicleController.avance();
 		
 		if ((moteurDroit.getSpeed()==0 || moteurGauche.getSpeed()==0) &&  !capteurPresence.obstacleDetect()){
 			fail("Les moteurs devraient avancer");

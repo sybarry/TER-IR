@@ -9,7 +9,7 @@ import org.junit.Test;
 import composantsEV3.Moteur;
 
 
-public class MoteurTest {
+public class MotorTest {
 
 	@Test
 	public void testMarche() throws Exception{

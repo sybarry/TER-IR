@@ -1,4 +1,4 @@
-package composantsEV3;
+package componentsEV3;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,7 +9,7 @@ import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
 
-public class EcouteBT extends Thread {
+public class BTListener extends Thread {
 
 	public static DataOutputStream dataOut; 
 	private static DataInputStream dataIn;

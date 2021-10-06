@@ -1,6 +1,6 @@
 package rileyRoverApp;
 
-import composantsEV3.*;
+import componentsEV3.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -26,7 +26,7 @@ import lejos.hardware.ev3.EV3;
 import lejos.hardware.Battery;
 
 
-public class VoitureControleur extends Thread{
+public class VehicleController extends Thread{
 	
 	private static DataOutputStream donneeSortie; 
 	private static DataInputStream donneeEntree;
@@ -47,9 +47,9 @@ public class VoitureControleur extends Thread{
 	
 	
 	
-	private static Moteur moteurDroit;
-	private static Moteur moteurGauche;
-	private static PresenceCapteur capteurPresence;
+	private static Motor MotorRight;
+	private static Motor MotorLeft;
+	private static MotionDetector capteurPresence;
 	private static ContactSensor capteurContact;
 //	private static ColorSensor capteurCouleur;
 	
@@ -58,8 +58,8 @@ public class VoitureControleur extends Thread{
 		AVANCE=1,
 		RECUL=2,
 		ARRET=3,
-		TOURNE_DROITE=16,
-		TOURNE_GAUCHE=17,
+		TOURNE_RightE=16,
+		TOURNE_Left=17,
 		KLAXONNE=18,
 		MODE_AUTOMATIQUE=19,
 		MODE_MANUEL=20,
@@ -89,7 +89,7 @@ public class VoitureControleur extends Thread{
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		//Mise en place de la connexion bluetooth
-		final EcouteBT EBT = new EcouteBT();  //Connection t�l�commande
+		final BTListener EBT = new BTListener();  //Connection t�l�commande
 		EBT.start();      
 		
 		while(EBT.BTconnect == false) {}
@@ -103,18 +103,18 @@ public class VoitureControleur extends Thread{
 		appliPreteAMarcher(true);
 		
 		//Initialisation des diff�rents composants de l'application
-		moteurDroit = new Moteur(MotorPort.C);
-		moteurGauche = new Moteur(MotorPort.B);
-		capteurPresence = new PresenceCapteur(SensorPort.S1);
+		MotorRight = new Motor(MotorPort.C);
+		MotorLeft = new Motor(MotorPort.B);
+		capteurPresence = new MotionDetector(SensorPort.S1);
 		capteurContact = new ContactSensor(SensorPort.S2);
 //		capteurCouleur = new ColorSensor(SensorPort.S3);
 		
-		RegulatedMotor listMotors[] = {moteurDroit.getUnMoteur()};
-		moteurGauche.getUnMoteur().synchronizeWith(listMotors);
+		RegulatedMotor listMotors[] = {MotorRight.getOneMotor()};
+		MotorLeft.getOneMotor().synchronizeWith(listMotors);
 		
-		//Arrêt des différents moteurs par mesure de sécurité
-		moteurDroit.arret();
-		moteurGauche.arret();
+		//Arrêt des différents Motors par mesure de sécurité
+		MotorRight.arret();
+		MotorLeft.arret();
 		
 
         
@@ -174,7 +174,7 @@ public class VoitureControleur extends Thread{
 					reculSecurise();
 					break;
 				case 3:
-					arretMoteur();
+					arretMotor();
 					break;
 				case 4:
 					changementVitesse(0);
@@ -213,10 +213,10 @@ public class VoitureControleur extends Thread{
 					appliPreteAMarcher(false);
 					break;
 				case 16:
-					tourneDroite();
+					tourneRighte();
 					break;
 				case 17:
-					tourneGauche();
+					tourneLeft();
 					break;
 				case 18:
 					klaxonne();
@@ -225,7 +225,7 @@ public class VoitureControleur extends Thread{
 					modeAuto();
 					break;
 				case 20:
-					arretMoteur();
+					arretMotor();
 					break;
 				default:
 					break;
@@ -267,7 +267,7 @@ public class VoitureControleur extends Thread{
 				avance();
 			}
 			else if(capteurPresence.obstacleDetect()) {
-				tourneDroite();
+				tourneRighte();
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
@@ -282,19 +282,19 @@ public class VoitureControleur extends Thread{
 	 */
 	public static void avance() throws InterruptedException {
 		System.out.println("AVANCE");
-		moteurGauche.getUnMoteur().startSynchronization();
-		moteurDroit.accelere(vitesse);
-		moteurGauche.accelere(vitesse);
-		moteurDroit.marche(true);
-		moteurGauche.marche(true);
-		moteurGauche.getUnMoteur().endSynchronization();
+		MotorLeft.getOneMotor().startSynchronization();
+		MotorRight.accelere(vitesse);
+		MotorLeft.accelere(vitesse);
+		MotorRight.marche(true);
+		MotorLeft.marche(true);
+		MotorLeft.getOneMotor().endSynchronization();
 		//TimeUnit.SECONDS.sleep(1);
 	}
 	public static void reculSecurise() throws InterruptedException {
 		if(!capteurContact.contactDetected()) {
 			recul();
 		}else {
-			arretMoteur();
+			arretMotor();
 		}
 	}
 	/*
@@ -302,21 +302,21 @@ public class VoitureControleur extends Thread{
 	 */
 	public static void recul() throws InterruptedException {
 		System.out.println("RECUL");
-		moteurGauche.getUnMoteur().startSynchronization();
-		moteurDroit.marche(false);
-		moteurGauche.marche(false);
-		moteurGauche.getUnMoteur().endSynchronization();
+		MotorLeft.getOneMotor().startSynchronization();
+		MotorRight.marche(false);
+		MotorLeft.marche(false);
+		MotorLeft.getOneMotor().endSynchronization();
 		//TimeUnit.SECONDS.sleep(1);
 	}
 	/*
-	 * Arr�te les moteurs
+	 * Arr�te les Motors
 	 */
-	public static void arretMoteur() {
+	public static void arretMotor() {
 		System.out.println("ARRET");
-		moteurGauche.getUnMoteur().startSynchronization();
-		moteurDroit.arret();
-		moteurGauche.arret();
-		moteurGauche.getUnMoteur().endSynchronization();
+		MotorLeft.getOneMotor().startSynchronization();
+		MotorRight.arret();
+		MotorLeft.arret();
+		MotorLeft.getOneMotor().endSynchronization();
 	}
 	/*
 	 * Change la vitesse de la voiture
@@ -333,25 +333,25 @@ public class VoitureControleur extends Thread{
 		appliReady=statut;
 	}
 	/*
-	 * Tourne � droite
+	 * Tourne � Righte
 	 */
-	public static void tourneDroite() throws InterruptedException {
-		System.out.println("DROITE");
-		moteurGauche.marche(true);
-		moteurDroit.marche(false);
-		moteurGauche.accelere(1);
-		moteurDroit.accelere(1);
+	public static void tourneRighte() throws InterruptedException {
+		System.out.println("RightE");
+		MotorLeft.marche(true);
+		MotorRight.marche(false);
+		MotorLeft.accelere(1);
+		MotorRight.accelere(1);
 		//TimeUnit.SECONDS.sleep(1);
 	}
 	/*
-	 * Tourne � gauche
+	 * Tourne � Left
 	 */
-	public static void tourneGauche() throws InterruptedException {
-		System.out.println("GAUCHE");
-		moteurDroit.marche(true);
-		moteurGauche.marche(false);
-		moteurDroit.accelere(1);
-		moteurGauche.accelere(1);
+	public static void tourneLeft() throws InterruptedException {
+		System.out.println("Left");
+		MotorRight.marche(true);
+		MotorLeft.marche(false);
+		MotorRight.accelere(1);
+		MotorLeft.accelere(1);
 		//TimeUnit.SECONDS.sleep(1);
 	}
 	/*

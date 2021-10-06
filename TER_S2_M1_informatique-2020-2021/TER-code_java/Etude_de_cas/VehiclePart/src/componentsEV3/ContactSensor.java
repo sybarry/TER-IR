@@ -1,4 +1,4 @@
-package composantsEV3;
+package componentsEV3;
 
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3TouchSensor;
@@ -7,10 +7,10 @@ import lejos.robotics.SampleProvider;
 public class ContactSensor {
 	
 	//Module correspondant au capteur de contact
-	public EV3TouchSensor capteurContact;
+	public EV3TouchSensor contactSensor;
 	
 	public ContactSensor(Port port) {
-		this.capteurContact = new EV3TouchSensor(port);
+		this.contactSensor = new EV3TouchSensor(port);
 	}
 	
 	/* True si objet touche
@@ -19,11 +19,11 @@ public class ContactSensor {
 	public boolean contactDetected() {
 
 		boolean contact = false;
-		SampleProvider dataSensor = this.capteurContact.getTouchMode();
+		SampleProvider dataSensor = this.contactSensor.getTouchMode();
 		int offsetSample = 0;
 		float[] sample = new float[dataSensor.sampleSize()]; 
 		
-		this.capteurContact.fetchSample(sample, offsetSample);
+		this.contactSensor.fetchSample(sample, offsetSample);
 		
 		int valueDetection = (int)sample[0];
 		

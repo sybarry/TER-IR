@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import composantsEV3.PresenceCapteur;
 
-public class PresenceCapteurTest {
+public class MotionDetectorTest {
 
 	@Test
 	public void testObstacleDetect() throws Exception{

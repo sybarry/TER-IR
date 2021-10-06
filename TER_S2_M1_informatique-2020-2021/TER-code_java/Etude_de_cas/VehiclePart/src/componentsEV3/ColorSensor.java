@@ -1,4 +1,4 @@
-package composantsEV3;
+package componentsEV3;
 
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -7,10 +7,10 @@ import lejos.robotics.SampleProvider;
 public class ColorSensor {
 	
 	//Module correspondant au capteur de contact
-	public EV3ColorSensor capteurCouleur;
+	public EV3ColorSensor colorSensor;
 		
 	public ColorSensor(Port port) {
-		this.capteurCouleur = new EV3ColorSensor(port);
+		this.colorSensor = new EV3ColorSensor(port);
 	}
 	
 	/* True si objet touche
@@ -18,11 +18,11 @@ public class ColorSensor {
 	
 	public float colorDetection() {
 		
-		SampleProvider dataSensor = this.capteurCouleur.getAmbientMode();
+		SampleProvider dataSensor = this.colorSensor.getAmbientMode();
 		int offsetSample = 0;
 		float[] sample = new float[dataSensor.sampleSize()]; 
 		
-		this.capteurCouleur.fetchSample(sample, offsetSample);	
+		this.colorSensor.fetchSample(sample, offsetSample);	
 		
 		float luminosity = (float)sample[0];
 		
