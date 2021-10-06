@@ -22,7 +22,7 @@ public class VehicleControllerTest extends Thread{
 		Moteur moteurGauche = new Moteur(MotorPort.B);
 		PresenceCapteur capteurPresence = new PresenceCapteur(SensorPort.S1);
 		
-		VehicleController.avance();
+		VehicleController.forward();
 		
 		if ((moteurDroit.getSpeed()==0 || moteurGauche.getSpeed()==0) &&  !capteurPresence.obstacleDetect()){
 			fail("Les moteurs devraient avancer");

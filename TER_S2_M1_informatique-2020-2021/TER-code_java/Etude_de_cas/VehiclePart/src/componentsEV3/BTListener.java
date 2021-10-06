@@ -30,7 +30,7 @@ public class BTListener extends Thread {
 					byteRecu = (int) dataIn.readByte(); 
 					
 					Thread.sleep(100);
-					System.out.println("Recu " + byteRecu);
+					System.out.println("Received " + byteRecu);
 					
 					byteRecu = 0;
 					

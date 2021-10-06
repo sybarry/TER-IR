@@ -7,26 +7,26 @@ import lejos.hardware.port.*;
 public class Motor {
 	
 	//Module correspondant au moteur connecté à la voiture
-	private EV3LargeRegulatedMotor unMoteur;
+	private EV3LargeRegulatedMotor oneMotor;
 	
 	/*
 	 * Constructeur de la classe moteur
 	 * @param port : le port de la brique EV3
 	 */
 	public Motor(Port port) {
-		this.unMoteur = new EV3LargeRegulatedMotor(port);
+		this.oneMotor = new EV3LargeRegulatedMotor(port);
 	}
 	
 	/*
 	 * Fait tourner le moteur dans un sens ou dans l'autre
 	 * @param avance : true pour aller vers l'avant, false pour aller vers l'arrière
 	 */
-	public void marche(boolean avance) {
+	public void run(boolean avance) {
 		if(avance) {
-			this.unMoteur.forward();
+			this.oneMotor.forward();
 		}
 		else {
-			this.unMoteur.backward();
+			this.oneMotor.backward();
 		}
 	}
 	
@@ -35,15 +35,15 @@ public class Motor {
 	 * Permet au moteur d'accélérer 
 	 * @param intensite : Vitesse choisi pour le moteur
 	 */
-	public void accelere(int intensite) {
-		this.unMoteur.setSpeed(intensite*360);
+	public void speedUp(int intensite) {
+		this.oneMotor.setSpeed(intensite*360);
 	}
 	
 	/*
 	 * Arrête le moteur
 	 */
-	public void arret() {
-		this.unMoteur.stop();
+	public void stop() {
+		this.oneMotor.stop();
 	}
 	
 	/*
@@ -51,25 +51,25 @@ public class Motor {
 	 * @return la vitesse actuelle du moteur
 	 */
 	public int getSpeed(){
-		return this.unMoteur.getSpeed();
+		return this.oneMotor.getSpeed();
 	}
 	
 	/*
 	 * @return true si le moteur avance
 	 */
 	public boolean isMoving(){
-		return this.unMoteur.isMoving();
+		return this.oneMotor.isMoving();
 	}
 	
 	/*
 	 * @return true si le moteur est arrêté
 	 */
 	public boolean isStalled(){
-		return this.unMoteur.isStalled();
+		return this.oneMotor.isStalled();
 	}
 
 	public EV3LargeRegulatedMotor getOneMotor() {
-		return unMoteur;
+		return oneMotor;
 	}
 	
 	
