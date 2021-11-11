@@ -1,0 +1,7 @@
+https://mosquitto.org/man/mosquitto_pub-1.html
+
+https://mosquitto.org/man/mosquitto_sub-1.html
+
+https://mosquitto.org/man/mosquitto_rr-1.html
+
+https://www.eclipse.org/paho/files/javadoc/index.html
