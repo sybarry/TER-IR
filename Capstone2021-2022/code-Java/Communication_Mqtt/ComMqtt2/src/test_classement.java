@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -32,6 +34,7 @@ public class test_classement {
 			
 			if (callBack.getTopic() == "Joueur"+k && callBack.getMsg() != "" && (long) chronoPlayer[k].getSecond() == 0) {
 				chronoPlayer[k].setSecond(Long.parseLong(callBack.getMsg()));
+				callBack.setMsg("");
 			}
 			if(k == 3) {k = 0;}else {k++;}
 		}
@@ -58,6 +61,65 @@ public class test_classement {
 	static void affichage(Paire T[]) {
 		for(int i = 0; i<=T.length; i++) {
 			System.out.println(T[i].getPremier() + " : " + T[i].getSecond());
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public static void main2(String[] args) throws MqttException {
+		
+		final SimpleMqttCallBack callBack = new SimpleMqttCallBack();
+		MemoryPersistence persistence = new MemoryPersistence();
+		MqttClient client = new MqttClient("tcp://localhost:1883", MqttClient.generateClientId(), persistence);
+		client.setCallback(callBack);
+		client.connect();
+		System.out.println("Connecte");
+		
+		client.subscribe("all");
+		client.subscribe("Joueur0");
+		client.subscribe("Joueur1");
+		client.subscribe("Joueur2");
+		client.subscribe("Joueur3");
+		
+		// Pour un classement emis a la fin de la course que lorsque toutes les voitures ont fini la course
+		// Au lancement de la course 
+		int nbPlayer = 4;
+		long chrono = java.lang.System.currentTimeMillis();		
+		
+		Vector<Paire> chronoPlayer = new Vector<Paire>();
+		
+		while(chronoPlayer.size() != nbPlayer) {
+			if (callBack.getTopic() != "" && callBack.getMsg() != "") {
+				chronoPlayer.add(new Paire<String, Long>(callBack.getTopic(), Long.parseLong(callBack.getMsg())));
+				callBack.setTopic("");
+				callBack.setMsg("");
+			}
+		}
+		
+		chronoPlayer = triBulles2(chronoPlayer);
+		affichage2(chronoPlayer);
+		
+	}
+	
+	static Vector<Paire> triBulles2(Vector<Paire> T){
+		Paire<String, Long> temp;
+	    for(int i = T.size()-1 ; i>=1 ; i--){
+	    	for(int j = 0 ; j<=i-1 ; j++) {
+	    		if((long) T.get(j).getSecond() > (long) T.get(j+1).getSecond()){
+	    			temp = T.get(j+1);
+	    			T.set(j+1, T.get(j));
+                    T.set(j, temp);
+	    		}
+	    	}
+	    }
+	      return T;
+	 }
+	
+	static void affichage2(Vector<Paire> T) {
+		for(int i = 0; i<=T.size()-1; i++) {
+			System.out.println(T.get(i).getPremier() + " : " + T.get(i).getSecond());
 		}
 	}
 }

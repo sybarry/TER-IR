@@ -41,4 +41,8 @@ public class SimpleMqttCallBack implements MqttCallback{
 	public void setMsg(String newMsg) {
 		this.msg = newMsg;
 	}
+	
+	public void setTopic(String newTopic) {
+		this.topic = newTopic;
+	}
 }
