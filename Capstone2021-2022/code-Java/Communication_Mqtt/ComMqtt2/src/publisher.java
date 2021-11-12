@@ -9,7 +9,7 @@ import lejos.hardware.Button;
 public class publisher {
 	
 	private static MqttClient client;
-	private static MqttMessage message = new MqttMessage();;
+	private static MqttMessage message = new MqttMessage();
 	
 	public static void connectMqtt(String serverAddress, String port) throws MqttException {
 		MemoryPersistence persistence = new MemoryPersistence();
