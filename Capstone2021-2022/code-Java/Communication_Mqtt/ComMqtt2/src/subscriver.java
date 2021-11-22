@@ -20,10 +20,9 @@ public class subscriver {
 	
 	public static void main(String[] args) throws MqttException {
 		
+		connectMqtt("localhost", "1883");
 		callBack = new SimpleMqttCallBack();
 		client.setCallback(callBack);
-		
-		connectMqtt("localhost", "1883");
 		
 		
 		client.subscribe("iot_data");	
