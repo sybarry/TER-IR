@@ -48,7 +48,7 @@ public class VehicleController extends Thread {
 		System.out.println("Connection BT success");
 		
 		// MQTT connection on the server "192.168.1.9", with the port "1883"
-		connectMqtt("192.168.1.9", "1883");
+		connectMqtt("192.168.43.164", "1883");
 		callBack = new SimpleMqttCallBack();
 		client.setCallback(callBack);
 		client.subscribe("all");	
