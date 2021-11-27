@@ -19,7 +19,7 @@ public abstract class AMessage<T> implements IMessage<T> {
 	 */
 	public AMessage(String messageType) { // Constructor used by user
 		this.infoMessage = new InfoMessage(-1, messageType, false);
-		this.infoConnection = null;
+		this.infoConnection = new InfoConnection("", "");
 	}
 	
 	/*

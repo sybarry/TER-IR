@@ -33,7 +33,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 	 *  
 	 *  @param msg The message to be sent
 	 */
-	private void writeMessage(IMessage<?> msg) throws IOException {
+	protected void writeMessage(IMessage<?> msg) throws IOException {
 		byte[] messageConverted = Encodeur_Decodeur.encoderMessage(msg); // Encodes the message
 		dOut.write(messageConverted); 
 		dOut.flush(); // Empties the output stream and forces the writing of all the output bytes in buffer memory
