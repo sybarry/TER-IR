@@ -16,7 +16,7 @@ public class ConnectionCommunicationWifiClient extends AConnectionCommunication 
 
 	private Socket client;
 	private int port; // the port of wifi connection 
-	private String ip; // the identifer od wifi server
+	private String ip; // the identifer to wifi server
 	
 	/*
 	 * Create an instance for a Wifi client

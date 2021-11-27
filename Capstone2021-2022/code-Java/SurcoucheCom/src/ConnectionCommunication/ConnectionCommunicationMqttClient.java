@@ -17,15 +17,25 @@ import Exception.MessageException;
 import Message.Encodeur_Decodeur;
 import Message.IMessage;
 
+/*
+ * @author ROZEN Anthony - GICQUEL Alexandre - GUERIN Antoine
+ */
+
 public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 	
-	private String ipServer;
-	private int port;
+	private String ipServer; // The identifier of mqtt server
+	private int port; // The port of mqtt connection
 	private MqttClient client;
 	private MqttMessage message;
-	private SimpleMqttCallBack callBack;
-	private String topic;
+	private SimpleMqttCallBack callBack; // Notify a client when receiving a message
+	private String topic; // The canal of publish/subscribe of a message
 	
+	/*
+	 * Create an instance for a Mqtt client 
+	 * 
+	 * @param port The port of mqtt connection 
+	 * @param ipServer The identifier of mqtt server
+	 */
 	public ConnectionCommunicationMqttClient(String ipServer, int port) {
 		this.ipServer = ipServer;
 		this.port = port;
