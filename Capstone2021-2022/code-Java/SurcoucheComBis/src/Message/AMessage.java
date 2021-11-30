@@ -18,7 +18,7 @@ public abstract class AMessage<T> implements IMessage<T> {
 	 * @param messageType The type of the generic message to be created
 	 */
 	public AMessage(String messageType) { // Constructor used by user
-		this.infoMessage = new InfoMessage(-1, messageType, false, "");
+		this.infoMessage = new InfoMessage(-1, messageType, false, " ");
 		this.infoConnection = new InfoConnection("", "");
 	}
 	

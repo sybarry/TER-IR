@@ -35,7 +35,7 @@ public class InfoMessage {
 		this.idMessage = idMessage;
 		this.withACK = withACK;
 		this.messageType = "";
-		this.topic = "";
+		this.topic = " ";
 	}
 	
 	public int getIdMessage() {
