@@ -8,13 +8,18 @@ import java.io.IOException;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import lejos.hardware.Bluetooth;
 import lejos.hardware.port.MotorPort;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
+import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 
 public class VehicleController extends Thread {
@@ -25,9 +30,11 @@ public class VehicleController extends Thread {
 
 	private static MqttClient client;
 	private static SimpleMqttCallBack callBack;
+	private static MqttMessage message = new MqttMessage();
 
 	private static Motor MotorRight;
 	private static Motor MotorLeft;
+	private static EV3ColorSensor colorSensor;
 
 	private static int speed = 10;
 	
@@ -61,6 +68,7 @@ public class VehicleController extends Thread {
 		// Initialisation of the application components
 		MotorRight = new Motor(MotorPort.A);
 		MotorLeft = new Motor(MotorPort.B);
+		colorSensor = new EV3ColorSensor(SensorPort.S3);
 
 		RegulatedMotor listMotors[] = { MotorRight.getOneMotor() };
 		MotorLeft.getOneMotor().synchronizeWith(listMotors);
@@ -102,6 +110,10 @@ public class VehicleController extends Thread {
 				default:
 					break;
 				}
+				
+				if(colorSensor.getColorID() == Color.RED) {	// Ajout	
+					publishMessage("Finish", "Car:1"); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
+				}
 			}
 		}
 	}
@@ -131,7 +143,12 @@ public class VehicleController extends Thread {
 		client.connect();
 		System.out.println("MQTT Connecte");
 	}
-
+	
+	public static void publishMessage(String msg, String topic) throws MqttPersistenceException, MqttException {
+		message.setPayload(msg.getBytes());
+		client.publish(topic, message);
+		System.out.println("Le message a ete envoye");
+	}
 
 	/*
 	 * Allows the car to move forward
