@@ -76,7 +76,7 @@ public class testComMqtt2 {
 		while(true) {
 			
 			str = comMqtt.receiveMessage("iot_data", "test");
-			//TimeUnit.MICROSECONDS.sleep(200); 
+			TimeUnit.MICROSECONDS.sleep(200); 
 			System.out.print(""); // demander pourquoi sans ca, ca ne marche pas 
 			
 			if(str != null) {
