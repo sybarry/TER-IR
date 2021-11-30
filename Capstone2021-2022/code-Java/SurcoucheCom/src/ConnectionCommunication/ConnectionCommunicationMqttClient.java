@@ -129,7 +129,8 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 			System.out.println("Mqtt client connected");	
 			client.setCallback(callBack);
 			
-			String ipClient = InetAddress.getLocalHost().getHostAddress();
+			//String ipClient = InetAddress.getLocalHost().getHostAddress(); // ne marche pas parce qu'il arrive pas a trouver l'ip
+			String ipClient = "";
 			infoConnection = new InfoConnection(ipClient, ipServer);
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
@@ -214,11 +215,41 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 		return msg;
 	}
 	
+	// Pour utiliser cette méthode, il faut l'envoie des corps du message respecte la norme "keyWord:messageBody"
+	// et cette fonction, si la norme est bien utiliser regle le probleme de retrouver un ancien message non traité
+	// si cela ne traite pas completement le probleme, ca le regle un peu mais faut renvoyer la liste des message 
+	// avec ce keyWord
+	public IMessage<?> receiveMessage(String topic, String keyWord) throws IOException, MessageException{
+
+		/*while(callBack.messageWithKeyWord(topic, keyWord) == null) { // pour eviter une erreur si lastMessageTopic() renvoie null
+			System.out.print(""); // sans ca, ca ne marche pas (bizarre)
+		}
+
+		byte[] convertedMessage = callBack.messageWithKeyWord(topic, keyWord).getBytes();
+
+		IMessage<?> msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
+
+		if(msg.getInfoMessage().getWithACK() == true) sendACK(msg.getInfoMessage().getIdMessage()); // sends an acknowledgement of receipt if desired by the message
+				
+		return msg;*/
+		
+		IMessage<?> msg = null;
+		
+		if(callBack.messageWithKeyWord(topic, keyWord) != null) { // pour eviter une erreur si lastMessageTopic() renvoie null
+		
+			byte[] convertedMessage = callBack.messageWithKeyWord(topic, keyWord).getBytes();
+			msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
+			if(msg.getInfoMessage().getWithACK() == true) sendACK(msg.getInfoMessage().getIdMessage()); // sends an acknowledgement of receipt if desired by the message
+		}	
+		
+		return msg;
+	} 
+	
 	public void removeTreatedMessage(String message) {
 		callBack.removeMsg(topic, message);
 	}
 	
-	// faudra avant chaque traitement de message, changer le topic (dans le main de l'utilisateur)
+	// faudra avant chaque traitement de message (send et receive), changer le topic (dans le main de l'utilisateur)
 	// Dans le programme utilisateur, ouvrire les canaux qur lequel on veux ecouter au debut du main car on ne sait pas 
 	// quand on va recevoir un msg
 	

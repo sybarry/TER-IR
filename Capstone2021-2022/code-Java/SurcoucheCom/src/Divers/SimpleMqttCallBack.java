@@ -48,6 +48,22 @@ public class SimpleMqttCallBack implements MqttCallback{
 		return null;
 	}
 	
+	public String messageWithKeyWord(String topic, String keyWord) {
+		
+		int i = listMsg.size() - 1;
+		
+		while((i >= 0) && listMsg.size() != 0){
+			if(listMsg.get(i).getPremier().compareTo(topic) == 0) {
+				if(listMsg.get(i).getSecond().contains(keyWord)) {
+					return listMsg.get(i).getSecond();
+				}
+			}
+			i--;
+		}
+		
+		return null;
+	}
+	
 	public void removeMsg(String topic, String message) {
 		boolean remove = false;
 		int i = listMsg.size() - 1;
