@@ -33,24 +33,24 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 	 *  
 	 *  @param msg The message to be sent
 	 */
-	protected void writeMessage(IMessage<?> msg) throws IOException {
+	protected void writeMessage(IMessage<?> msg) throws IOException, MessageException {
 		byte[] messageConverted = Encodeur_Decodeur.encoderMessage(msg); // Encodes the message
 		dOut.write(messageConverted); 
 		dOut.flush(); // Empties the output stream and forces the writing of all the output bytes in buffer memory
 	}
 	
 	@Override
-	public void sendACK(int idMessage) throws IOException {
-		dOut.writeUTF("received message "+idMessage); 
+	public void sendACK(IMessage<?> msg) throws IOException {
+		dOut.writeUTF("received message "+msg.getInfoMessage().getIdMessage()); 
 		dOut.flush();
 	}
 	
 	@Override
-	public boolean receiveACK(int idMessage) throws IOException { 
+	public boolean receiveACK(IMessage<?> msg) throws IOException { 
 		if(dIn.available() == 0) return false; 	// to find out if there are bytes that have been sent in the input stream 
 												// because readUTF() waits for something to be sent to it before continuing the code
 		
-		return dIn.readUTF().contentEquals("received message "+idMessage); 
+		return dIn.readUTF().contentEquals("received message "+msg.getInfoMessage().getIdMessage()); 
 	}
 	
 	/*
@@ -59,12 +59,12 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 	 *  @param msg The message to be sent
 	 *  @param timeOut Wait time before returning an acknowledge of receipt
 	 */
-	private void ACK(IMessage<?> msg, int timeOut) throws IOException {
-		boolean ack = receiveACK(msg.getInfoMessage().getIdMessage());
+	private void ACK(IMessage<?> msg, int timeOut) throws IOException, MessageException {
+		boolean ack = receiveACK(msg);
 		long chrono = java.lang.System.currentTimeMillis();
 		
 		while(ack == false) {
-			ack = receiveACK(msg.getInfoMessage().getIdMessage());
+			ack = receiveACK(msg);
 			if(ack == false && (java.lang.System.currentTimeMillis() - chrono >= timeOut)) { 	// if he has not received an acknowledge of receipt, and 
 																								// that the timeOut has been reached
 				writeMessage(msg);
@@ -110,7 +110,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 			
 			IMessage<?> message = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
 
-			if(message.getInfoMessage().getWithACK() == true) sendACK(message.getInfoMessage().getIdMessage()); // sends an acknowledgement of receipt if desired by the message
+			if(message.getInfoMessage().getWithACK() == true) sendACK(message); // sends an acknowledgement of receipt if desired by the message
 			
 			return message;
 		}else {
@@ -142,7 +142,7 @@ public abstract class AConnectionCommunication implements IConnectionCommunicati
 	    		public void run() {
 					try {
 						ACK(msg, timeOut);
-					} catch (IOException e) {
+					} catch (IOException | MessageException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

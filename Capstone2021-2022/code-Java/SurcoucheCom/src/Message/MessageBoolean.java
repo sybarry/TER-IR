@@ -17,6 +17,18 @@ public class MessageBoolean extends AMessage<Boolean> {
 		super("boolean");
 		this.message = message;
 	}
+
+	/*
+	 * Create an instance for MessageBoolean 
+	 * 
+	 * @param message The body of message 
+	 * @param topic The message sending channel (for mqtt)
+	 */
+	public MessageBoolean(boolean message, String topic) {
+		super("boolean");
+		this.message = message;
+		this.getInfoMessage().setTopic(topic);
+	}
 	
 	/*
 	 * Create an instance for MessageBoolean

@@ -15,5 +15,6 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/antho/Documents/Etude/Master/M2/Capstone/transfo-protocoles/Capstone2021-2022/code-Java/SurcoucheCom/SurcoucheCom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

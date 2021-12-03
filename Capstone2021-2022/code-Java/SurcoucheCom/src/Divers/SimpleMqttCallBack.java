@@ -5,10 +5,17 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+/*
+ * @author ROZEN Anthony - GICQUEL Alexandre - GUERIN Antoine - ROCHETEAU Nathan
+ */
+
 public class SimpleMqttCallBack implements MqttCallback{
 	
-	private ArrayList<Paire<String, String>> listMsg;
+	private ArrayList<Paire<String, String>> listMsg; // Paire(topic, message), the list of unprocessed messages
 	
+	/*
+	 * Create an instance for a SimpleMqttCallBack
+	 */
 	public SimpleMqttCallBack() {
 		listMsg = new ArrayList<Paire<String, String>>();
 	}
@@ -33,8 +40,13 @@ public class SimpleMqttCallBack implements MqttCallback{
 		return this.listMsg;
 	}
 	
-	public String lastMessageTopic(String topic){ // soit retourner le msg ou retourner la paire ? et 
-		// peut etre aussi ajouter le type du message attendu
+	/*
+	 * Method that allows you to return the last message received on a topic
+	 * 
+	 * @param topic The channel where you want to retrieve the message
+	 * @return The String message
+	 */
+	public String lastMessageTopic(String topic){ 
 		
 		int i = listMsg.size() - 1;
 
@@ -48,6 +60,13 @@ public class SimpleMqttCallBack implements MqttCallback{
 		return null;
 	}
 	
+	/*
+	 * Method that returns a message from a key word and a topic
+	 * 
+	 * @param topic The channel where you want to retrieve the message
+	 * @param keyWord The keyword of the message you want to retrieve 
+	 * @return The string message 
+	 */
 	public String messageWithKeyWord(String topic, String keyWord) {
 		
 		int i = listMsg.size() - 1;
@@ -64,6 +83,12 @@ public class SimpleMqttCallBack implements MqttCallback{
 		return null;
 	}
 	
+	/*
+	 * Method to delete a message from the list of unprocessed messages
+	 * 
+	 * @param message The message you want to delete
+	 * @param topic The channel of the message you want to delete
+	 */
 	public void removeMsg(String topic, String message) {
 		boolean remove = false;
 		int i = listMsg.size() - 1;
@@ -77,6 +102,9 @@ public class SimpleMqttCallBack implements MqttCallback{
 		}
 	}
 	
+	/*
+	 * Method that displays the content of the list of unprocessed messages
+	 */
 	public void affichage() {
 		System.out.print("[");
 		for(int i=0; i<=listMsg.size()-1;i++) {

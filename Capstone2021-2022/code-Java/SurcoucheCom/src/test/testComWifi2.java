@@ -19,7 +19,7 @@ public class testComWifi2 {
 	static String str = "";
 	
 	public static void main(String[] args) throws IOException, InterruptedException, MessageException {
-		String ip = "192.168.1.22"; // connexion ev3 
+		String ip = "192.168.3.219"; // connexion ev3 
 		int port = 1234;
 
 		final ConnectionCommunicationWifiClient comWifi = new ConnectionCommunicationWifiClient(port, ip);

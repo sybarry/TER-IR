@@ -17,6 +17,18 @@ public class MessageFloat extends AMessage<Float> {
 		super("float");
 		this.message = message;
 	}
+
+	/*
+	 * Create an instance for MessageFloat 
+	 * 
+	 * @param message The body of message 
+	 * @param topic The message sending channel (for mqtt)
+	 */
+	public MessageFloat(float message, String topic) {
+		super("float");
+		this.message = message;
+		this.getInfoMessage().setTopic(topic);
+	}
 	
 	/*
 	 * Create an instance for MessageFloat

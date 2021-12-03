@@ -17,6 +17,18 @@ public class MessageInt extends AMessage<Integer> {
 		super("int");
 		this.message = message;
 	}
+
+	/*
+	 * Create an instance for MessageInt 
+	 * 
+	 * @param message The body of message 
+	 * @param topic The message sending channel (for mqtt)
+	 */
+	public MessageInt(int message, String topic) {
+		super("int");
+		this.message = message;
+		this.getInfoMessage().setTopic(topic);
+	}
 	
 	/*
 	 * Create an instance for MessageInt

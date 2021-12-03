@@ -17,6 +17,18 @@ public class MessageDouble extends AMessage<Double> {
 		super("double");
 		this.message = message;
 	}
+
+	/*
+	 * Create an instance for MessageDouble 
+	 * 
+	 * @param message The body of message 
+	 * @param topic The message sending channel (for mqtt)
+	 */
+	public MessageDouble(double message, String topic) {
+		super("double");
+		this.message = message;
+		this.getInfoMessage().setTopic(topic);
+	}
 	
 	/*
 	 * Create an instance for MessageDouble

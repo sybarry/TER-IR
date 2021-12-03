@@ -28,19 +28,19 @@ public interface IConnectionCommunication {
 	/*
 	 *  Method to send an acknowledgement of receipt a message to the source device
 	 *  
-	 *  @param idMessage The identifier of the message for which we want to send an acknowledgement of receipt
+	 *  @param msg The message for which you want to send an acknowledgement of receipt
 	 *  @throws IOException If an I/O error occurs 
 	 */
-	void sendACK(int idMessage) throws IOException;
+	void sendACK(IMessage<?> msg) throws IOException;
 	
 	/*
 	 *  Method used to determine if an acknowledgement of receipt has been retrieved for the identifier message idMessage 
 	 *  
-	 *  @param idMessage The identifier of the message for which we want to send an acknowledgement of receipt
+	 *  @param msg The message for which you want to receive an acknowledgement of receipt
 	 *  @return True if a receive an acknowledge of receipt for the message
 	 *  @throws IOException If an I/O error occurs 
 	 */
-	boolean receiveACK(int idMessage) throws IOException;
+	boolean receiveACK(IMessage<?> msg) throws IOException;
 	
 	/*
 	 *  Method for sending a message between two devices without waiting for an acknowledgement of receipt 

@@ -1,6 +1,4 @@
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,28 +9,29 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import ConnectionCommunication.ConnectionCommunicationMqttClient;
+import Exception.MessageException;
+import Message.IMessage;
+import Message.MessageString;
 
 /*
  * Ce programme sera execute sur une machine en java pour piloter la course
  */
 public class RaceController {
 	
-	private static MqttClient client;
-	private static MqttMessage message = new MqttMessage();
-	private static SimpleMqttCallBack callBack;
+	private static ConnectionCommunicationMqttClient mqttClient;
+	private static IMessage<?> str = null;
 	private static int nbPlayer = 4;
+	private static String topicAll = "All";
 
-	public static void main(String[] args) throws MqttException {
-	
-		//connectMqtt("192.168.1.9", "1883");
-		connectMqtt("localhost", "1883");
-		callBack = new SimpleMqttCallBack();
-		client.setCallback(callBack);
+	public static void main(String[] args) throws MqttException, IOException, MessageException {
+
+		//mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
+        mqttClient = new ConnectionCommunicationMqttClient("localhost", 1883);
+        mqttClient.openConnection();
+		
 		Scanner sc = new Scanner(System.in);
 		String m ="";
 	
@@ -47,7 +46,7 @@ public class RaceController {
 		System.out.println("Mise en écoute du controller sur les canaux véhicules :");
 		for(int i=1; i<nbPlayer+1; i++) { // Mise en écoute sur les canaux de chaque véhicule
 			playerTimes.put(i,(long) 0);
-			client.subscribe("car"+i);
+			mqttClient.subscribe("Car"+i);
 			System.out.println("	-> En ecoute sur le canal de la voiture "+ i);
 		}
 		
@@ -56,40 +55,37 @@ public class RaceController {
 		m = sc.next();
 		
 		if(m.compareTo("GO") == 0) { // TO FIX : automatisation du lancement de la course
-			publishMessage("GO", "all");
+			mqttClient.sendMessage(new MessageString(Command.START, topicAll));
 			startTimer = System.currentTimeMillis();
 			System.out.println();
 			System.out.println("### START ###");
 		}
 		
-		/*
-		while(!isFinished) {
-			System.out.print("");
-			if(callBack.getMsg().compareTo("") == -1) {
-				playerTimes.replace((int) callBack.getTopic().charAt(3), System.currentTimeMillis() - startTimer);
-				isFinished = true;
-				for(Long s : playerTimes.values()) {
-					if(s.equals(0)) {
-						isFinished = false;
+		while(!isFinished) { // a tester
+
+			for(int i=1; i<nbPlayer+1; i++) { 
+				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
+				
+				if(str != null) {
+					String[] s1 = ((String) str.getMessage()).split(":");
+					
+					if(s1[1].compareTo(Command.messageInCommand(Command.FINISH)) == 0) {
+						playerTimes.replace(i, System.currentTimeMillis() - startTimer);
+						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
+						str = null; 
+						
+						isFinished = true;
+						for(Long s : playerTimes.values()) {
+							if(s.equals((long) 0)) {
+								isFinished = false;
+							}
+						}
 					}
 				}
 			}
 		}
-		*/
 		
 		System.out.println("### END ###");
-		
-		System.out.println();
-		System.out.println("Voici les scores des véhicules stockés dans une hashmap:");
-		playerTimes.put(1, (long) 1233);
-		playerTimes.put(2,(long) 821);
-		playerTimes.put(3,(long) 1652);
-		playerTimes.put(4,(long) 1231);
-		System.out.println(playerTimes);
-		
-		System.out.println();
-		System.out.println("### TRI ###");
-		playerTimes=sortByValue(playerTimes);
 		
 		System.out.println();
 		System.out.println("Classement :");
@@ -125,19 +121,5 @@ public class RaceController {
         }
         return temp;
     }
-	
-	public static void connectMqtt(String serverAddress, String port) throws MqttException {
-		MemoryPersistence persistence = new MemoryPersistence();
-		client = new MqttClient("tcp://"+serverAddress+":"+port, MqttClient.generateClientId(), persistence);
-	
-		client.connect();
-		System.out.println("Connecte");
-	}
-
-	public static void publishMessage(String msg, String topic) throws MqttPersistenceException, MqttException {
-		message.setPayload(msg.getBytes());
-		client.publish(topic, message);
-		System.out.println("Le message a ete envoye");
-	}
 
 }

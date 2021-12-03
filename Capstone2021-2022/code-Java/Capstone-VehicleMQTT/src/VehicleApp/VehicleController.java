@@ -1,64 +1,70 @@
 package VehicleApp;
 
 import Components.*;
+import ConnectionCommunication.ConnectionCommunicationBTServer;
+import ConnectionCommunication.ConnectionCommunicationMqttClient;
+import Exception.MessageException;
+import Message.IMessage;
+import Message.MessageInt;
+import Message.MessageString;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import lejos.hardware.Bluetooth;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.remote.nxt.BTConnection;
-import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 
 public class VehicleController extends Thread {
 
-	private static BTConnection BTLink;
 	private static boolean appliReady;
-	private static int transmission = 0;
-
-	private static MqttClient client;
-	private static SimpleMqttCallBack callBack;
-	private static MqttMessage message = new MqttMessage();
+	private static ConnectionCommunicationBTServer BTServer;
+	private static MessageInt transmission;
+	
+	private static ConnectionCommunicationMqttClient mqttClient;
+	private static IMessage<?> str = null;
 
 	private static Motor MotorRight;
 	private static Motor MotorLeft;
 	private static EV3ColorSensor colorSensor;
 
 	private static int speed = 10;
+	private static String topicWithServer = "Car1";
+	private static String topicAll = "All";
 	
-	final static BTListener EBT = new BTListener();
-
 	/*
 	 * Main class - launch the application
 	 */
 	public static void main(String[] args) throws IOException,
-			InterruptedException, MqttException {
+			InterruptedException, MessageException, MqttException {
 
 		// Bluetooth connection setup
-		EBT.start();
-
-		while (BTListener.BTconnect == false) {
-		}
-
-		System.out.println("Connection BT success");
+		BTServer = new ConnectionCommunicationBTServer(30, NXTConnection.RAW);
+		BTServer.openConnection();
+		transmission = new MessageInt(0);
+		
+		boolean finish = false;
+		
+		new Thread() { // renvoie une erreur car la telecommande n'utilise pas la surcouche donc envoie pas de message correct
+            public void run() {
+            	for(;;) {
+                	try {
+    					transmission = (MessageInt) BTServer.receiveMessage();
+    				} catch (IOException | MessageException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}	
+            	}
+            }   
+        }.start();
 		
 		// MQTT connection on the server "192.168.1.9", with the port "1883"
-		connectMqtt("192.168.43.164", "1883");
-		callBack = new SimpleMqttCallBack();
-		client.setCallback(callBack);
-		client.subscribe("all");	
+        mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
+        mqttClient.openConnection();
+        mqttClient.subscribe(topicAll);
 		System.out.println("En ecoute sur le canal all");
 		boolean go = false;
 
@@ -81,16 +87,21 @@ public class VehicleController extends Thread {
 		// Loop running as long as the application is running
 		while (appliReady) {
 			
-			if(callBack.getMsg().compareTo("GO") == 0 && callBack.getTopic().compareTo("all") == 0) {
-				go = true;
+			str = mqttClient.receiveMessage(topicAll, Command.keyWordInCommand(Command.START));
+			if(str != null) {
+				String[] s1 = ((String) str.getMessage()).split(":"); 
+				
+				if(s1[1].compareTo(Command.messageInCommand(Command.START)) == 0) {
+					go = true;
+					mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
+					str = null; 
+				}
 			}
 			
 			while(go) {
-				//Reading bytes sent from the application
-				transmission = EBT.byteRecu;
 				
 				//Goes into a state depending on the signal received
-				switch (transmission) {
+				switch (transmission.getMessage()) {
 	
 				case 1:
 					forward();
@@ -111,43 +122,12 @@ public class VehicleController extends Thread {
 					break;
 				}
 				
-				if(colorSensor.getColorID() == Color.RED) {	// Ajout	
-					publishMessage("Finish", "Car:1"); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
+				if(colorSensor.getColorID() == Color.RED && finish == false) {	
+					mqttClient.sendMessage(new MessageString(Command.FINISH, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
+					finish = true; // pour eviter de renvoyer le message qui permet d'arreter le chrono si on a finit la course 
 				}
 			}
 		}
-	}
-
-
-	/*
-	* Allows listening to bluetooth devices and connecting to �
-	* the application is based on the NXT box (similar to EV3) for
-	* make the connection
-	*/
-	public static void bluetoothConnection() {
-		System.out.println("En ecoute");
-		BTConnector nxtCommConnector = (BTConnector) Bluetooth
-				.getNXTCommConnector();
-		BTLink = (BTConnection) nxtCommConnector.waitForConnection(30000,
-				NXTConnection.RAW);
-		DataOutputStream outputData = BTLink.openDataOutputStream();
-		DataInputStream inputData = BTLink.openDataInputStream();
-		if(inputData!=null && outputData != null) {
-		}
-	}
-	
-	public static void connectMqtt(String serverAddress, String port) throws MqttException {
-		MemoryPersistence persistence = new MemoryPersistence();
-		client = new MqttClient("tcp://"+serverAddress+":"+port, MqttClient.generateClientId(), persistence);
-	
-		client.connect();
-		System.out.println("MQTT Connecte");
-	}
-	
-	public static void publishMessage(String msg, String topic) throws MqttPersistenceException, MqttException {
-		message.setPayload(msg.getBytes());
-		client.publish(topic, message);
-		System.out.println("Le message a ete envoye");
 	}
 
 	/*

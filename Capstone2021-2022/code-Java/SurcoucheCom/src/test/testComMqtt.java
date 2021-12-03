@@ -13,8 +13,9 @@ public class testComMqtt {
 		final ConnectionCommunicationMqttClient comMqtt = new ConnectionCommunicationMqttClient("localhost", 1883);
 		
 		comMqtt.openConnection();
-		comMqtt.setTopic("iot_data");
 		
-		comMqtt.sendMessage(new MessageString("coucou"));
+		//faut que l'utilsataur utilise que ce constructeur si il veut envoye des message via mqtt
+		// et qu'il respecte la norme d'ecriture de message mqtt
+		comMqtt.sendMessage(new MessageString("test:coucou", "iot_data"));
 	}
 }

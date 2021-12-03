@@ -3,12 +3,12 @@ package ConnectionCommunication;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import Divers.InfoConnection;
@@ -18,7 +18,7 @@ import Message.Encodeur_Decodeur;
 import Message.IMessage;
 
 /*
- * @author ROZEN Anthony - GICQUEL Alexandre - GUERIN Antoine
+ * @author ROZEN Anthony - GICQUEL Alexandre - GUERIN Antoine - ROCHETEAU Nathan
  */
 
 public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
@@ -28,7 +28,6 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 	private MqttClient client;
 	private MqttMessage message;
 	private SimpleMqttCallBack callBack; // Notify a client when receiving a message
-	private String topic; // The canal of publish/subscribe of a message
 	
 	/*
 	 * Create an instance for a Mqtt client 
@@ -41,80 +40,42 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 		this.port = port;
 		message = new MqttMessage();
 		callBack = new SimpleMqttCallBack();
-		topic = "";
+		//topic = "";
 		
-		dIn = new DataInputStream(null); // pour empecher que le programme renvoie une erreur même si on les utilises pas
-		dOut = new DataOutputStream(null); // pour empecher que le programme renvoie une erreur même si on les utilises pas
+		dIn = new DataInputStream(null); // To prevent the program from returning an error even if they are not used
+		dOut = new DataOutputStream(null); // To prevent the program from returning an error even if they are not used
 		// parce que par exemple, lorsque qu'on envoie un message, on regarde si dOut n'est pas egale a null 
 		// mais pour mqtt on n'a pas besoin de dOut donc il est forcement a null alors que l'envoie de message fonctionne 
 	}
 
-	/**
-	 * @return the callBack
-	 */
 	public SimpleMqttCallBack getCallBack() {
 		return callBack;
 	}
 
-	/**
-	 * @param callBack the callBack to set
-	 */
 	public void setCallBack(SimpleMqttCallBack callBack) {
 		this.callBack = callBack;
 	}
 
-	/**
-	 * @return the topic
-	 */
-	public String getTopic() {
-		return topic;
-	}
-
-	/**
-	 * @param topic the topic to set
-	 */
-	public void setTopic(String topic) {
-		this.topic = topic;
-	}
-
-	/**
-	 * @return the ipServer
-	 */
 	public String getIpServer() {
 		return ipServer;
 	}
 
-	/**
-	 * @param ipServer the ipServer to set
-	 */
 	public void setIpServer(String ipServer) {
 		this.ipServer = ipServer;
 	}
 
-	/**
-	 * @return the port
-	 */
 	public int getPort() {
 		return port;
 	}
 
-	/**
-	 * @param port the port to set
-	 */
 	public void setPort(int port) {
 		this.port = port;
 	}
 
-	/**
-	 * @return the client
-	 */
 	public MqttClient getClient() {
 		return client;
 	}
 
-	/**
-	 * @param client the client to set
-	 */
 	public void setClient(MqttClient client) {
 		this.client = client;
 	}
@@ -149,24 +110,34 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 		}
 	}
 	
+	/*
+	 * Method of subscribing to a topic
+	 * 
+	 * @param topic The channel you want to listen to
+	 */
 	public void subscribe(String topic) throws MqttException {
 		client.subscribe(topic);
 	}
 	
+	/*
+	 * method of unsubscribing from a subject
+	 * 
+	 * @param the channel on which we no longer want to listen
+	 */
 	public void unsubscribe(String topic) throws MqttException {
 		client.unsubscribe(topic);
 	}
 	
 	@Override
-	protected void writeMessage(IMessage<?> msg) throws IOException {
+	protected void writeMessage(IMessage<?> msg) throws IOException, MessageException {
+		
+		standarIsRespected(msg);
+		
 		byte[] messageConverted = Encodeur_Decodeur.encoderMessage(msg); // Encodes the message
 		message.setPayload(messageConverted);
 		
-		// soit faire un attribut topic qu'on set avant chaque envoie de masse OU
-		// soit jouter un parametre variable dans la signature de la fonction
-		
 		try {
-			client.publish(topic, message);
+			client.publish(msg.getInfoMessage().getTopic(), message);
 			System.out.println("Le message a ete envoye");
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
@@ -175,13 +146,13 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 	}
 	
 	@Override
-	public void sendACK(int idMessage) throws IOException { 
+	public void sendACK(IMessage<?> msg) throws IOException { 
 
-		String msg = "received message "+idMessage;
-		message.setPayload(msg.getBytes());
+		String m = "received message "+msg.getInfoMessage().getIdMessage();
+		message.setPayload(m.getBytes());
 		
 		try {
-			client.publish(topic, message);
+			client.publish(msg.getInfoMessage().getTopic(), message);
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -189,69 +160,87 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 	}
 	
 	@Override
-	public boolean receiveACK(int idMessage) throws IOException { 
+	public boolean receiveACK(IMessage<?> msg) throws IOException { 
 		
-		boolean result = callBack.lastMessageTopic(topic).compareTo("received message "+idMessage) == 0;
+		boolean result = callBack.lastMessageTopic(msg.getInfoMessage().getTopic()).compareTo("received message "+msg.getInfoMessage().getIdMessage()) == 0;
 		if(result == true) { 
-			callBack.removeMsg(topic, "received message "+idMessage);
+			callBack.removeMsg(msg.getInfoMessage().getTopic(), "received message "+idMessage);
 		}
 		
 		return result;
 	}
 	
+	
 	@Override
+	// Do not use this function because it takes a topic by default and does not search for the message with the mqtt message writing standard
 	public IMessage<?> receiveMessage() throws IOException, MessageException{
+		
+		IMessage<?> msg = null;
 
-		while(callBack.lastMessageTopic(topic) == null) { // pour eviter une erreur si lastMessageTopic() renvoie null
-			System.out.print(""); // sans ca, ca ne marche pas (bizarre)
+		while(callBack.lastMessageTopic("defaultTopic") != null) { // pour eviter une erreur si lastMessageTopic() renvoie null
+			
+			byte[] convertedMessage = callBack.lastMessageTopic("defaultTopic").getBytes();
+			msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
+			if(msg.getInfoMessage().getWithACK() == true) sendACK(msg); // sends an acknowledgement of receipt if desired by the message
+		
+			standarIsRespected(msg);
 		}
-
-		byte[] convertedMessage = callBack.lastMessageTopic(topic).getBytes();
-
-		IMessage<?> msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
-
-		if(msg.getInfoMessage().getWithACK() == true) sendACK(msg.getInfoMessage().getIdMessage()); // sends an acknowledgement of receipt if desired by the message
 				
 		return msg;
 	}
-	
-	// Pour utiliser cette méthode, il faut l'envoie des corps du message respecte la norme "keyWord:messageBody"
-	// et cette fonction, si la norme est bien utiliser regle le probleme de retrouver un ancien message non traité
-	// si cela ne traite pas completement le probleme, ca le regle un peu mais faut renvoyer la liste des message 
-	// avec ce keyWord
+
+	/*
+	 *  Method for receiving a message and sending an acknowledgement if required
+	 *  
+	 *  @param topic The channel where you want to get the message
+	 *  @param keyWord The key word of the message you want to get 
+	 *  @return The message receive
+	 *  @throws IOException If an I/O error occurs 
+	 *  @throws MessageException If the standard of writing a message mqtt is not respected 
+	 */
 	public IMessage<?> receiveMessage(String topic, String keyWord) throws IOException, MessageException{
-
-		/*while(callBack.messageWithKeyWord(topic, keyWord) == null) { // pour eviter une erreur si lastMessageTopic() renvoie null
-			System.out.print(""); // sans ca, ca ne marche pas (bizarre)
-		}
-
-		byte[] convertedMessage = callBack.messageWithKeyWord(topic, keyWord).getBytes();
-
-		IMessage<?> msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
-
-		if(msg.getInfoMessage().getWithACK() == true) sendACK(msg.getInfoMessage().getIdMessage()); // sends an acknowledgement of receipt if desired by the message
-				
-		return msg;*/
 		
 		IMessage<?> msg = null;
 		
-		if(callBack.messageWithKeyWord(topic, keyWord) != null) { // pour eviter une erreur si lastMessageTopic() renvoie null
+		if(callBack.messageWithKeyWord(topic, keyWord) != null) { // To avoid an error if messageWithKeyWord() returns null
 		
 			byte[] convertedMessage = callBack.messageWithKeyWord(topic, keyWord).getBytes();
 			msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received
-			if(msg.getInfoMessage().getWithACK() == true) sendACK(msg.getInfoMessage().getIdMessage()); // sends an acknowledgement of receipt if desired by the message
+			if(msg.getInfoMessage().getWithACK() == true) sendACK(msg); // sends an acknowledgement of receipt if desired by the message
+			
+			standarIsRespected(msg);
 		}	
 		
 		return msg;
 	} 
 	
-	public void removeTreatedMessage(String message) {
+	/*
+	 * Method to delete a message
+	 * 
+	 * @param message The message you want to delete
+	 * @param topic The channel of the message you want to delete
+	 */
+	public void removeTreatedMessage(String message, String topic) {
 		callBack.removeMsg(topic, message);
 	}
 	
-	// faudra avant chaque traitement de message (send et receive), changer le topic (dans le main de l'utilisateur)
-	// Dans le programme utilisateur, ouvrire les canaux qur lequel on veux ecouter au debut du main car on ne sait pas 
+	/*
+	 * Method of determining whether a message meets the standard of writing a message mqtt is respected 
+	 * 
+	 * @param msg The message to be sent or to be receive
+	 * @throws MessageException If the standard of writing a message mqtt is not respected 
+	 */
+	private void standarIsRespected(IMessage<?> msg) throws MessageException {
+		Pattern pattern = Pattern.compile(".+:.+"); // The standard for writing a mqtt message 
+    	Matcher matcher = pattern.matcher((String) msg.getMessage());
+        
+		if(!matcher.matches()) { // To find out if the message received meets the standard of writing a message mqtt
+			throw new MessageException("The standard of writing a message mqtt is not respected");
+		}
+	}
+
+	// Dans le programme utilisateur, ouvrire les canaux sur lequel on veux ecouter au debut du main car on ne sait pas 
 	// quand on va recevoir un msg
 	
-	// demander pourquoi sans le System.out.print(""); ca ne fait rien dans receiveMessage (ConnectionCommunicationMqttClient)
+	// la norme est keyWord:message
 }

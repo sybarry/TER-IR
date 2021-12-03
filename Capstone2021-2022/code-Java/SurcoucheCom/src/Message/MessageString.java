@@ -1,4 +1,4 @@
-package Message;
+	package Message;
 
 import Divers.InfoConnection;
 import Divers.InfoMessage;
@@ -19,6 +19,18 @@ public class MessageString extends AMessage<String> {
 	public MessageString(String message) {
 		super("String");
 		this.message = message;
+	}
+	
+	/*
+	 * Create an instance for MessageString 
+	 * 
+	 * @param message The body of message 
+	 * @param topic The message sending channel (for mqtt)
+	 */
+	public MessageString(String message, String topic) {
+		super("String");
+		this.message = message;
+		this.getInfoMessage().setTopic(topic);
 	}
 	
 	/*

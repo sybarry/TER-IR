@@ -17,6 +17,18 @@ public class MessageByte extends AMessage<Byte> {
 		super("byte");
 		this.message = message;
 	}
+
+	/*
+	 * Create an instance for MessageByte 
+	 * 
+	 * @param message The body of message 
+	 * @param topic The message sending channel (for mqtt)
+	 */
+	public MessageByte(byte message, String topic) {
+		super("byte");
+		this.message = message;
+		this.getInfoMessage().setTopic(topic);
+	}
 	
 	/*
 	 * Create an instance for MessageByte
