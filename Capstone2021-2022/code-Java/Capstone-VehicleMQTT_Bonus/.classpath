@@ -3,7 +3,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="con" path="org.lejos.ev3.ldt.LEJOS_EV3_LIBRARY_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Alexa/Documents/FAC/Master/M2/Capstone/transfo-protocoles/Capstone2021-2022/org.eclipse.paho.client.mqttv3-1.2.5.jar" sourcepath="C:/Users/antho/.m2/repository/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.5/org.eclipse.paho.client.mqttv3-1.2.5-sources.jar">
+	<classpathentry kind="lib" path="C:/Users/antho/Documents/Etude/Master/M2/Capstone/transfo-protocoles/Capstone2021-2022/org.eclipse.paho.client.mqttv3-1.2.5.jar" sourcepath="C:/Users/antho/.m2/repository/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.5/org.eclipse.paho.client.mqttv3-1.2.5-sources.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="maven.groupId" value="org.eclipse.paho"/>
@@ -12,6 +12,6 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Alexa/Documents/FAC/Master/M2/Capstone/transfo-protocoles/Capstone2021-2022/code-Java/SurcoucheCom/SurcoucheCom.jar"/>
+	<classpathentry kind="lib" path="C:/Users/antho/Documents/Etude/Master/M2/Capstone/transfo-protocoles/Capstone2021-2022/code-Java/SurcoucheCom/SurcoucheCom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
