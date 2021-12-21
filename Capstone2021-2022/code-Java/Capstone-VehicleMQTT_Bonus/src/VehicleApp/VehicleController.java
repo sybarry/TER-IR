@@ -73,7 +73,7 @@ public class VehicleController extends Thread {
         mqttClient.openConnection();
         mqttClient.subscribe(topicAll);
         mqttClient.subscribe(topicWithServer);
-		System.out.println("En ecoute sur le canal all");
+		System.out.println("En ecoute sur le canal "+topicAll);
 
 
 		// Signals the application to be ready
@@ -94,8 +94,6 @@ public class VehicleController extends Thread {
 
 		// Loop running as long as the application is running
 		while (appliReady) {
-			
-			
 			
 			//***************THREAD capteur de couleur **************//
 			new Thread() {
@@ -146,7 +144,7 @@ public class VehicleController extends Thread {
 	        }.start();
 	        
 	        
-	      //***************THREAD malus **************//
+	        //***************THREAD malus **************//
 			new Thread() {
 	            public void run() {
 	            	while(finish == false) {
@@ -187,6 +185,7 @@ public class VehicleController extends Thread {
 	            }   
 	        }.start();
 	        
+	        //***************Go de départ **************//
 			str = mqttClient.receiveMessage(topicAll, Command.keyWordInCommand(Command.START));
 			if(str != null) {
 				String[] s1 = ((String) str.getMessage()).split(":"); 
@@ -198,11 +197,10 @@ public class VehicleController extends Thread {
 				}
 			}
 			
+			//*************** Gestion des commandes **************//
 			while(go) {
-				
 				//Goes into a state depending on the signal received
 				switch (transmission.getMessage()) {
-	
 				case 1:
 					forward();
 					break;
