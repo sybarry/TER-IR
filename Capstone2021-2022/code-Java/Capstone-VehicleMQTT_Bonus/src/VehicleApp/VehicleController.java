@@ -117,6 +117,8 @@ public class VehicleController extends Thread {
 	        					}
 	        					
 	        					String[] s1 = ((String) bonus.getMessage()).split(":"); 
+	        					//BTServer.sendMessage(new MessageString("Vous avez obtenu le bonus "+s1[1]));
+	        					
 	        					switch(s1[1]) {
 	        						case "RedShell":
 	        							System.out.println("BONUS redShell");
@@ -154,6 +156,8 @@ public class VehicleController extends Thread {
         						malus = mqttClient.receiveMessage(topicWithServer,"Malus") ;
         					}
 	        				String[] s1 = ((String) malus.getMessage()).split(":"); 
+	        				//BTServer.sendMessage(new MessageString("Vous avez recu le malus "+s1[1]));
+	        				
 	        				switch(s1[1]) {
 	        					
 	        					case "RedShell":
@@ -191,11 +195,25 @@ public class VehicleController extends Thread {
 				String[] s1 = ((String) str.getMessage()).split(":"); 
 				
 				if(s1[1].compareTo(Command.messageInCommand(Command.START)) == 0) {
-					go = true;
 					mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
 					str = null; 
+					
+					go = true;
+					//BTServer.sendMessage(new MessageString(s1[1]));
 				}
 			}
+			
+			/*str = mqttClient.receiveMessage(topicAll, "COUNTDOWN");
+			if(str != null) {
+				String[] s1 = ((String) str.getMessage()).split(":"); 
+				
+				System.out.println(s1[1]);
+				
+				BTServer.sendMessage(new MessageString(s1[1]));
+				
+				mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
+				str = null; 
+			}*/
 			
 			//*************** Gestion des commandes **************//
 			while(go) {

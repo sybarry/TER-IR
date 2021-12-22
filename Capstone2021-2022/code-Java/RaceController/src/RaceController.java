@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import ConnectionCommunication.ConnectionCommunicationMqttClient;
@@ -65,6 +67,13 @@ public class RaceController {
 		m = sc.next();
 		
 		if(m.compareTo("GO") == 0) { // TO FIX : automatisation du lancement de la course
+			
+			/*for(int i = 1; i<=3; i++) {
+				mqttClient.sendMessage(new MessageString("COUNTDOWN:"+i, topicAll));
+				System.out.println(i);
+				TimeUnit.SECONDS.sleep(1);
+			}*/
+			
 			mqttClient.sendMessage(new MessageString(Command.START, topicAll));
 			startTimer = System.currentTimeMillis();
 			System.out.println();
