@@ -35,7 +35,7 @@ public class InfoMessage {
 		this.idMessage = idMessage;
 		this.withACK = withACK;
 		this.messageType = "";
-		this.topic = " "; // "" returns an error because of the split function so we put " "
+		this.topic = "defaultTopic"; // If the topic is not indicated during a message
 	}
 	
 	public int getIdMessage() {

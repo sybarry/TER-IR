@@ -20,6 +20,8 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import java.io.IOException;
+
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
@@ -53,9 +55,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.disconnect:
-                bluetoothService.disconnect();
-                navLoginScreen();
-                finish();
+                try {
+                    comBT.closeConnection();
+                    navLoginScreen();
+                    finish();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             case R.id.flush_tasks:
                 taskRepository.deleteAllTasks();

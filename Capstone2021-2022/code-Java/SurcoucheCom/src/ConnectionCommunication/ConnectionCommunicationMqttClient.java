@@ -177,7 +177,7 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 		
 		IMessage<?> msg = null;
 
-		while(callBack.lastMessageTopic("defaultTopic") != null) { // pour eviter une erreur si lastMessageTopic() renvoie null
+		while(callBack.lastMessageTopic("defaultTopic") != null) { // to avoid an error if lastMessageTopic() returns null
 			
 			byte[] convertedMessage = callBack.lastMessageTopic("defaultTopic").getBytes();
 			msg = Encodeur_Decodeur.decoderMessage(convertedMessage); // decode the message received

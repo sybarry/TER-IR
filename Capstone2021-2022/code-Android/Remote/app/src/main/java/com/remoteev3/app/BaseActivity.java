@@ -10,13 +10,17 @@ import androidx.annotation.Nullable;
 import com.remoteev3.app.db.TaskRepository;
 import com.remoteev3.app.network.BluetoothService;
 
+import ConnectionCommunication.ConnectionCommunicationBTAndroidClient;
 import dagger.android.support.DaggerAppCompatActivity;
 
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
 
+    /*@Inject
+    public BluetoothService bluetoothService;*/
+
     @Inject
-    public BluetoothService bluetoothService;
+    public ConnectionCommunicationBTAndroidClient comBT;
 
     @Inject
     public TaskRepository taskRepository;
