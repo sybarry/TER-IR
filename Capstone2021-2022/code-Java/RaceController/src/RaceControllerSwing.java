@@ -86,6 +86,7 @@ public class RaceControllerSwing {
 		}
 		
 		System.out.println("### END ###");
+		playerTimes=sortByValue(playerTimes);
 		
 		System.out.println();
 		System.out.println("Classement :");
