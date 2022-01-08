@@ -50,6 +50,8 @@ public class RaceController {
 		HashMap<Integer,Long> playerTimes = new HashMap<Integer,Long>(); // Hashmap des scores d'arrivée de chaque Véhicule
 		boolean isFinished=false;
 		long startTimer = 0;
+		int currentNbPlayer =0;
+		
 		
 		
 		System.out.println("=> Lancement de la course avec " + nbPlayer + " véhicules");
@@ -62,6 +64,23 @@ public class RaceController {
 			System.out.println("	-> En ecoute sur le canal de la voiture "+ i);
 		}
 		
+		System.out.println("En attente de tous les participants");
+		while(currentNbPlayer!=nbPlayer) {
+			for(int i=1; i<nbPlayer+1; i++) { 
+				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
+			
+				if(str != null) {
+					String[] s1 = ((String) str.getMessage()).split(":");
+				
+					if(s1[1].compareTo(Command.messageInCommand(Command.READY)) == 0) {
+						currentNbPlayer++;
+						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
+						str = null; 
+					}
+				}
+			}
+		}
+		System.out.println("Tous les participants sont prêts");
 		System.out.println();
 		System.out.println("Ecrire GO pour commencer la course");
 		m = sc.next();
