@@ -82,7 +82,6 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 
 	@Override
 	public void openConnection() throws IOException {
-		
 		try {
 			MemoryPersistence persistence = new MemoryPersistence();
 			client = new MqttClient("tcp://"+ipServer+":"+port, MqttClient.generateClientId(), persistence);
@@ -138,7 +137,7 @@ public class ConnectionCommunicationMqttClient extends AConnectionCommunication{
 		
 		try {
 			client.publish(msg.getInfoMessage().getTopic(), message);
-			System.out.println("Le message a ete envoye");
+			System.out.println("Le message a ete envoye "+msg.getMessage());
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

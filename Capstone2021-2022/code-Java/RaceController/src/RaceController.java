@@ -27,7 +27,8 @@ public class RaceController {
 	
 	private static ConnectionCommunicationMqttClient mqttClient;
 	private static IMessage<?> str = null;
-	private static int nbPlayer = 4;
+	private static IMessage<?> bonusMalus = null;
+	private static int nbPlayer = 3;
 	private static String topicAll = "All";
 	
 	private static ArrayList<String> listBonus = new ArrayList<String>();
@@ -65,9 +66,9 @@ public class RaceController {
 		}
 		
 		System.out.println("En attente de tous les participants");
-		while(currentNbPlayer!=nbPlayer) {
+		while(currentNbPlayer<nbPlayer) {
 			for(int i=1; i<nbPlayer+1; i++) { 
-				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
+				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.READY));
 			
 				if(str != null) {
 					String[] s1 = ((String) str.getMessage()).split(":");
@@ -121,41 +122,54 @@ public class RaceController {
 					}
 				}
 				
-				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.WANTBONUS));
-				if(str != null) {
-					String[] s1 = ((String) str.getMessage()).split(":");
-					
-					if(s1[1].compareTo(Command.messageInCommand(Command.WANTBONUS)) == 0) {
-						
-						bonus = listBonus.get(random.nextInt(listBonus.size()));
-						int sendMalus = 0;
-						
-						switch(bonus) {
-							case "RedShell":
-								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
-								
-								sendMalus = random.nextInt(nbPlayer)+1;
-								while(sendMalus == i) {
-									sendMalus = random.nextInt(nbPlayer)+1;
+				new Thread() {
+		            public void run() {
+		            	for(;;) {
+		            		for(int i=1; i<nbPlayer+1; i++) {
+			            		try {
+									bonusMalus = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.WANTBONUS));
+									if(str != null) {
+				    					String[] s1 = ((String) str.getMessage()).split(":");
+				    					
+				    					if(s1[1].compareTo(Command.messageInCommand(Command.WANTBONUS)) == 0) {
+				    						
+				    						bonus = listBonus.get(random.nextInt(listBonus.size()));
+				    						int sendMalus = 0;
+				    						
+				    						switch(bonus) {
+				    							case "RedShell":
+				    								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
+				    								
+				    								sendMalus = random.nextInt(nbPlayer)+1;
+				    								while(sendMalus == i) {
+				    									sendMalus = random.nextInt(nbPlayer)+1;
+				    								}
+				    								
+				    								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendMalus));							
+				    								break;
+				    							case "GreenShell":
+				    								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
+				    								
+				    								sendMalus = random.nextInt(nbPlayer)+1;
+				    								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendMalus));
+				    								break;
+				    							default:
+				    								break;
+				    								
+				    						}
+				    						
+				    						mqttClient.removeTreatedMessage((String) bonusMalus.toString(), "Car"+i);
+				    						bonusMalus = null; 
+				    					}
+									}
+			            		} catch (IOException | MessageException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-								
-								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendMalus));							
-								break;
-							case "GreenShell":
-								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
-								
-								sendMalus = random.nextInt(nbPlayer)+1;
-								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendMalus));
-								break;
-							default:
-								break;
-								
-						}
-						
-						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
-						str = null; 
-					}
-				}
+		            		}
+		    				}
+		            	}  
+		        }.start();
 			}			
 		}
 		

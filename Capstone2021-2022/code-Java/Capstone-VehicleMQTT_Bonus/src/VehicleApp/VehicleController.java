@@ -36,7 +36,7 @@ public class VehicleController extends Thread {
 	private static EV3ColorSensor colorSensor;
 
 	private static int speed = 10;
-	private static String topicWithServer = "Car1";
+	private static String topicWithServer = "Car3"; // a changer pour chaque vehicule 1..N
 	private static String topicAll = "All";
 	
 	
@@ -69,7 +69,8 @@ public class VehicleController extends Thread {
         }.start();
 		
 		// MQTT connection on the server "192.168.1.9", with the port "1883"
-        mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
+        //mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
+        mqttClient = new ConnectionCommunicationMqttClient("192.168.43.164", 1883);
         mqttClient.openConnection();
         mqttClient.subscribe(topicAll);
         mqttClient.subscribe(topicWithServer);
@@ -83,6 +84,7 @@ public class VehicleController extends Thread {
 		MotorRight = new Motor(MotorPort.A);
 		MotorLeft = new Motor(MotorPort.B);
 		colorSensor = new EV3ColorSensor(SensorPort.S3);
+		
 
 		RegulatedMotor listMotors[] = { MotorRight.getOneMotor() };
 		MotorLeft.getOneMotor().synchronizeWith(listMotors);
@@ -90,6 +92,8 @@ public class VehicleController extends Thread {
 		// Stops the different Motors due to security issues
 		MotorRight.stop();
 		MotorLeft.stop();
+		
+		mqttClient.sendMessage(new MessageString(Command.READY, topicWithServer));
 
 
 		// Loop running as long as the application is running
@@ -98,13 +102,13 @@ public class VehicleController extends Thread {
 			//***************THREAD capteur de couleur **************//
 			new Thread() {
 	            public void run() {
-	            	while(finish == false) {
+	            	while(!finish) {
 	                	try {
-	        				//******************FINISH A paralleliser **********//
+	        				//******************FINISH A paralleliser **********/
 	        				if(colorSensor.getColorID() == Color.RED && finish == false) {	
-	        					mqttClient.sendMessage(new MessageString(Command.FINISH, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
 	        					finish = true; // pour eviter de renvoyer le message qui permet d'arreter le chrono si on a finit la course 
-	        				}
+	        					mqttClient.sendMessage(new MessageString(Command.FINISH, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
+	        					}
 	        				
 	        				//****************BONUS a paralleliser*************//
 	        				if(colorSensor.getColorID() == Color.YELLOW && bonusActivated == false) {	
@@ -116,18 +120,18 @@ public class VehicleController extends Thread {
 	        						bonus = mqttClient.receiveMessage(topicWithServer,"Bonus") ;
 	        					}
 	        					
-	        					String[] s1 = ((String) bonus.getMessage()).split(":"); 
+	        					String[] s1 = ((String) bonus.getMessage()).split(":"); //pour recuperer le corp du message 
 	        					//BTServer.sendMessage(new MessageString("Vous avez obtenu le bonus "+s1[1]));
 	        					
 	        					switch(s1[1]) {
 	        						case "RedShell":
 	        							System.out.println("BONUS redShell");
-	        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicAll);
+	        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicWithServer);
 	        							bonus = null; 
 	        							break;
 	        						case "GreenShell":
 	        							System.out.println("BONUS greenShell");
-	        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicAll);
+	        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicWithServer);
 	        							bonus = null; 
 	        							break;
 	        						default:
@@ -153,7 +157,8 @@ public class VehicleController extends Thread {
 	                	try {
 	                		malus = mqttClient.receiveMessage(topicWithServer,"Malus") ;
         					while( malus == null) {
-        						malus = mqttClient.receiveMessage(topicWithServer,"Malus") ;
+        						malus = mqttClient.receiveMessage(topicWithServer,"Malus");
+        						Delay.msDelay(1000);
         					}
 	        				String[] s1 = ((String) malus.getMessage()).split(":"); 
 	        				//BTServer.sendMessage(new MessageString("Vous avez recu le malus "+s1[1]));
@@ -165,7 +170,7 @@ public class VehicleController extends Thread {
 	        						go=false;
 	        						Delay.msDelay(1000);
 	        						go=true;
-	        						mqttClient.removeTreatedMessage((String) malus.toString(), topicAll);
+	        						mqttClient.removeTreatedMessage((String) malus.toString(), topicWithServer);
 	        						malus = null; 
 	        						break;
 	        					case "GreenShell":
@@ -173,7 +178,7 @@ public class VehicleController extends Thread {
 	        						go=false;
 	        						Delay.msDelay(1000);
 	        						go=true;
-	        						mqttClient.removeTreatedMessage((String) malus.toString(), topicAll);
+	        						mqttClient.removeTreatedMessage((String) malus.toString(), topicWithServer);
         							malus = null; 
 	        						break;
 	        					default : 
@@ -218,6 +223,7 @@ public class VehicleController extends Thread {
 			//*************** Gestion des commandes **************//
 			while(go) {
 				//Goes into a state depending on the signal received
+				
 				switch (transmission.getMessage()) {
 				case 1:
 					forward();

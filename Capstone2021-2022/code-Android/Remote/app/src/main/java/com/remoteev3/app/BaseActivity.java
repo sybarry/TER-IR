@@ -16,11 +16,11 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
 
-    /*@Inject
-    public BluetoothService bluetoothService;*/
-
     @Inject
-    public ConnectionCommunicationBTAndroidClient comBT;
+    public BluetoothService bluetoothService;
+
+    /*@Inject
+    public ConnectionCommunicationBTAndroidClient comBT;*/
 
     @Inject
     public TaskRepository taskRepository;
