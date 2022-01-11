@@ -1,6 +1,7 @@
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -23,47 +25,82 @@ import Message.MessageString;
  */
 public class RaceControllerSwing {
 	
-	private static ConnectionCommunicationMqttClient mqttClient;
-	private static IMessage<?> str = null;
-	private static int nbPlayer = 4;
-	private static String topicAll = "All";
-	private static HashMap<Integer,Long> playerTimes = new HashMap<Integer,Long>(); // Hashmap des scores d'arrivée de chaque Véhicule
+	public static ConnectionCommunicationMqttClient mqttClient;
+	public static IMessage<?> str = null;
+	public static int nbPlayerMax = 4;
+	public static String topicAll = "All";
+	public static HashMap<Integer,Long> playerTimes = new HashMap<Integer,Long>(); // Hashmap des scores d'arrivée de chaque Véhicule
 	
+	public static ArrayList<String> listBonus = new ArrayList<String>();
+	public static Random random = new Random();
+	public static String bonus = "";
+	public static boolean isReady = false;
+	public static int currentNbPlayer = 3;
+	
+	public static Fenetre fenetre = new Fenetre();
 
 	public static void main(String[] args) throws MqttException, IOException, MessageException {
 		
-		//TODO Instancier une JFrame
-		Fenetre fenetre = new Fenetre();
+		// Ajout de la liste des bonus
+		listBonus.add("RedShell");
+		listBonus.add("GreenShell");
+		
 		//TODO Afficher la JFrame
 		fenetre.setVisible(true);
 
 		//mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
         mqttClient = new ConnectionCommunicationMqttClient("localhost", 1883);
         mqttClient.openConnection();
+        
+		fenetre.write("=> Lancement de la course avec " + nbPlayerMax + " véhicules");
+		fenetre.write("");
+		fenetre.write("Mise en écoute du controller sur les canaux véhicules :");
 		
-		System.out.println("=> Lancement de la course avec " + nbPlayer + " véhicules");
-		
-		System.out.println();
-		System.out.println("Mise en écoute du controller sur les canaux véhicules :");
-		for(int i=1; i<nbPlayer+1; i++) { // Mise en écoute sur les canaux de chaque véhicule
+		for(int i=1; i<nbPlayerMax+1; i++) { // Mise en écoute sur les canaux de chaque véhicule
 			playerTimes.put(i,(long) 0);
 			mqttClient.subscribe("Car"+i);
-			System.out.println("	-> En ecoute sur le canal de la voiture "+ i);
-		}	
-		
+			fenetre.write("	-> En ecoute sur le canal de la voiture n°"+ i);
+		}
+		fenetre.write("");
+		fenetre.write("En attente de tous les participants...");
+		while(currentNbPlayer<nbPlayerMax) {
+			for(int i=1; i<nbPlayerMax+1; i++) { 
+				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.READY));
+			
+				if(str != null) {
+					String[] s1 = ((String) str.getMessage()).split(":");
+				
+					if(s1[1].compareTo(Command.messageInCommand(Command.READY)) == 0) {
+						currentNbPlayer++;
+						fenetre.write("Connexion de la voiture n°"+i);
+						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
+						str = null; 
+					}
+				}
+			}
+		}
+		isReady=true;
 	}  
 	
+	public static void Test() throws IOException, MessageException {
+		if(isReady) {
+			startRace();
+		}else {
+			fenetre.DisplayWait();
+		}
+	}
+	
 	public static void startRace() throws IOException, MessageException {
+		
 		boolean isFinished=false;
 		
 		mqttClient.sendMessage(new MessageString(Command.START, topicAll));
 		long startTimer = System.currentTimeMillis();
-		System.out.println();
-		System.out.println("### START ###");
+		fenetre.write("### START ###");
 		
 		while(!isFinished) { // a tester
 
-			for(int i=1; i<nbPlayer+1; i++) { 
+			for(int i=1; i<nbPlayerMax+1; i++) { 
 				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
 				
 				if(str != null) {
@@ -85,14 +122,12 @@ public class RaceControllerSwing {
 			}
 		}
 		
-		System.out.println("### END ###");
+		fenetre.write("### END ###");
 		playerTimes=sortByValue(playerTimes);
-		
-		System.out.println();
-		System.out.println("Classement :");
+		fenetre.write("Classement :");
 		int k = 1;
 		for(Integer i : playerTimes.keySet()) {
-			System.out.println("	"+k+" - Joueur "+ i +" : " + playerTimes.get(i));
+			fenetre.write("	"+k+" - Joueur "+ i +" : " + playerTimes.get(i));
 			k++;
 		}
 	}
