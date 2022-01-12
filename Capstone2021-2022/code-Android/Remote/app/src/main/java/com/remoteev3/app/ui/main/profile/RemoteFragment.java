@@ -120,14 +120,16 @@ public class RemoteFragment extends DaggerFragment {
             public void run() {
                 while(true){
                     final String message = viewModel.insertTask("Réception du message");
-                    List<String> startMessage = Arrays.asList("start","go","3","2","1");
-                    if(startMessage.contains(message)) {
-                        text.setTextSize(TypedValue.COMPLEX_UNIT_SP,80);
-                    }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            List<String> startMessage = Arrays.asList("start","go","3","2","1");
+                            if(startMessage.contains(message)) {
+                                text.setTextSize(TypedValue.COMPLEX_UNIT_SP,80);
+                            } else {
+                                text.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+                            }
                             text.setText(message);
                         }
                     });
