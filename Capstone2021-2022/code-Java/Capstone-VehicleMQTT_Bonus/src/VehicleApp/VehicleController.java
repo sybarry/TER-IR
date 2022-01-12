@@ -23,8 +23,12 @@ import lejos.utility.Delay;
 public class VehicleController extends Thread {
 
 	private static boolean appliReady;
-	private static ConnectionCommunicationBTServer BTServer;
-	private static MessageInt transmission;
+	
+	// private static ConnectionCommunicationBTServer BTServer;  La communication entre le véhicule et la télécommande ne fonctionne pas avec la surcouche, donc nous utilisons la communication sans surcouche
+	private static BTListener BTServer;
+	
+	// private static MessageInt transmission;
+	private static int transmission = 0;
 	
 	private static ConnectionCommunicationMqttClient mqttClient;
 	private static IMessage<?> str = null;
@@ -50,9 +54,13 @@ public class VehicleController extends Thread {
 			InterruptedException, MessageException, MqttException {
 
 		// Bluetooth connection setup
-		BTServer = new ConnectionCommunicationBTServer(30, NXTConnection.RAW);
-		BTServer.openConnection();
-		transmission = new MessageInt(0);
+		
+		// BTServer = new ConnectionCommunicationBTServer(30, NXTConnection.RAW);
+		// BTServer.openConnection();
+		// transmission = new MessageInt(0);
+		BTServer = new BTListener();
+		BTServer.start();
+		System.out.println("Connection BT success");
 
 		
 		new Thread() { // renvoie une erreur car la telecommande n'utilise pas la surcouche donc envoie pas de message correct
@@ -204,7 +212,7 @@ public class VehicleController extends Thread {
 					str = null; 
 					
 					go = true;
-					//BTServer.sendMessage(new MessageString(s1[1]));
+					BTServer.sendMessage(s1[1]);
 				}
 			}
 			
@@ -222,9 +230,11 @@ public class VehicleController extends Thread {
 			
 			//*************** Gestion des commandes **************//
 			while(go) {
+				transmission = BTServer.byteRecu;
+				
 				//Goes into a state depending on the signal received
 				
-				switch (transmission.getMessage()) {
+				switch (transmission) {
 				case 1:
 					forward();
 					break;

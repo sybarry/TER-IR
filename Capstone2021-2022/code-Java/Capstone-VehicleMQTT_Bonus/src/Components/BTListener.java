@@ -58,4 +58,14 @@ public class BTListener extends Thread {
 			dataIn = BTLink.openDataInputStream();
 			BTconnect = true;
 		}
+		
+		public void sendMessage(String toSend) {
+			try {
+				dataOut.writeUTF(toSend);
+				dataOut.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+}
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import dagger.android.support.DaggerFragment;
@@ -115,7 +120,10 @@ public class RemoteFragment extends DaggerFragment {
             public void run() {
                 while(true){
                     final String message = viewModel.insertTask("Réception du message");
-                    System.out.println("Coucou");
+                    List<String> startMessage = Arrays.asList("start","go","3","2","1");
+                    if(startMessage.contains(message)) {
+                        text.setTextSize(TypedValue.COMPLEX_UNIT_SP,80);
+                    }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
