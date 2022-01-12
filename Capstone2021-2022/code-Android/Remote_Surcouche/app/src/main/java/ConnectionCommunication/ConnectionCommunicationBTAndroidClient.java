@@ -5,13 +5,17 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.remoteev3.app.Divers.InfoConnection;
-
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+import Divers.InfoConnection;
+
+@Singleton
 public class ConnectionCommunicationBTAndroidClient extends AConnectionCommunication {
 
 	private static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
@@ -22,8 +26,8 @@ public class ConnectionCommunicationBTAndroidClient extends AConnectionCommunica
     	private String macAdd;
 
     	@Inject
-    	public ConnectionCommunicationBTAndroidClient(String macAdd) {
-		this.macAdd = macAdd;
+    	public ConnectionCommunicationBTAndroidClient() {
+		this.macAdd = "";
 		this.dOut = null;
 		this.dIn = null;
 		this.socket_ev3 = null;
@@ -41,12 +45,16 @@ public class ConnectionCommunicationBTAndroidClient extends AConnectionCommunica
     	}
 
     	@Override
-    	public void openConnection() throws IOException {
+    	public void openConnection() {
     	    this.ev3 = localAdapter.getRemoteDevice(macAdd);
     	    try {
     	        socket_ev3 = ev3.createRfcommSocketToServiceRecord(UUID.fromString(SPP_UUID));
     	        socket_ev3.connect();
     	        Log.d("BLUETOOTH: ", "" + socket_ev3.isConnected());
+
+    	        this.dOut = new DataOutputStream(socket_ev3.getOutputStream());
+
+    	        this.dIn = new DataInputStream(socket_ev3.getInputStream());
 	
 	            String nameSender = "......";
 	            String nameReceiver = "......";
@@ -57,11 +65,13 @@ public class ConnectionCommunicationBTAndroidClient extends AConnectionCommunica
 	}
 
   	@Override
-  	public void closeConnection() throws IOException {
+  	public void closeConnection() {
   		try {
        		    socket_ev3.close();
         	} catch (IOException e) {
         	    e.printStackTrace();
         	}
-   	}	
+   	}
+
+
 }

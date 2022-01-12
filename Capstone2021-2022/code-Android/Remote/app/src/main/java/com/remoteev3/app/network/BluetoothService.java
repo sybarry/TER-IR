@@ -8,8 +8,13 @@ import android.util.Log;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Singleton
@@ -50,7 +55,7 @@ public class BluetoothService {
         connSock = socket_ev3;
         if (connSock != null) {
             try {
-                OutputStreamWriter out = new OutputStreamWriter(connSock.getOutputStream());
+                DataOutputStream out = new DataOutputStream(connSock.getOutputStream());
                 out.write(msg);
                 out.flush();
                 Thread.sleep(500);
@@ -62,6 +67,20 @@ public class BluetoothService {
         }
     }
 
+    public String receiveMessage(){
+        BluetoothSocket connSock;
+        connSock = socket_ev3;
+        if(connSock != null) {
+            try {
+                DataInputStream in = new DataInputStream(connSock.getInputStream());
+                return in.readUTF();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public void disconnect() {
         try {
             socket_ev3.close();
@@ -69,6 +88,7 @@ public class BluetoothService {
             e.printStackTrace();
         }
     }
+
 }
 
 

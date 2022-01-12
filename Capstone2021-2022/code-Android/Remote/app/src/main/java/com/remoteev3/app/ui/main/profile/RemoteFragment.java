@@ -21,7 +21,10 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.Objects;
 
 import dagger.android.support.DaggerFragment;
 
@@ -36,7 +39,7 @@ public class RemoteFragment extends DaggerFragment {
     private ImageButton avancer;
     private ImageButton reculer;
     private Button frein;
-
+    private TextView text;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -52,68 +55,77 @@ public class RemoteFragment extends DaggerFragment {
         Log.d(TAG, "onViewCreated: ProfileFragment. " + this);
         viewModel = ViewModelProviders.of(this, providerFactory).get(RemoteViewModel.class);
         initButtons(view);
+        initText(view);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initButtons(View view) {
         this.avancer = (ImageButton) view.findViewById(R.id.avancer);
-        avancer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.insertTask(1,"Avancer");
-            }
-        });
-
         this.reculer = (ImageButton) view.findViewById(R.id.reculer);
-        reculer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.insertTask(2,"Reculer");
-            }
-        });
-
         this.tournerDroite = (ImageButton) view.findViewById(R.id.tourneDroite);
-        tournerDroite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.insertTask(3,"Tourne à droite");
-            }
-        });
-
         this.tournerGauche = (ImageButton) view.findViewById(R.id.tourneGauche);
-        tournerGauche.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.insertTask(4,"Tourne à gauche");
-            }
-        });
-
         this.frein = (Button) view.findViewById(R.id.frein);
-        frein.setOnClickListener(new View.OnClickListener() {
+
+        new Thread(){
             @Override
-            public void onClick(View v) {
-                viewModel.insertTask(5,"Freinner");
+            public void run() {
+                avancer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewModel.insertTask(1,"Avancer");
+                    }
+                });
+
+                reculer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewModel.insertTask(2,"Reculer");
+                    }
+                });
+
+                tournerGauche.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewModel.insertTask(4,"Tourne à gauche");
+                    }
+                });
+
+                tournerDroite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewModel.insertTask(3,"Tourne à droite");
+                    }
+                });
+
+                frein.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewModel.insertTask(5,"Freiner");
+                    }
+                });
             }
-        });
+        }.start();
     }
+    @SuppressLint("ClickableViewAccessibility")
+    private void initText(View view) {
+        this.text = (TextView) view.findViewById(R.id.textView);
+
+        new Thread(){
+            @Override
+            public void run() {
+                while(true){
+                    final String message = viewModel.insertTask("Réception du message");
+                    System.out.println("Coucou");
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            text.setText(message);
+                        }
+                    });
+                }
+            }
+        }.start();
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
