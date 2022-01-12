@@ -36,7 +36,7 @@ public class VehicleController extends Thread {
 	private static EV3ColorSensor colorSensor;
 
 	private static int speed = 10;
-	private static String topicWithServer = "Car3"; // a changer pour chaque vehicule 1..N
+	private static String topicWithServer = "Car1"; // a changer pour chaque vehicule 1..N
 	private static String topicAll = "All";
 	
 	
@@ -111,7 +111,7 @@ public class VehicleController extends Thread {
 	        					}
 	        				
 	        				//****************BONUS a paralleliser*************//
-	        				if(colorSensor.getColorID() == Color.YELLOW && bonusActivated == false) {	
+	        				/*if(colorSensor.getColorID() == Color.YELLOW && bonusActivated == false) {	
 	        					bonusActivated=true;
 	        					mqttClient.sendMessage(new MessageString(Command.WANTBONUS, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
 	        					
@@ -139,7 +139,7 @@ public class VehicleController extends Thread {
 	        							
 	        					}
 	        					bonusActivated=false;
-	        				}
+	        				}*/
 	    					
 	    				} catch (IOException | MessageException e) {
 	    					// TODO Auto-generated catch block
@@ -151,7 +151,7 @@ public class VehicleController extends Thread {
 	        
 	        
 	        //***************THREAD malus **************//
-			new Thread() {
+			/*new Thread() {
 	            public void run() {
 	            	while(finish == false) {
 	                	try {
@@ -192,7 +192,7 @@ public class VehicleController extends Thread {
 	    				}	
 	            	}
 	            }   
-	        }.start();
+	        }.start();*/
 	        
 	        //***************Go de départ **************//
 			str = mqttClient.receiveMessage(topicAll, Command.keyWordInCommand(Command.START));
@@ -255,8 +255,8 @@ public class VehicleController extends Thread {
 		MotorLeft.getOneMotor().startSynchronization();
 		MotorRight.speedUp(speed);
 		MotorLeft.speedUp(speed);
-		MotorRight.run(true);
-		MotorLeft.run(true);
+		MotorRight.run(false); // false for revers motors
+		MotorLeft.run(false); // false for revers motors
 		MotorLeft.getOneMotor().endSynchronization();
 		// TimeUnit.SECONDS.sleep(1);
 	}
@@ -271,8 +271,8 @@ public class VehicleController extends Thread {
 	public static void backWard() throws InterruptedException {
 		System.out.println("BACKWARD");
 		MotorLeft.getOneMotor().startSynchronization();
-		MotorRight.run(false);
-		MotorLeft.run(false);
+		MotorRight.run(true); // true for revers motors
+		MotorLeft.run(true); // true for revers motors
 		MotorLeft.getOneMotor().endSynchronization();
 		// TimeUnit.SECONDS.sleep(1);
 	}

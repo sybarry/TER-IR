@@ -122,7 +122,7 @@ public class RaceController {
 					}
 				}
 				
-				new Thread() {
+				/*new Thread() {
 		            public void run() {
 		            	for(;;) {
 		            		for(int i=1; i<nbPlayer+1; i++) {
@@ -169,7 +169,7 @@ public class RaceController {
 		            		}
 		    				}
 		            	}  
-		        }.start();
+		        }.start();*/
 			}			
 		}
 		
