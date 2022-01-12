@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -90,8 +91,14 @@ public class RaceControllerSwing {
 		fenetre.enableRaceLaunch();
 	}  
 	
-	public static void startRace() throws IOException, MessageException {
+	public static void startRace() throws IOException, MessageException, InterruptedException {
 		boolean isFinished=false;
+		
+		for(int i=3; i>=1; i--) {
+			mqttClient.sendMessage(new MessageString("COUNTDOWN:"+i, topicAll));
+			fenetre.write(String.valueOf(i));
+			TimeUnit.SECONDS.sleep(1);
+		}
 		
 		mqttClient.sendMessage(new MessageString(Command.START, topicAll));
 		long startTimer = System.currentTimeMillis();

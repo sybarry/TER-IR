@@ -189,7 +189,18 @@ public class VehicleController extends Thread {
 		// Loop running as long as the application is running
 		while (appliReady) {
 			
-	        
+			str = mqttClient.receiveMessage(topicAll, "COUNTDOWN");
+			if(str != null) {
+				String[] s1 = ((String) str.getMessage()).split(":"); 
+				
+				System.out.println(s1[1]);
+				
+				BTServer.sendMessage(s1[1]);
+				
+				mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
+				str = null; 
+			}
+			
 	        //***************Go de départ **************//
 			str = mqttClient.receiveMessage(topicAll, Command.keyWordInCommand(Command.START));
 			if(str != null) {
@@ -198,23 +209,12 @@ public class VehicleController extends Thread {
 				if(s1[1].compareTo(Command.messageInCommand(Command.START)) == 0) {
 					mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
 					str = null; 
-					
 					go = true;
+					
+					System.out.println(s1[1]);
 					BTServer.sendMessage(s1[1]);
 				}
 			}
-			
-			/*str = mqttClient.receiveMessage(topicAll, "COUNTDOWN");
-			if(str != null) {
-				String[] s1 = ((String) str.getMessage()).split(":"); 
-				
-				System.out.println(s1[1]);
-				
-				BTServer.sendMessage(new MessageString(s1[1]));
-				
-				mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
-				str = null; 
-			}*/
 			
 			//*************** Gestion des commandes **************//
 			while(go) {
