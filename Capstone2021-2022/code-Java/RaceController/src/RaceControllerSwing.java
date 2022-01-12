@@ -27,6 +27,7 @@ public class RaceControllerSwing {
 	
 	public static ConnectionCommunicationMqttClient mqttClient;
 	public static IMessage<?> str = null;
+	public static IMessage<?> str2 = null;
 	public static int nbPlayerMax = 4;
 	public static String topicAll = "All";
 	public static HashMap<Integer,Long> playerTimes = new HashMap<Integer,Long>(); // Hashmap des scores d'arrivée de chaque Véhicule
@@ -103,6 +104,7 @@ public class RaceControllerSwing {
 			for(int i=1; i<(nbPlayerMax+1); i++) {
 				
 				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
+				str2 = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.WANTBONUS));
 				System.out.println("Car"+i);
 				if(str != null) {
 					String[] s1 = ((String) str.getMessage()).split(":");
@@ -119,6 +121,45 @@ public class RaceControllerSwing {
 								isFinished = false;
 							}
 						}
+					}
+				}
+				if(str2 != null) {
+					String[] s2 = ((String) str.getMessage()).split(":");
+					if(s2[1].compareTo(Command.messageInCommand(Command.WANTBONUS))==0) {
+						
+						bonus = listBonus.get(random.nextInt(listBonus.size()));
+						int sendPenalty = 0;
+						
+						switch(bonus) {
+							case "RedShell":
+								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
+								
+								sendPenalty = random.nextInt(nbPlayerMax)+1;
+								while(sendPenalty == i) {
+									sendPenalty = random.nextInt(nbPlayerMax)+1;
+								}
+								
+								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendPenalty));
+								fenetre.write("La voiture n°"+i+" a envoyé une carapace à la voiture n°"+sendPenalty+" !");
+								break;
+							case "GreenShell":
+								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
+								
+								sendPenalty = random.nextInt(nbPlayerMax)+1;
+								if(i==sendPenalty) {
+									fenetre.write("Oups, la voiture n°"+i+" s'est prit sa propre carapace !");
+								}else {
+									fenetre.write("La voiture n°"+i+" a envoyé une carapace à la voiture n°"+sendPenalty+" !");
+								}
+								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendPenalty));
+								break;
+							default:
+								break;
+								
+						}
+						
+						mqttClient.removeTreatedMessage((String) str2.toString(), "Car"+i);
+						str2 = null;
 					}
 				}
 			}

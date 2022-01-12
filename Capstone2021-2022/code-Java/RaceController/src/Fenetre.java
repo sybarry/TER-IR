@@ -43,23 +43,34 @@ public class Fenetre extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 				if(source==boutonConnection) {
-					int value=0;
-					switch((String)nbPlayers.getSelectedItem()) {
-					case "2 Joueurs":
-						value=2;
-						break;
-					case "3 Joueurs":
-						value=3;
-						break;
-					case "4 Joueurs":
-						value=4;
-						break;
+					if(nbPlayers.getSelectedItem().equals("Choisir")) {
+						JOptionPane.showMessageDialog(conteneur, "Veuillez choisir un nombre de joueurs");
+					}else {
+						int value=0;
+						switch((String)nbPlayers.getSelectedItem()) {
+						case "Choisir":
+							value=0;
+							break;
+						case "1 Joueur":
+							value=1;
+							break;
+						case "2 Joueurs":
+							value=2;
+							break;
+						case "3 Joueurs":
+							value=3;
+							break;
+						case "4 Joueurs":
+							value=4;
+							break;
+						default:
+							break;
+						}
+						RaceControllerSwing.nbPlayerMax= value;
+						nbPlayers.setEnabled(false);
+						boutonConnection.setEnabled(false);
+						RaceControllerSwing.isLaunched=true;
 					}
-					System.out.println(value);
-					RaceControllerSwing.nbPlayerMax= value;
-					nbPlayers.setEnabled(false);
-					boutonConnection.setEnabled(false);
-					RaceControllerSwing.isLaunched=true;
 				}else if(source==boutonCourse) {
 					boutonCourse.setEnabled(false);
 					new Thread(){
@@ -78,11 +89,13 @@ public class Fenetre extends JFrame {
 		
 		//Initialisation de boutonConnection
 		boutonConnection = new JButton("Lancer la connection");
+		boutonConnection.setToolTipText("Lance la connection MQTT et bloque le nombre de joueurs choisi pour la course");
 		boutonConnection.setBounds(10, 11, 155, 23);
 		boutonConnection.addActionListener(al);
 		conteneur.add(boutonConnection);
 		
 		boutonCourse = new JButton("Lancer la course");
+		boutonCourse.setToolTipText("Lance la course lorsque tous les joueurs sont connect\u00E9s");
 		boutonCourse.setEnabled(false);
 		boutonCourse.setBounds(206, 54, 150, 23);
 		boutonCourse.addActionListener(al);
@@ -96,19 +109,20 @@ public class Fenetre extends JFrame {
 		
 		//Initialisation de jta
 		jta=new JTextArea();
+		jta.setToolTipText("Console de texte des \u00E9v\u00E8nements de la course");
 		jta.setEditable(false);
 		jsp.setViewportView(jta);
 		
 		//Initialisation de nbPlayers
 		nbPlayers = new JComboBox();
-		nbPlayers.setModel(new DefaultComboBoxModel(new String[] {"2 Joueurs", "3 Joueurs", "4 Joueurs"}));
-		nbPlayers.setToolTipText("");
+		nbPlayers.setModel(new DefaultComboBoxModel(new String[] {"Choisir", "1 Joueur", "2 Joueurs", "3 Joueurs", "4 Joueurs"}));
 		nbPlayers.setBounds(476, 11, 98, 22);
 		//ajout de nbPlayers au conteneur
 		conteneur.add(nbPlayers);
 		
 		//Initialisation de ConnectedPlayers
 		connectedPlayers = new JTextField();
+		connectedPlayers.setToolTipText("Nombre de joueurs actuellement connect\u00E9 sur le nombre de joueurs total");
 		connectedPlayers.setEditable(false);
 		connectedPlayers.setBounds(307, 12, 23, 20);
 		conteneur.add(connectedPlayers);
