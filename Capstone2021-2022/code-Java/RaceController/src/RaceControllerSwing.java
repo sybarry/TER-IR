@@ -147,16 +147,16 @@ public class RaceControllerSwing {
 								}
 								
 								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendPenalty));
-								fenetre.write("La voiture n°"+i+" a envoyé une carapace à la voiture n°"+sendPenalty+" !");
+								fenetre.write("La voiture n°"+i+" a envoyé une carapace rouge à la voiture n°"+sendPenalty+" !");
 								break;
 							case "GreenShell":
 								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
 								
 								sendPenalty = random.nextInt(nbPlayerMax)+1;
 								if(i==sendPenalty) {
-									fenetre.write("Oups, la voiture n°"+i+" s'est prit sa propre carapace !");
+									fenetre.write("Oups, la voiture n°"+i+" s'est prit sa propre carapace verte !");
 								}else {
-									fenetre.write("La voiture n°"+i+" a envoyé une carapace à la voiture n°"+sendPenalty+" !");
+									fenetre.write("La voiture n°"+i+" a envoyé une carapace verte à la voiture n°"+sendPenalty+" !");
 								}
 								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendPenalty));
 								break;
