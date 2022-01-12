@@ -40,7 +40,7 @@ public class VehicleController extends Thread {
 	private static EV3ColorSensor colorSensor;
 
 	private static int speed = 10;
-	private static String topicWithServer = "Car1"; // a changer pour chaque vehicule 1..N
+	private static String topicWithServer = "Car2"; // a changer pour chaque vehicule 1..N
 	private static String topicAll = "All";
 	
 	
@@ -61,20 +61,6 @@ public class VehicleController extends Thread {
 		BTServer = new BTListener();
 		BTServer.start();
 		System.out.println("Connection BT success");
-
-		
-		new Thread() { // renvoie une erreur car la telecommande n'utilise pas la surcouche donc envoie pas de message correct
-            public void run() {
-            	for(;;) {
-                	try {
-    					transmission = (MessageInt) BTServer.receiveMessage();
-    				} catch (IOException | MessageException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}	
-            	}
-            }   
-        }.start();
 		
 		// MQTT connection on the server "192.168.1.9", with the port "1883"
         //mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
@@ -102,105 +88,107 @@ public class VehicleController extends Thread {
 		MotorLeft.stop();
 		
 		mqttClient.sendMessage(new MessageString(Command.READY, topicWithServer));
+		
+		//***************THREAD capteur de couleur **************//
+		
+		new Thread() {
+            public void run() {
+            	while(!finish) {
+                	try {
+        				//******************FINISH A paralleliser **********/
+        				if(colorSensor.getColorID() == Color.RED && finish == false) {	
+        					finish = true; // pour eviter de renvoyer le message qui permet d'arreter le chrono si on a finit la course 
+        					mqttClient.sendMessage(new MessageString(Command.FINISH, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
+        					}
+        				
+        				//****************BONUS a paralleliser*************//
+        				/*if(colorSensor.getColorID() == Color.YELLOW && bonusActivated == false) {	
+        					bonusActivated=true;
+        					mqttClient.sendMessage(new MessageString(Command.WANTBONUS, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
+        					
+        					bonus = mqttClient.receiveMessage(topicWithServer,"Bonus") ;
+        					while( bonus == null) {
+        						bonus = mqttClient.receiveMessage(topicWithServer,"Bonus") ;
+        					}
+        					
+        					String[] s1 = ((String) bonus.getMessage()).split(":"); //pour recuperer le corp du message 
+        					//BTServer.sendMessage(new MessageString("Vous avez obtenu le bonus "+s1[1]));
+        					
+        					switch(s1[1]) {
+        						case "RedShell":
+        							System.out.println("BONUS redShell");
+        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicWithServer);
+        							bonus = null; 
+        							break;
+        						case "GreenShell":
+        							System.out.println("BONUS greenShell");
+        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicWithServer);
+        							bonus = null; 
+        							break;
+        						default:
+        							break;
+        							
+        					}
+        					bonusActivated=false;
+        				}*/
+    					
+    				} catch (IOException | MessageException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}	
+            	}
+            }   
+        }.start();
+        
+        
+        //***************THREAD malus **************//
+		/*new Thread() {
+            public void run() {
+            	while(finish == false) {
+                	try {
+                		malus = mqttClient.receiveMessage(topicWithServer,"Malus") ;
+    					while( malus == null) {
+    						malus = mqttClient.receiveMessage(topicWithServer,"Malus");
+    						Delay.msDelay(1000);
+    					}
+        				String[] s1 = ((String) malus.getMessage()).split(":"); 
+        				//BTServer.sendMessage(new MessageString("Vous avez recu le malus "+s1[1]));
+        				
+        				switch(s1[1]) {
+        					
+        					case "RedShell":
+        						System.out.println("Malus redShell");
+        						go=false;
+        						Delay.msDelay(1000);
+        						go=true;
+        						mqttClient.removeTreatedMessage((String) malus.toString(), topicWithServer);
+        						malus = null; 
+        						break;
+        					case "GreenShell":
+        						System.out.println("Malus greenShell");
+        						go=false;
+        						Delay.msDelay(1000);
+        						go=true;
+        						mqttClient.removeTreatedMessage((String) malus.toString(), topicWithServer);
+    							malus = null; 
+        						break;
+        					default : 
+        						break;
+        				
+        						
+        				}
+    				} catch (IOException | MessageException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}	
+            	}
+            }   
+        }.start();*/
 
 
 		// Loop running as long as the application is running
 		while (appliReady) {
 			
-			//***************THREAD capteur de couleur **************//
-			new Thread() {
-	            public void run() {
-	            	while(!finish) {
-	                	try {
-	        				//******************FINISH A paralleliser **********/
-	        				if(colorSensor.getColorID() == Color.RED && finish == false) {	
-	        					finish = true; // pour eviter de renvoyer le message qui permet d'arreter le chrono si on a finit la course 
-	        					mqttClient.sendMessage(new MessageString(Command.FINISH, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
-	        					}
-	        				
-	        				//****************BONUS a paralleliser*************//
-	        				/*if(colorSensor.getColorID() == Color.YELLOW && bonusActivated == false) {	
-	        					bonusActivated=true;
-	        					mqttClient.sendMessage(new MessageString(Command.WANTBONUS, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
-	        					
-	        					bonus = mqttClient.receiveMessage(topicWithServer,"Bonus") ;
-	        					while( bonus == null) {
-	        						bonus = mqttClient.receiveMessage(topicWithServer,"Bonus") ;
-	        					}
-	        					
-	        					String[] s1 = ((String) bonus.getMessage()).split(":"); //pour recuperer le corp du message 
-	        					//BTServer.sendMessage(new MessageString("Vous avez obtenu le bonus "+s1[1]));
-	        					
-	        					switch(s1[1]) {
-	        						case "RedShell":
-	        							System.out.println("BONUS redShell");
-	        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicWithServer);
-	        							bonus = null; 
-	        							break;
-	        						case "GreenShell":
-	        							System.out.println("BONUS greenShell");
-	        							mqttClient.removeTreatedMessage((String) bonus.toString(), topicWithServer);
-	        							bonus = null; 
-	        							break;
-	        						default:
-	        							break;
-	        							
-	        					}
-	        					bonusActivated=false;
-	        				}*/
-	    					
-	    				} catch (IOException | MessageException e) {
-	    					// TODO Auto-generated catch block
-	    					e.printStackTrace();
-	    				}	
-	            	}
-	            }   
-	        }.start();
-	        
-	        
-	        //***************THREAD malus **************//
-			/*new Thread() {
-	            public void run() {
-	            	while(finish == false) {
-	                	try {
-	                		malus = mqttClient.receiveMessage(topicWithServer,"Malus") ;
-        					while( malus == null) {
-        						malus = mqttClient.receiveMessage(topicWithServer,"Malus");
-        						Delay.msDelay(1000);
-        					}
-	        				String[] s1 = ((String) malus.getMessage()).split(":"); 
-	        				//BTServer.sendMessage(new MessageString("Vous avez recu le malus "+s1[1]));
-	        				
-	        				switch(s1[1]) {
-	        					
-	        					case "RedShell":
-	        						System.out.println("Malus redShell");
-	        						go=false;
-	        						Delay.msDelay(1000);
-	        						go=true;
-	        						mqttClient.removeTreatedMessage((String) malus.toString(), topicWithServer);
-	        						malus = null; 
-	        						break;
-	        					case "GreenShell":
-	        						System.out.println("Malus greenShell");
-	        						go=false;
-	        						Delay.msDelay(1000);
-	        						go=true;
-	        						mqttClient.removeTreatedMessage((String) malus.toString(), topicWithServer);
-        							malus = null; 
-	        						break;
-	        					default : 
-	        						break;
-	        				
-	        						
-	        				}
-	    				} catch (IOException | MessageException e) {
-	    					// TODO Auto-generated catch block
-	    					e.printStackTrace();
-	    				}	
-	            	}
-	            }   
-	        }.start();*/
 	        
 	        //***************Go de départ **************//
 			str = mqttClient.receiveMessage(topicAll, Command.keyWordInCommand(Command.START));
@@ -265,8 +253,8 @@ public class VehicleController extends Thread {
 		MotorLeft.getOneMotor().startSynchronization();
 		MotorRight.speedUp(speed);
 		MotorLeft.speedUp(speed);
-		MotorRight.run(false); // false for revers motors
-		MotorLeft.run(false); // false for revers motors
+		MotorRight.run(true); // false for revers motors
+		MotorLeft.run(true); // false for revers motors
 		MotorLeft.getOneMotor().endSynchronization();
 		// TimeUnit.SECONDS.sleep(1);
 	}
@@ -281,8 +269,8 @@ public class VehicleController extends Thread {
 	public static void backWard() throws InterruptedException {
 		System.out.println("BACKWARD");
 		MotorLeft.getOneMotor().startSynchronization();
-		MotorRight.run(true); // true for revers motors
-		MotorLeft.run(true); // true for revers motors
+		MotorRight.run(false); // true for revers motors
+		MotorLeft.run(false); // true for revers motors
 		MotorLeft.getOneMotor().endSynchronization();
 		// TimeUnit.SECONDS.sleep(1);
 	}

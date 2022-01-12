@@ -96,15 +96,20 @@ public class RaceControllerSwing {
 		long startTimer = System.currentTimeMillis();
 		fenetre.write("### START ###");
 		int a=0;
+		
+		
+		
 		while(!isFinished) { // a tester
-			for(int i=1; i<nbPlayerMax+i; i++) {
-				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
+			for(int i=1; i<(nbPlayerMax+1); i++) {
 				
+				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
+				System.out.println("Car"+i);
 				if(str != null) {
 					String[] s1 = ((String) str.getMessage()).split(":");
 					
 					if(s1[1].compareTo(Command.messageInCommand(Command.FINISH)) == 0) {
 						playerTimes.replace(i, System.currentTimeMillis() - startTimer);
+						fenetre.write("Le véhicule n°"+i+" a franchi la ligne d'arrivée en "+((double) playerTimes.get(i))/1000+" secondes.");
 						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
 						str = null; 
 						
@@ -124,7 +129,7 @@ public class RaceControllerSwing {
 		fenetre.write("Classement :");
 		int k = 1;
 		for(Integer i : playerTimes.keySet()) {
-			fenetre.write("	"+k+" - Joueur "+ i +" : " + playerTimes.get(i));
+			fenetre.write("	"+k+" - Joueur "+ i +" : " + ((double) (playerTimes.get(i))/1000));
 			k++;
 		}
 	}
