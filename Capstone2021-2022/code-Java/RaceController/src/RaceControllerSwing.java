@@ -35,7 +35,8 @@ public class RaceControllerSwing {
 	public static Random random = new Random();
 	public static String bonus = "";
 	public static boolean isReady = false;
-	public static int currentNbPlayer = 3;
+	public static boolean isLaunched=false;
+	public static int currentNbPlayer = 0;
 	
 	public static Fenetre fenetre = new Fenetre();
 
@@ -48,11 +49,15 @@ public class RaceControllerSwing {
 		//TODO Afficher la JFrame
 		fenetre.setVisible(true);
 
+		while(!isLaunched) {
+			System.out.print("");
+		}
+		
 		//mqttClient = new ConnectionCommunicationMqttClient("192.168.1.9", 1883);
         mqttClient = new ConnectionCommunicationMqttClient("localhost", 1883);
         mqttClient.openConnection();
-        
-		fenetre.write("=> Lancement de la course avec " + nbPlayerMax + " véhicules");
+        fenetre.displayConnectedPlayers();
+        fenetre.write("=> Lancement de la course avec " + nbPlayerMax + " véhicules");
 		fenetre.write("");
 		fenetre.write("Mise en écoute du controller sur les canaux véhicules :");
 		
@@ -61,9 +66,10 @@ public class RaceControllerSwing {
 			mqttClient.subscribe("Car"+i);
 			fenetre.write("	-> En ecoute sur le canal de la voiture n°"+ i);
 		}
+		
 		fenetre.write("");
 		fenetre.write("En attente de tous les participants...");
-		while(currentNbPlayer<nbPlayerMax) {
+		while(currentNbPlayer!=nbPlayerMax) {
 			for(int i=1; i<nbPlayerMax+1; i++) { 
 				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.READY));
 			
@@ -72,6 +78,7 @@ public class RaceControllerSwing {
 				
 					if(s1[1].compareTo(Command.messageInCommand(Command.READY)) == 0) {
 						currentNbPlayer++;
+						fenetre.displayConnectedPlayers();
 						fenetre.write("Connexion de la voiture n°"+i);
 						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
 						str = null; 
@@ -79,28 +86,18 @@ public class RaceControllerSwing {
 				}
 			}
 		}
-		isReady=true;
+		fenetre.enableRaceLaunch();
 	}  
 	
-	public static void Test() throws IOException, MessageException {
-		if(isReady) {
-			startRace();
-		}else {
-			fenetre.DisplayWait();
-		}
-	}
-	
 	public static void startRace() throws IOException, MessageException {
-		
 		boolean isFinished=false;
 		
 		mqttClient.sendMessage(new MessageString(Command.START, topicAll));
 		long startTimer = System.currentTimeMillis();
 		fenetre.write("### START ###");
-		
+		int a=0;
 		while(!isFinished) { // a tester
-
-			for(int i=1; i<nbPlayerMax+1; i++) { 
+			for(int i=1; i<nbPlayerMax+i; i++) {
 				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
 				
 				if(str != null) {
