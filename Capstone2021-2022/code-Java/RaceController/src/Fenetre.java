@@ -77,7 +77,7 @@ public class Fenetre extends JFrame {
 						public void run() {
 							try {
 								RaceControllerSwing.startRace();
-							} catch (IOException | MessageException e) {
+							} catch (IOException | MessageException | InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
