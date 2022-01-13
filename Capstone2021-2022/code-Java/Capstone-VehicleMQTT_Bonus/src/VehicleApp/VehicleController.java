@@ -34,13 +34,14 @@ public class VehicleController extends Thread {
 	private static IMessage<?> str = null;
 	private static IMessage<?> bonus = null;
 	private static IMessage<?> malus = null;
+	private static IMessage<?> standings = null;
 
 	private static Motor MotorRight;
 	private static Motor MotorLeft;
 	private static EV3ColorSensor colorSensor;
 
 	private static int speed = 10;
-	private static String topicWithServer = "Car2"; // a changer pour chaque vehicule 1..N
+	private static String topicWithServer = "Car3"; // a changer pour chaque vehicule 1..N
 	private static String topicAll = "All";
 	
 	
@@ -90,27 +91,6 @@ public class VehicleController extends Thread {
 		mqttClient.sendMessage(new MessageString(Command.READY, topicWithServer));
 		
 		//***************THREAD capteur de couleur **************//
-		
-		new Thread() {
-            public void run() {
-            	for(;;) {
-            		try {
-						str = mqttClient.receiveMessage(topicAll, "STANDINGS");
-						if(str != null) {
-	        				String[] s1 = ((String) str.getMessage()).split(":");
-	        				
-	        				BTServer.sendMessage(s1[1]);
-	        				
-	        				mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
-	        				str = null; 
-	        			}
-					} catch (IOException | MessageException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            	}
-            }
-		}.start();
 		
 		new Thread() {
             public void run() {
@@ -263,6 +243,17 @@ public class VehicleController extends Thread {
 				default:
 					break;
 				}
+				
+				standings = mqttClient.receiveMessage(topicAll, "STANDINGS");
+				System.out.println(standings);
+				if(standings != null) {
+    				String[] s1 = ((String) standings.getMessage()).split(":");
+    				System.out.println(s1[1]);
+    				BTServer.sendMessage(s1[1]);
+    				
+    				mqttClient.removeTreatedMessage((String) standings.toString(), topicAll);
+    				standings = null; 
+    			}
 			}
 		}
 	}
@@ -275,8 +266,8 @@ public class VehicleController extends Thread {
 		MotorLeft.getOneMotor().startSynchronization();
 		MotorRight.speedUp(speed);
 		MotorLeft.speedUp(speed);
-		MotorRight.run(true); // false for revers motors
-		MotorLeft.run(true); // false for revers motors
+		MotorRight.run(false); // false for revers motors
+		MotorLeft.run(false); // false for revers motors
 		MotorLeft.getOneMotor().endSynchronization();
 		// TimeUnit.SECONDS.sleep(1);
 	}
@@ -291,8 +282,8 @@ public class VehicleController extends Thread {
 	public static void backWard() throws InterruptedException {
 		System.out.println("BACKWARD");
 		MotorLeft.getOneMotor().startSynchronization();
-		MotorRight.run(false); // true for revers motors
-		MotorLeft.run(false); // true for revers motors
+		MotorRight.run(true); // true for revers motors
+		MotorLeft.run(true); // true for revers motors
 		MotorLeft.getOneMotor().endSynchronization();
 		// TimeUnit.SECONDS.sleep(1);
 	}

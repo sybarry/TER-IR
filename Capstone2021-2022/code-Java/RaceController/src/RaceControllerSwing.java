@@ -38,7 +38,7 @@ public class RaceControllerSwing {
 	public static String bonus = "";
 	public static boolean isReady = false;
 	public static boolean isLaunched=false;
-	public static int currentNbPlayer = 3;
+	public static int currentNbPlayer = 0;
 	
 	public static Fenetre fenetre = new Fenetre();
 
@@ -174,16 +174,16 @@ public class RaceControllerSwing {
 		fenetre.write("### END ###");
 		playerTimes=sortByValue(playerTimes);
 		fenetre.write("Standings :");
-		String Standings = "STANDINGS:";
+		String standings = "STANDINGS:";
 		int k = 1;
 		for(Integer i : playerTimes.keySet()) {
-			String playerPosition = "    "+k+" - Player "+ i +" : " + ((double) (playerTimes.get(i))/1000);
+			String playerPosition = "  "+k+" - Player "+ i +" -> " + ((double) (playerTimes.get(i))/1000)+" seconds";
 			fenetre.write(playerPosition);
-			Standings = Standings + playerPosition + "\n";
+			standings = standings + playerPosition + "!";
 			k++;
 		}
-		mqttClient.sendMessage(new MessageString(Standings, topicAll));
 		
+		mqttClient.sendMessage(new MessageString(standings, topicAll));
 	}
 	
 	public static HashMap<Integer, Long> sortByValue(HashMap<Integer, Long> hm){
