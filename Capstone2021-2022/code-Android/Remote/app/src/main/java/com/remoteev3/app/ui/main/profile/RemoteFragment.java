@@ -124,7 +124,7 @@ public class RemoteFragment extends DaggerFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<String> startMessage = Arrays.asList("start","go","3","2","1");
+                            List<String> startMessage = Arrays.asList("start","go","3","2","1","finish");
                             if(startMessage.contains(message)) {
                                 text.setTextSize(TypedValue.COMPLEX_UNIT_SP,80);
                             } else {
