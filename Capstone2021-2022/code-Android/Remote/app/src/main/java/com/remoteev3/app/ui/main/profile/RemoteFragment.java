@@ -119,18 +119,23 @@ public class RemoteFragment extends DaggerFragment {
             @Override
             public void run() {
                 while(true){
-                    final String message = viewModel.insertTask("Réception du message");
+                    final String[] message = {viewModel.insertTask("Réception du message")};
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<String> startMessage = Arrays.asList("start","go","3","2","1","finish");
-                            if(startMessage.contains(message)) {
+                            List<String> bigMessage = Arrays.asList("start","go","3","2","1","finish");
+                            if(bigMessage.contains(message[0])) {
                                 text.setTextSize(TypedValue.COMPLEX_UNIT_SP,80);
                             } else {
+                                String[] leaderboard = message[0].split("!");
+                                message[0] = "";
+                                for(String l : leaderboard){
+                                    message[0] = message[0] + l + "\n";
+                                }
                                 text.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
                             }
-                            text.setText(message);
+                            text.setText(message[0]);
                         }
                     });
                 }
