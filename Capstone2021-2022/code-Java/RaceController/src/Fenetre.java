@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import Exception.MessageException;
 import java.awt.Component;
+import java.awt.Toolkit;
 
 public class Fenetre extends JFrame {
 	private JPanel conteneur;
@@ -22,6 +23,7 @@ public class Fenetre extends JFrame {
 	private JLabel LnbPlayers;
 	
 	public Fenetre() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\natha\\Documents\\Fac\\Capstone\\transfo-protocoles\\Capstone2021-2022\\code-Java\\RaceController\\resources\\universit\u00E9-de-nantes-squarelogo-1457003476200.png"));
 		setResizable(false);
 		firstPrint=true;
 		
@@ -43,24 +45,24 @@ public class Fenetre extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 				if(source==boutonConnection) {
-					if(nbPlayers.getSelectedItem().equals("Choisir")) {
-						JOptionPane.showMessageDialog(conteneur, "Veuillez choisir un nombre de joueurs");
+					if(nbPlayers.getSelectedItem().equals("Choose")) {
+						JOptionPane.showMessageDialog(conteneur, "Please choose a number of players");
 					}else {
 						int value=0;
 						switch((String)nbPlayers.getSelectedItem()) {
-						case "Choisir":
+						case "Choose":
 							value=0;
 							break;
-						case "1 Joueur":
+						case "1 Player":
 							value=1;
 							break;
-						case "2 Joueurs":
+						case "2 Players":
 							value=2;
 							break;
-						case "3 Joueurs":
+						case "3 Players":
 							value=3;
 							break;
-						case "4 Joueurs":
+						case "4 Players":
 							value=4;
 							break;
 						default:
@@ -88,14 +90,14 @@ public class Fenetre extends JFrame {
 		};
 		
 		//Initialisation de boutonConnection
-		boutonConnection = new JButton("Lancer la connection");
-		boutonConnection.setToolTipText("Lance la connection MQTT et bloque le nombre de joueurs choisi pour la course");
-		boutonConnection.setBounds(10, 11, 155, 23);
+		boutonConnection = new JButton("Launch the connection");
+		boutonConnection.setToolTipText("Launch the MQTT connection and block le number of players chosen for the race");
+		boutonConnection.setBounds(10, 11, 180, 23);
 		boutonConnection.addActionListener(al);
 		conteneur.add(boutonConnection);
 		
-		boutonCourse = new JButton("Lancer la course");
-		boutonCourse.setToolTipText("Lance la course lorsque tous les joueurs sont connect\u00E9s");
+		boutonCourse = new JButton("Launch the race");
+		boutonCourse.setToolTipText("Launch the race when every vehicle is ready");
 		boutonCourse.setEnabled(false);
 		boutonCourse.setBounds(206, 54, 150, 23);
 		boutonCourse.addActionListener(al);
@@ -109,33 +111,33 @@ public class Fenetre extends JFrame {
 		
 		//Initialisation de jta
 		jta=new JTextArea();
-		jta.setToolTipText("Console de texte des \u00E9v\u00E8nements de la course");
+		jta.setToolTipText("Text area listing all the events of the race");
 		jta.setEditable(false);
 		jsp.setViewportView(jta);
 		
 		//Initialisation de nbPlayers
 		nbPlayers = new JComboBox();
-		nbPlayers.setModel(new DefaultComboBoxModel(new String[] {"Choisir", "1 Joueur", "2 Joueurs", "3 Joueurs", "4 Joueurs"}));
+		nbPlayers.setModel(new DefaultComboBoxModel(new String[] {"Choose", "1 Player", "2 Players", "3 Players", "4 Players"}));
 		nbPlayers.setBounds(476, 11, 98, 22);
 		//ajout de nbPlayers au conteneur
 		conteneur.add(nbPlayers);
 		
 		//Initialisation de ConnectedPlayers
 		connectedPlayers = new JTextField();
-		connectedPlayers.setToolTipText("Nombre de joueurs actuellement connect\u00E9 sur le nombre de joueurs total");
+		connectedPlayers.setToolTipText("Number of players currently connected on the max number of players");
 		connectedPlayers.setEditable(false);
-		connectedPlayers.setBounds(307, 12, 23, 20);
+		connectedPlayers.setBounds(321, 12, 23, 20);
 		conteneur.add(connectedPlayers);
 		connectedPlayers.setColumns(10);
 		
 		//Initialisation de LconnectedPlayers
-		LconnectedPlayers = new JLabel("Joueurs connect\u00E9s :");
+		LconnectedPlayers = new JLabel("Connected Players :");
 		LconnectedPlayers.setHorizontalAlignment(SwingConstants.CENTER);
-		LconnectedPlayers.setBounds(180, 11, 118, 23);
+		LconnectedPlayers.setBounds(200, 11, 118, 23);
 		conteneur.add(LconnectedPlayers);
 		
 		//Initialisation de LnbPlayers
-		LnbPlayers = new JLabel("Nombre de joueurs :");
+		LnbPlayers = new JLabel("Number of players :");
 		LnbPlayers.setHorizontalAlignment(SwingConstants.CENTER);
 		LnbPlayers.setBounds(353, 15, 118, 14);
 		conteneur.add(LnbPlayers);

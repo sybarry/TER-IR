@@ -38,7 +38,7 @@ public class RaceControllerSwing {
 	public static String bonus = "";
 	public static boolean isReady = false;
 	public static boolean isLaunched=false;
-	public static int currentNbPlayer = 0;
+	public static int currentNbPlayer = 3;
 	
 	public static Fenetre fenetre = new Fenetre();
 
@@ -59,18 +59,18 @@ public class RaceControllerSwing {
         mqttClient = new ConnectionCommunicationMqttClient("localhost", 1883);
         mqttClient.openConnection();
         fenetre.displayConnectedPlayers();
-        fenetre.write("=> Lancement de la course avec " + nbPlayerMax + " véhicules");
+        fenetre.write("=> Launch of the race with " + nbPlayerMax + " vehicles");
 		fenetre.write("");
-		fenetre.write("Mise en écoute du controller sur les canaux véhicules :");
+		fenetre.write("Listening of the controller on the vehicle channels :");
 		
 		for(int i=1; i<nbPlayerMax+1; i++) { // Mise en écoute sur les canaux de chaque véhicule
 			playerTimes.put(i,(long) 0);
 			mqttClient.subscribe("Car"+i);
-			fenetre.write("	-> En ecoute sur le canal de la voiture n°"+ i);
+			fenetre.write("	-> Listening on the channel of the car n°"+ i);
 		}
 		
 		fenetre.write("");
-		fenetre.write("En attente de tous les participants...");
+		fenetre.write("Waiting for all participants...");
 		while(currentNbPlayer!=nbPlayerMax) {
 			for(int i=1; i<nbPlayerMax+1; i++) { 
 				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.READY));
@@ -81,7 +81,7 @@ public class RaceControllerSwing {
 					if(s1[1].compareTo(Command.messageInCommand(Command.READY)) == 0) {
 						currentNbPlayer++;
 						fenetre.displayConnectedPlayers();
-						fenetre.write("Connexion de la voiture n°"+i);
+						fenetre.write("Connection of the car n°"+i);
 						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
 						str = null; 
 					}
@@ -112,13 +112,12 @@ public class RaceControllerSwing {
 				
 				str = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.FINISH));
 				str2 = mqttClient.receiveMessage("Car"+i, Command.keyWordInCommand(Command.WANTBONUS));
-				System.out.println("Car"+i);
 				if(str != null) {
 					String[] s1 = ((String) str.getMessage()).split(":");
 					
 					if(s1[1].compareTo(Command.messageInCommand(Command.FINISH)) == 0) {
 						playerTimes.replace(i, System.currentTimeMillis() - startTimer);
-						fenetre.write("Le véhicule n°"+i+" a franchi la ligne d'arrivée en "+((double) playerTimes.get(i))/1000+" secondes.");
+						fenetre.write("The vehicle n°"+i+" has finished the race in "+((double) playerTimes.get(i))/1000+" seconds.");
 						mqttClient.removeTreatedMessage((String) str.toString(), "Car"+i);
 						str = null; 
 						
@@ -147,16 +146,16 @@ public class RaceControllerSwing {
 								}
 								
 								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendPenalty));
-								fenetre.write("La voiture n°"+i+" a envoyé une carapace rouge à la voiture n°"+sendPenalty+" !");
+								fenetre.write("The vehicle n°"+i+" has launched a red shell on the vehicle n°"+sendPenalty+" !");
 								break;
 							case "GreenShell":
 								mqttClient.sendMessage(new MessageString("Bonus:"+bonus, "Car"+i));
 								
 								sendPenalty = random.nextInt(nbPlayerMax)+1;
 								if(i==sendPenalty) {
-									fenetre.write("Oups, la voiture n°"+i+" s'est prit sa propre carapace verte !");
+									fenetre.write("Oops, the vehicle n°"+i+" took his own green shell !");
 								}else {
-									fenetre.write("La voiture n°"+i+" a envoyé une carapace verte à la voiture n°"+sendPenalty+" !");
+									fenetre.write("The vehicle n°"+i+" has thrown a green shell to the vehicle n°"+sendPenalty+" !");
 								}
 								mqttClient.sendMessage(new MessageString("Malus:"+bonus, "Car"+sendPenalty));
 								break;
@@ -174,12 +173,17 @@ public class RaceControllerSwing {
 		
 		fenetre.write("### END ###");
 		playerTimes=sortByValue(playerTimes);
-		fenetre.write("Classement :");
+		fenetre.write("Standings :");
+		String Standings = "STANDINGS:";
 		int k = 1;
 		for(Integer i : playerTimes.keySet()) {
-			fenetre.write("	"+k+" - Joueur "+ i +" : " + ((double) (playerTimes.get(i))/1000));
+			String playerPosition = "    "+k+" - Player "+ i +" : " + ((double) (playerTimes.get(i))/1000);
+			fenetre.write(playerPosition);
+			Standings = Standings + playerPosition + "\n";
 			k++;
 		}
+		mqttClient.sendMessage(new MessageString(Standings, topicAll));
+		
 	}
 	
 	public static HashMap<Integer, Long> sortByValue(HashMap<Integer, Long> hm){
