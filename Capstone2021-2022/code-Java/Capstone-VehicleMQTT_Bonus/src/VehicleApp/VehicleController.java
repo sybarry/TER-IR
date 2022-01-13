@@ -93,13 +93,35 @@ public class VehicleController extends Thread {
 		
 		new Thread() {
             public void run() {
+            	for(;;) {
+            		try {
+						str = mqttClient.receiveMessage(topicAll, "STANDINGS");
+						if(str != null) {
+	        				String[] s1 = ((String) str.getMessage()).split(":");
+	        				
+	        				BTServer.sendMessage(s1[1]);
+	        				
+	        				mqttClient.removeTreatedMessage((String) str.toString(), topicAll);
+	        				str = null; 
+	        			}
+					} catch (IOException | MessageException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	}
+            }
+		}.start();
+		
+		new Thread() {
+            public void run() {
             	while(!finish) {
                 	try {
         				//******************FINISH A paralleliser **********/
         				if(colorSensor.getColorID() == Color.RED && finish == false) {	
         					finish = true; // pour eviter de renvoyer le message qui permet d'arreter le chrono si on a finit la course 
         					mqttClient.sendMessage(new MessageString(Command.FINISH, topicWithServer)); // le raceController devra regarder si le message est bien finish avant de mettre le temps dans la hashMap
-        					}
+        					BTServer.sendMessage("finish");
+        				}
         				
         				//****************BONUS a paralleliser*************//
         				/*if(colorSensor.getColorID() == Color.YELLOW && bonusActivated == false) {	
