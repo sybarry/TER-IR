@@ -13,7 +13,7 @@ Pour cloner le projet, assurez-vous :
 - d'installer le plugin [LeJOS sur Eclipse](https://sourceforge.net/p/lejos/wiki/Installing%20the%20Eclipse%20plugin/) et de le configurer correctement avec votre robot.
 - d'utiliser et compiler le projet avec Java 7
 
-Pour plus de details sur le projet, consultez la [documentation](/rapports/Documentation%20MQTT%20-%20Conduite%20Autonome.pdf).
+Pour plus de details sur le projet, consultez la [documentation](https://gitlab.univ-nantes.fr/ter-ir-2020/transfo-protocoles/-/tree/M1ALMA-2024/TER_S2_M1_informatique-2023-2024/rapports).
 
 
 #### Membres:
