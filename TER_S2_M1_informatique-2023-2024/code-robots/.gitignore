@@ -1,5 +1,0 @@
-bin
-*.jar
-!org.eclipse.paho.client.mqttv3-1.2.0.jar
-.settings
-.classpath
