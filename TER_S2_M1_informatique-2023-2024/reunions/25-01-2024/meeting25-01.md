@@ -28,7 +28,8 @@
 * Présentation du pilotage individuel d'un robot EV3
 * Réception d'instructions via MQTT selon une l'addresse MAC du robot
 
-### Actions à entreprendre
+
+### A faire:
 
 #### Documentation
 
