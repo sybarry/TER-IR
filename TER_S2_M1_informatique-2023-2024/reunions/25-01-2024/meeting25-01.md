@@ -1,4 +1,4 @@
-## Rapport de la Réunion du 25/01 à 8h30
+## Rapport de la réunion du 25/01 à 8h30
 
 ### Objectif de la Réunion
 
