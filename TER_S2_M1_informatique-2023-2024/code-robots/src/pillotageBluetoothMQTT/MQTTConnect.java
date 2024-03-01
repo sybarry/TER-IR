@@ -13,17 +13,16 @@ public class MQTTConnect {
         connOpts.setCleanSession(true);
         connOpts.setUserName(username);
         connOpts.setPassword(password.toCharArray());
-        
+
         client.connect(connOpts);
         System.out.println("Connected to broker: " + broker);
 
         client.subscribe(topic);
         client.setCallback(new listenToMQTT());
-        
+
         while (true)
-        	continue;
-        
-        System.out.println("MQTT Disconnected");       
+            continue;
+
     }
 
     private static class listenToMQTT implements MqttCallback {
@@ -41,10 +40,16 @@ public class MQTTConnect {
                         MainMQTT_BT.ctrl.movingForward();
                         break;
                     case "back":
-                    	MainMQTT_BT.ctrl.movingBackward();
+                        MainMQTT_BT.ctrl.movingBackward();
                         break;
                     case "stop":
-                    	MainMQTT_BT.ctrl.stop();
+                        MainMQTT_BT.ctrl.stop();
+                        break;
+                    case "disconnect":
+                        MainMQTT_BT.BT_disconnected = true;
+                        break;
+                    case "connect":
+                        MainMQTT_BT.BT_disconnected = false;
                         break;
                 }
             } catch (Exception e) {
@@ -57,6 +62,6 @@ public class MQTTConnect {
         }
     }
 
-	
+
 
 }

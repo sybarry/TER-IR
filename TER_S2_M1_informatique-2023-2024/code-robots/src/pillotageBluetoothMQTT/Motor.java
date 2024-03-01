@@ -3,15 +3,14 @@ package pillotageBluetoothMQTT;
 import lejos.robotics.RegulatedMotor;
 
 public class Motor {
-
 	private RegulatedMotor motor;
-	private int speed ;
-	private int previousSpeed ;
+	private int actual_speed;
+	private int previousSpeed;
 
-	public Motor(RegulatedMotor _motor) {
-		this.motor =_motor;
+	public void setMotor(RegulatedMotor motor) {
+		this.motor = motor;
 	}
-	
+
 	public int getPreviousSpeed() {
 		return previousSpeed;
 	}
@@ -20,31 +19,33 @@ public class Motor {
 		this.previousSpeed = previousSpeed;
 	}
 
-	public int getSpeed() {
-		return speed;
+	public Motor(RegulatedMotor _motor, int initial_speed) {
+		this.motor =_motor;
+		this.actual_speed = initial_speed;
+		this.previousSpeed = initial_speed;
 	}
 
-	public void setSpeed(int speed) {
-		this.speed = speed;
-		motor.setSpeed(speed);
+	public int getActual_speed() {
+		return actual_speed;
+	}
+
+	public void setActual_speed(int actual_speed) {
+		this.actual_speed = actual_speed;
+		motor.setSpeed(actual_speed);
 	}
 
 	public void movingBackward() {
 //		setSpeed(50);
 		motor.backward();
 	}
-	
+
 	public void movingForward() {
 //		setSpeed(50);
 		motor.forward();
 	}
-	
+
 	public RegulatedMotor getMotor() {
 		return motor;
-	}
-
-	public void setMotor(RegulatedMotor motor) {
-		this.motor = motor;
 	}
 
 	public void stop() {
@@ -54,4 +55,17 @@ public class Motor {
 	public void rotateHalf() {
 		motor.rotate(90);
 	}
+
+	public void speedUp(int value) {
+		this.previousSpeed = actual_speed;
+		actual_speed += value;
+		motor.setSpeed(actual_speed);
+	}
+
+	public void speedDown(int value) {
+		this.previousSpeed = actual_speed;
+		actual_speed -= value;
+		motor.setSpeed(actual_speed);
+	}
+
 }
