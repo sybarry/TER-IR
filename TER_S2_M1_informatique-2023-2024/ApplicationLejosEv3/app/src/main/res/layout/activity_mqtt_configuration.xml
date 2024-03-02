@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/mqtt_layout"
+            android:layout_margin="15dp">
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/editClientID"
+                    android:maxLength="50"
+                    android:hint="Client ID" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="2">
+
+                <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Topic"
+                        android:id="@+id/editTopic"
+                        android:maxLength="15" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1">
+
+                <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Port"
+                        android:inputType="number"
+                        android:id="@+id/editPort"
+                        android:maxLength="7" />
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="10dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="tcp://"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_marginEnd="5dp" />
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginStart="5dp">
+
+                <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/editBroker"
+                        android:hint="IP"
+                        android:inputType="text"
+                        android:maxLength="30"
+                        android:layout_weight="1" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="25dp"
+                        android:id="@+id/editUsername"
+                        android:hint="Username"
+                        android:maxLength="30" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="25dp"
+                        android:id="@+id/editPassword"
+                        android:hint="Password"
+                        android:textIsSelectable="false"
+                        android:inputType="textPassword"
+                        android:maxLength="30" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:baselineAligned="false"
+                android:gravity="center">
+
+            <Button
+                    android:text="Save"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:id="@+id/btnSave"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_marginTop="15dp" />
+
+            <Button
+                    android:text="Test connection"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:id="@+id/btnCheck"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:layout_marginTop="15dp" />
+
+            <ProgressBar
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:id="@+id/progressBar"
+                    android:layout_weight="1"
+                    android:indeterminateBehavior="repeat"
+                    android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

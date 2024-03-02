@@ -2,28 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="androidproject.applicationlejosev3">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.MainActivity">
+        <activity android:name=".main.MainActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".connection.ConnectionBluetoothActivity">
         </activity>
-        <activity android:name=".connection.ConnectBluetoothActivity">
-        </activity>
         <activity android:name=".panel.ControlPageActivity">
         </activity>
-        <activity android:name=".connection.ConnectWifiActivity">
+        <activity android:name=".main.ConnectWifiActivity">
+        </activity>
+        <activity android:name=".connection.MQTTConfigurationActivity">
         </activity>
     </application>
 

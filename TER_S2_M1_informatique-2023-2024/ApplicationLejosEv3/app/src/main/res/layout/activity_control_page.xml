@@ -17,8 +17,8 @@
         android:paddingTop="25dp"
         android:weightSum="2" >
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
+        <RelativeLayout
+                android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingBottom="16dp"
                         android:paddingLeft="16dp"
@@ -41,30 +41,67 @@
                 android:layout_below="@id/digitView"
                 android:id="@+id/seek"
                 android:max="100"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnStatus"
+                    android:layout_marginTop="39dp"
+                    android:layout_below="@+id/seek"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="60dp"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:minWidth="30dp"
+                    android:minHeight="50dp"
+                    android:clickable="false"
+                    android:focusable="auto"
+                    android:background="@color/green" />
+
+            <TextView
+                    android:text="Connecté"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtStatus"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/btnStatus"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:textStyle="bold" />
         </RelativeLayout>
 
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
+        <RelativeLayout
+                android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingBottom="16dp"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="16dp"
                         android:layout_weight="1">
-        <de.nitri.gauge.Gauge
-            android:id="@+id/gauge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            gauge:initialValue="0"
-            gauge:maxValue="100"
-            gauge:minValue="0"
-            gauge:totalNicks="120"
-            gauge:valuePerNick="1"
-            />
+
+            <de.nitri.gauge.Gauge
+                    android:id="@+id/gauge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    gauge:initialValue="0"
+                    gauge:maxValue="100"
+                    gauge:minValue="0"
+                    gauge:totalNicks="120"
+                    gauge:valuePerNick="1"
+                    android:layout_marginTop="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp" />
         </RelativeLayout>
 
 
@@ -79,8 +116,8 @@
         android:paddingBottom="25dp"
         android:weightSum="2" >
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
+        <RelativeLayout
+                android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingBottom="16dp"
                         android:paddingLeft="16dp"
@@ -89,38 +126,45 @@
                         android:layout_weight="1">
 
             <Button
-                android:id="@+id/buttonA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/avancer"
-                android:layout_centerHorizontal="true"/>
+                    android:id="@+id/buttonA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/avancer"
+                    android:layout_centerHorizontal="true"
+                    android:enabled="true" />
+
             <Button
-                android:id="@+id/buttonR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reculer"
-                android:layout_below="@+id/buttonA"
-                android:layout_centerHorizontal="true"/>
+                    android:id="@+id/buttonR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reculer"
+                    android:layout_below="@+id/buttonA"
+                    android:layout_centerHorizontal="true"
+                    android:enabled="true" />
+
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/stop"
-                android:id="@+id/buttonS"
-                android:layout_below="@+id/buttonR"
-                android:layout_centerHorizontal="true"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stop"
+                    android:id="@+id/buttonS"
+                    android:layout_below="@+id/buttonR"
+                    android:layout_centerHorizontal="true"
+                    android:enabled="true" />
+
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/exit"
-                android:id="@+id/buttonQuit"
-                android:layout_below="@+id/buttonS"
-                android:layout_centerHorizontal="true"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exit"
+                    android:id="@+id/buttonQuit"
+                    android:layout_below="@+id/buttonS"
+                    android:layout_centerHorizontal="true"
+                    android:enabled="true" />
 
 
         </RelativeLayout>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
+        <RelativeLayout
+                android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingBottom="16dp"
                         android:paddingLeft="16dp"
@@ -129,22 +173,35 @@
                         android:layout_weight="1">
 
             <ImageButton
-                android:id="@+id/buttonG"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:src="@drawable/left_arrow"
-                android:scaleType="fitCenter"
-                android:layout_centerVertical="true"/>
+                    android:id="@+id/buttonG"
+                    android:enabled="true"
+                    android:layout_width="123dp"
+                    android:layout_height="113dp"
+                    android:src="@drawable/right_arrow"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="17dp" />
 
             <ImageButton
-                android:id="@+id/buttonD"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:src="@drawable/right_arrow"
-                android:scaleType="fitCenter"
-                android:layout_toRightOf="@+id/buttonG"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="40dp"/>
+                    android:id="@+id/buttonD"
+                    android:layout_width="123dp"
+                    android:enabled="true"
+                    android:layout_height="113dp"
+                    android:src="@drawable/left_arrow"
+                    android:scaleType="fitCenter"
+                    android:layout_marginLeft="-113dp"
+                    android:layout_marginTop="38dp"
+                    android:layout_below="@+id/buttonG"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="37dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="17dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="50dp" />
         </RelativeLayout>
 
     </LinearLayout>

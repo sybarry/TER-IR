@@ -8,7 +8,6 @@ import java.io.*;
 public class BTConnect implements Runnable {
 	static final String MAC = BrickFinder.getLocal().getBluetoothDevice().getBluetoothAddress();
 
-
 	public void connect() throws IOException {
 		System.out.println("Waiting for bluetooth client");
 		NXTCommConnector connector = Bluetooth.getNXTCommConnector();

@@ -30,5 +30,8 @@ dependencies {
     implementation 'com.github.Pygmalion69:Gauge:1.2.3'
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.capur16:DigitSpeedView:v1.0.3'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
 }

@@ -83,12 +83,6 @@ public class Controller {
 	}
 
 	public void turnRight() {
-		/*
-			totalspeed : 200
-			speedleft : +10
-			if speedleft > totalspeed then speedleft : totalspeed
-			speedright : totalspeed - speedleft
-		 */
 		if (actualState == State.FORWARD){
 			actualState = State.TURNING_RIGHT;
 			rightMotor.setActual_speed(rightMotor.getPreviousSpeed());

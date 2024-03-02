@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">ApplicationLejosEv3</string>
-    <string name="entrer_mac_adresse">Entrez l\'EV3 mac adresse</string>
+    <string name="app_name">EV3 Mobile</string>
+    <string name="verify_txtMAC">L\'adresse MAC est invalide</string>
     <string name="ok">OK</string>
     <string name="Preference">ev3 preference</string>
     <string name="EV3_key">ev3_mac_adresse</string>
@@ -23,6 +23,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_wheel">Wheel</string>
+    <string name="infoConnectBT">L\'appareil doit être un EV3 et deja appairé depuis les paramêtres Bluetooth</string>
+    <string name="connected">Connecté</string>
+    <string name="disconnected">Connexion perdue</string>
 
 
 </resources>
