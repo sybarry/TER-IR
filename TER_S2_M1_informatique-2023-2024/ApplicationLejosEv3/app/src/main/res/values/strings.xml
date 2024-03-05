@@ -16,8 +16,6 @@
     <string name="enable_bt">Autorisez le bluetooth</string>
     <string name="autoriser">Autoriser</string>
     <string name="cancel">Cancel</string>
-    <string name="bt_failed">Impossible de se connecter à cette adresse</string>
-    <string name="bt_disabled">Autorisez le bluetooth pour continuer</string>
     <string name="title_activity_speedometer">Speedometer</string>
 
     <!-- TODO: Remove or change this placeholder text -->

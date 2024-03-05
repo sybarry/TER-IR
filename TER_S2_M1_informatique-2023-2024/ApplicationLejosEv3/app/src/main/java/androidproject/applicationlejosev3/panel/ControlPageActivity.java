@@ -1,25 +1,14 @@
 package androidproject.applicationlejosev3.panel;
 
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.github.capur16.digitspeedviewlib.DigitSpeedView;
-
-import java.util.Arrays;
-import java.util.List;
 
 import androidproject.applicationlejosev3.R;
 import androidproject.applicationlejosev3.connection.BluetoothService;
@@ -36,20 +25,6 @@ public class ControlPageActivity extends AppCompatActivity {
     DigitSpeedView digit;
     AppCompatSeekBar vitesse;
     TextView txtStatus;
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            switch (action) {
-                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                    connectionCut();
-                    break;
-                case BluetoothDevice.ACTION_ACL_CONNECTED:
-                    connectionActive();
-                    break;
-            }
-        }
-    };
-    boolean registed = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,29 +37,22 @@ public class ControlPageActivity extends AppCompatActivity {
         btnStop = findViewById(R.id.buttonS);
         gauge = findViewById(R.id.gauge);
         vitesse = findViewById(R.id.seek);
-        vitesse.incrementProgressBy(10);
         digit = findViewById(R.id.digitView);
         btnStatus = findViewById(R.id.btnStatus);
         txtStatus = findViewById(R.id.txtStatus);
-        String authorize = getString(R.string.bt_disabled);
-        String fail = getString(R.string.bt_failed);
 
         // Toast pour avertir l'utilisateur
         Device device = getIntent().getParcelableExtra("mac");
         BTConnect = new BluetoothService(this, device);
 
         if (!BTConnect.connectToDevice(device)) {
-            Utils.toast(this, fail);
+            Utils.toast(this, "Impossible de se connecter à cet appareil");
             finish();
         }
-        else if (!BluetoothService.checkBTPermissions(this, this)) {
-            Utils.toast(this, authorize);
+        if (!BluetoothService.checkBTPermissions(this, this)) {
+            Utils.toast(this, "Autorisez le bluetooth pour continuer");
             finish();
         }
-
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mReceiver, filter);
-        registed = true;
 
         vitesse.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -190,22 +158,6 @@ public class ControlPageActivity extends AppCompatActivity {
         btnExit.setOnClickListener((view) -> finish());
     }
 
-    private void connectionCut() {
-        btnStatus.setBackgroundColor(Color.RED);
-        txtStatus.setText(R.string.disconnected);
-        List<View> views = Arrays.asList(btnAvancer, btnReculer, btnGauche, btnDroite, btnStop, btnExit);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            views.forEach(view -> view.setEnabled(false));
-    }
-
-    private void connectionActive() {
-        btnStatus.setBackgroundColor(Color.GREEN);
-        txtStatus.setText(R.string.connected);
-        List<View> views = Arrays.asList(btnAvancer, btnReculer, btnGauche, btnDroite, btnStop, btnExit);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            views.forEach(view -> view.setEnabled(true));
-    }
-
     @Override
     public void onBackPressed() {
         finish();
@@ -214,8 +166,6 @@ public class ControlPageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         BTConnect.disconnect();
-        if (registed)
-            unregisterReceiver(mReceiver);
 
         super.onDestroy();
     }
