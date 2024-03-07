@@ -16,13 +16,11 @@ public class MQTTConnect {
 
         client.connect(connOpts);
         System.out.println("Connected to broker: " + broker);
-
         client.subscribe(topic);
         client.setCallback(new listenToMQTT());
 
         while (true)
             continue;
-
     }
 
     private static class listenToMQTT implements MqttCallback {
@@ -45,6 +43,12 @@ public class MQTTConnect {
                     case "stop":
                         MainMQTT_BT.ctrl.stop();
                         break;
+                    case "speedup":
+                        MainMQTT_BT.ctrl.accelerate(50);
+                        break;
+                    case "speeddown":
+                        MainMQTT_BT.ctrl.decelerate(50);
+                        break;
                     case "disconnect":
                         MainMQTT_BT.BT_disconnected = true;
                         break;
@@ -61,7 +65,5 @@ public class MQTTConnect {
         public void deliveryComplete(IMqttDeliveryToken token) {
         }
     }
-
-
 
 }

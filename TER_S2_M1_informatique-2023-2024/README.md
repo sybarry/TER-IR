@@ -13,7 +13,7 @@ Les fonctionnalites suivantes ont été implementées:
 
 Pour cloner le projet, assurez-vous d'abord:
 - d'installer le plugin [LeJOS sur Eclipse](https://sourceforge.net/p/lejos/wiki/Installing%20the%20Eclipse%20plugin/) et de le configurer correctement avec votre robot.
-- d'utiliser et compiler le projet avec Java 1.7
+- d'utiliser et compiler le projet du robot avec Java 1.7
 - Pour cloner un dossier specifique en travaillant sur le même dépot:
 ```bash
 git clone --depth 1 --branch master --no-checkout REPO_REMOTE_URL

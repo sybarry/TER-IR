@@ -5,119 +5,138 @@ import lejos.hardware.port.MotorPort;
 import lejos.robotics.RegulatedMotor;
 
 public class Controller {
-	State actualState = State.STOPPED;
-	private Motor leftMotor;
-	private Motor rightMotor;
-	private int ratioLeft = 50;
-	private int ratioRight = 50;
-	private int initial_speed = 100;
+    State actualState = State.STOPPED;
+    private Motor leftMotor;
+    private Motor rightMotor;
+    public int ratioLeft = 0;
+    public int ratioRight = 0;
+    private int initial_speed = 50;
+    private int max_speed = 500;
 
-	public Controller()
-	{
-		this.leftMotor = new Motor(new EV3LargeRegulatedMotor(MotorPort.C), initial_speed);
-		this.rightMotor = new Motor(new EV3LargeRegulatedMotor(MotorPort.B), initial_speed);
+    public Controller() {
+        this.leftMotor = new Motor(new EV3LargeRegulatedMotor(MotorPort.C), initial_speed);
+        this.rightMotor = new Motor(new EV3LargeRegulatedMotor(MotorPort.B), initial_speed);
+        RegulatedMotor[] T = {this.rightMotor.getMotor()};
+        leftMotor.getMotor().synchronizeWith(T);
+    }
 
-		RegulatedMotor[] T = {this.rightMotor.getMotor()};
-		leftMotor.getMotor().synchronizeWith(T);
-		leftMotor.setActual_speed(initial_speed);
-		rightMotor.setActual_speed(initial_speed);
-	}
+    public void movingForward() {
+        leftMotor.getMotor().startSynchronization();
+        if (actualState == State.STOPPED) {
+            actualState = State.FORWARD;
+            leftMotor.movingForward();
+            rightMotor.movingForward();
+        } else if (actualState == State.TURNING_LEFT) {
+            actualState = State.FORWARD;
+            ratioLeft = 0;
+            ratioRight = 0;
+            leftMotor.setActual_speed(rightMotor.getActual_speed());
+        } else if (actualState == State.TURNING_RIGHT) {
+            actualState = State.FORWARD;
+            ratioRight = 0;
+            ratioLeft = 0;
+            rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioRight);
+        } else System.out.println("Must stop first");
+        leftMotor.getMotor().endSynchronization();
+    }
 
-	public void movingForward () {
-		if(actualState == State.STOPPED) {
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.movingForward();
-			rightMotor.movingForward();
-			actualState = State.FORWARD;
-			leftMotor.getMotor().endSynchronization();
-		} else if(actualState == State.TURNING_LEFT) {
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.setActual_speed(initial_speed);
-			rightMotor.setActual_speed(initial_speed);
-			actualState = State.FORWARD;
-			leftMotor.getMotor().endSynchronization();
-		} else if (actualState == State.TURNING_RIGHT) {
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.setActual_speed(initial_speed);
-			rightMotor.setActual_speed(initial_speed);
-			actualState = State.FORWARD;
-			leftMotor.getMotor().endSynchronization();
-		} else System.out.println("Must stop first");
-	}
+    public void movingBackward() {
+        leftMotor.getMotor().startSynchronization();
+        if (actualState == State.STOPPED) {
+            leftMotor.movingBackward();
+            rightMotor.movingBackward();
+            actualState = State.BACKWARD;
+        } else if (actualState == State.TURNING_LEFT) {
+            leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioLeft);
+            actualState = State.BACKWARD;
+        } else if (actualState == State.TURNING_RIGHT) {
+            rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioRight);
+            actualState = State.BACKWARD;
+        } else System.out.println("Must stop first");
+        leftMotor.getMotor().endSynchronization();
+    }
 
-	public void movingBackward() {
-		if(actualState == State.STOPPED) {
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.movingBackward();
-			rightMotor.movingBackward();
-			actualState = State.BACKWARD;
-			leftMotor.getMotor().endSynchronization();
-		} else System.out.println("Must stop first");
-	}
+    public void stop() {
+        leftMotor.getMotor().startSynchronization();
+        leftMotor.stop();
+        rightMotor.stop();
+        actualState = State.STOPPED;
+        leftMotor.getMotor().endSynchronization();
+    }
 
-	public void stop() {
-		leftMotor.getMotor().startSynchronization();
-		leftMotor.stop();
-		rightMotor.stop();
-		actualState = State.STOPPED;
-		leftMotor.getMotor().endSynchronization();
-	}
+    public void turnLeft() {
+        leftMotor.getMotor().startSynchronization();
+        if (actualState == State.FORWARD) {
+            actualState = State.TURNING_LEFT;
+            ratioLeft += 50;
+            rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioLeft);
+        }
+        else if (actualState == State.TURNING_LEFT) {
+            ratioLeft += 50;
+            if (ratioLeft >= 200)
+        		ratioLeft = 200;
+            
+            rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioLeft);
+        }
+        else if (actualState == State.TURNING_RIGHT) {
+            ratioRight -= 50;
+            if (ratioRight <= 0) {
+            	ratioRight = 0;
+            	actualState = State.FORWARD;
+            }
+            leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioRight);
+        }
+        leftMotor.getMotor().endSynchronization();
+    }
 
-	public void turnLeft() {
-		if (actualState == State.FORWARD){
-			actualState = State.TURNING_LEFT;
-			leftMotor.setActual_speed(leftMotor.getPreviousSpeed());
-			rightMotor.setActual_speed(leftMotor.getPreviousSpeed());
+    public void turnRight() {
+        leftMotor.getMotor().startSynchronization();
+        if (actualState == State.FORWARD) {
+            actualState = State.TURNING_RIGHT;
+            ratioRight += 50;
+            leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioRight);
+        } else if (actualState == State.TURNING_RIGHT) {
+            ratioRight += 50;
+            if (ratioRight >= 200)
+                	ratioRight = 200;
+            leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioRight);
+        } else if (actualState == State.TURNING_LEFT) {
+            ratioLeft -= 50;
+            if (ratioLeft <= 0) {
+            	ratioLeft = 0;
+            	actualState = State.FORWARD;
+            }
+            rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioLeft);
+        }
+        leftMotor.getMotor().endSynchronization();
+    }
 
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.setActual_speed(leftMotor.getActual_speed());
-			rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioLeft);
-			leftMotor.getMotor().endSynchronization();
-		} else if (actualState == State.TURNING_LEFT) {
-			ratioLeft += 50;
-			rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioLeft);
-		} else if (actualState == State.TURNING_RIGHT) {
-			ratioRight -= 50;
-			leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioRight);
-		}
-	}
+    public void accelerate(int value) {
+        if (leftMotor.getActual_speed() + value <= max_speed) {
+            leftMotor.getMotor().startSynchronization();
+            leftMotor.speedUp(value);
+            rightMotor.speedUp(value);
+            leftMotor.getMotor().endSynchronization();
+        } else System.out.println("Max speed reached");
+    }
 
-	public void turnRight() {
-		if (actualState == State.FORWARD){
-			actualState = State.TURNING_RIGHT;
-			rightMotor.setActual_speed(rightMotor.getPreviousSpeed());
-			leftMotor.setActual_speed(rightMotor.getPreviousSpeed());
+    public void decelerate(int value) {
+        leftMotor.getMotor().startSynchronization();
+        if (leftMotor.getActual_speed() - value >= 0) {
+            leftMotor.speedDown(value);
+            rightMotor.speedDown(value);
+        } else if (leftMotor.getActual_speed() - value < 0) {
+            leftMotor.stop();
+            rightMotor.stop();
+        } else System.out.println("Min speed reached");
+        leftMotor.getMotor().endSynchronization();
+    }
 
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioRight);
-			rightMotor.setActual_speed(rightMotor.getActual_speed());
-			leftMotor.getMotor().endSynchronization();
-		}
-		else if(actualState == State.TURNING_RIGHT) {
-			ratioRight += 50;
-			leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioRight);
-		} else if (actualState == State.TURNING_LEFT) {
-			ratioLeft -= 50;
-			rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioLeft);
-		}
-	}
-
-	public void accelerate(int value) {
-		leftMotor.getMotor().startSynchronization();
-		leftMotor.speedUp(value);
-		rightMotor.speedUp(value);
-		leftMotor.getMotor().endSynchronization();
-	}
-
-	public void decelerate(int value) {
-		if(leftMotor.getActual_speed() - value <= 0 || rightMotor.getActual_speed() - value <= 0)
-			stop();
-		else {
-			leftMotor.getMotor().startSynchronization();
-			leftMotor.speedDown(value);
-			rightMotor.speedDown(value);
-			leftMotor.getMotor().endSynchronization();
-		}
-	}
+    public byte[] getSpeedAsArray() {
+        return new byte[]{
+                (byte) (leftMotor.getActual_speed() / 10),
+                (byte) (rightMotor.getActual_speed() / 10)
+        };
+    }
 
 }

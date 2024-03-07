@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import lejos.hardware.Button;
 import lejos.utility.Delay;
 import pilottageColorSensor.Automate;
+import pilottageColorSensor.ConduiteAutonome;
 import pilottageColorSensor.Direction;
 
 public class MQTTConnect {

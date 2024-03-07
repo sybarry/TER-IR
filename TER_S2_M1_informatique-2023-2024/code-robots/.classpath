@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/org.eclipse.paho.client.mqttv3-1.2.0.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="libs/org.eclipse.paho.client.mqttv3-1.2.0.jar"/>
 	<classpathentry kind="con" path="org.lejos.ev3.ldt.LEJOS_EV3_LIBRARY_CONTAINER/"/>
-	<classpathentry kind="lib" path="libs/json-simple-1.1.1.jar"/>
-    <classpathentry kind="lib" path="libs/LeJOS/commons-cli.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/dbusjava.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/ev3classes.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/ev3tools.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/jcommon.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/jfreechart.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/jsch-0.1.50.jar" />
-    <classpathentry kind="lib" path="libs/LeJOS/opencv-2411.jar" />
+	<classpathentry exported="true" kind="lib" path="libs/json-simple-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/commons-cli.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/dbusjava.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/ev3classes.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/ev3tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/jcommon.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/jfreechart.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/jsch-0.1.50.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/LeJOS/opencv-2411.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

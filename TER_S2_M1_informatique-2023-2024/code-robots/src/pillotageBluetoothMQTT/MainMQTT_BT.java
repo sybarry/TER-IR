@@ -16,7 +16,6 @@ public class MainMQTT_BT {
     public static void main(String[] args) throws IOException {
         try {
             ctrl = new Controller();
-
             // Bluetooth thread
             Thread T1 = new Thread(new BTConnect());
 
@@ -26,6 +25,8 @@ public class MainMQTT_BT {
                 public void run() {
                     try {
                         new MQTTConnect(MQTT_SERVER_IP, clientId, "ev3/topic");
+//                        while (true)
+//                            Thread.sleep(1000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

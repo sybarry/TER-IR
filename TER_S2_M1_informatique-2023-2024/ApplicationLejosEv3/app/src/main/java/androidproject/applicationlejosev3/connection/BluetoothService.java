@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,18 +91,36 @@ public class BluetoothService {
     }
 
     // Utile pour envoyer des messages à l'EV3 (pour les fonctionnalités)
-    public void writeMessage(int msg) throws InterruptedException{
+    public void sendCommand(int speed){
         BluetoothSocket connSock = socket;
         if(connSock != null){
             try {
                 OutputStreamWriter out = new OutputStreamWriter(connSock.getOutputStream());
-                out.write(msg);
+                out.write(speed);
                 out.flush();
                 Thread.sleep(250); // wait for the message to be treated by EV3
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int[] receiveSpeed() throws IOException {
+        BluetoothSocket connSock = socket;
+        if (!connSock.isConnected())
+            return null;
+
+        InputStream in = connSock.getInputStream();
+        byte[] buffer = new byte[1024]; // adjust the size as needed
+        int bytesRead = in.read(buffer);
+        if (bytesRead == -1)
+            return null;
+        byte[] result = new byte[bytesRead];
+        System.arraycopy(buffer, 0, result, 0, bytesRead);
+        int[] intResult = new int[bytesRead];
+        for (int i = 0; i < bytesRead; i++)
+            intResult[i] = Integer.parseInt(String.valueOf(result[i])) * 10;
+        return intResult;
     }
 
     public static boolean checkBTPermissions(Context context, Activity activity) {
@@ -110,8 +129,10 @@ public class BluetoothService {
             Utils.toast(context, "Bluetooth not available on this device");
             return false;
         }
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
+
             return true;
+        }
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             requestPermissions(activity, new String[]{Manifest.permission.BLUETOOTH}, 1);
         return false;
