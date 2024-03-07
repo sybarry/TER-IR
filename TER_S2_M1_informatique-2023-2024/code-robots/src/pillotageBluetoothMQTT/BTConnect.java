@@ -12,8 +12,13 @@ import java.io.IOException;
 import static pillotageBluetoothMQTT.MainMQTT_BT.ctrl;
 
 public class BTConnect implements Runnable {
+    /** MAC address du robot */
     static final String MAC = BrickFinder.getLocal().getBluetoothDevice().getBluetoothAddress();
 
+    /** Méthode pour connecter le robot à un client bluetooth.
+     * La methode est bloquante, elle attend la connexion d'un client bluetooth <br>
+     * @throws IOException si une erreur d'entrée/sortie survient
+     * */
     public void connect() throws IOException {
         System.out.println("Waiting for bluetooth client");
         NXTCommConnector connector = Bluetooth.getNXTCommConnector();
@@ -22,6 +27,10 @@ public class BTConnect implements Runnable {
         DataOutputStream out = connection.openDataOutputStream();
         System.out.println("Client connected");
 
+        /** Boucle pour lire les commandes envoyées par le client et les exécuter.
+         * Avant de lire une commande, on envoie la vitesse actuelle des moteurs au client. <br>
+         * Au cas où le client se déconnecte, on sort de la boucle et la connexion bluetooth (le thread) est fermée. <br>
+         * **/
         while (true) {
             out.write(ctrl.getSpeedAsArray());
             out.flush();
@@ -38,6 +47,11 @@ public class BTConnect implements Runnable {
         System.out.println("Bluetooth disconnected");
     }
 
+    /** Méthode pour exécuter une commande envoyée par le client.
+     * Les commandes sont des entiers entre 1 et 7. <br>
+     * @param ctrl le controlleur du robot
+     * @param command la commande à exécuter
+     * **/
     private void executeCommand(Controller ctrl, int command) {
         switch (command) {
             case 1:

@@ -33,15 +33,17 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         LV = findViewById(R.id.LV);
         editMAC = findViewById(R.id.editMac);
 
+        /** Verifie si le bluetooth est activé, sinon demande à l'utilisateur de l'activer */
         if (!BluetoothService.checkBTPermissions(this, this))
             finish();
 
-        // Bluetooth connection
+        /** Récupère les appareils appairés et les affiche dans la liste */
         BTConnect = new BluetoothService(this);
         List<Device> devices = getPairedDevices(BTConnect.localAdapter);
         DeviceAdapter adapter = new DeviceAdapter(this, devices);
         LV.setAdapter(adapter);
 
+        /** Permet de se connecter à un appareil en cliquant dessus */
         LV.setOnItemClickListener((parent, item_view, pos, row_id) -> {
             Device device = (Device) parent.getItemAtPosition(pos);
             editMAC.setText(device.getMacAddress());
@@ -50,9 +52,11 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
             startActivity(it);
         });
 
+        /** Rafraichit la liste des appareils appairés */
         btnRefresh.setOnClickListener(view -> updateBluetoothDevices(LV, BTConnect.localAdapter));
     }
 
+    /** Récupère les appareils appairés */
     private List<Device> getPairedDevices(BluetoothAdapter BTAdapter) {
         BluetoothService.checkBTPermissions(this, this);
         if (!BTAdapter.isEnabled()) {
@@ -63,6 +67,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         return BTConnect.getPairedBluetoothDevices();
     }
 
+    /** Met à jour la liste des appareils appairés */
     private void updateBluetoothDevices(ListView LV, BluetoothAdapter BTAdapter) {
         List<Device> devices = getPairedDevices(BTAdapter);
         DeviceAdapter adapter = (DeviceAdapter) LV.getAdapter();
@@ -73,6 +78,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
     }
 
 
+    /** Demande à l'utilisateur d'activer le bluetooth */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
@@ -82,6 +88,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         }
     }
 
+    /** Récupère le résultat de la demande d'activation du bluetooth */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 2) {
@@ -94,6 +101,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         }
     }
 
+    /** Retourne à la page précédente en fermant efficacement l'activité */
     @Override
     public void onBackPressed() {
         finish();

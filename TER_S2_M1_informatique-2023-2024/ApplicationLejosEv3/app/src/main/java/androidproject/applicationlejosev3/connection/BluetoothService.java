@@ -25,15 +25,28 @@ import java.util.UUID;
 import androidproject.applicationlejosev3.utils.Device;
 import androidproject.applicationlejosev3.utils.Utils;
 
+/** Classe qui gère la connexion Bluetooth avec l'EV3
+ *  Elle permet de se connecter à un périphérique, d'envoyer des commandes et de recevoir des données
+ *  Elle permet aussi de récupérer la liste des périphériques appairés
+ */
 public class BluetoothService {
     private static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
     BluetoothAdapter localAdapter;
     private BluetoothSocket socket;
 
+    /** Constructeur 1 de la classe
+     * Initialise le Bluetooth
+     * @param context : contexte de l'application
+     */
     public BluetoothService(Context context){
         localAdapter = initBT(context);
     }
 
+    /** Constructeur 2 de la classe
+     * Initialise le Bluetooth et crée un socket pour se connecter à un périphérique
+     * @param context : contexte de l'application
+     * @param d : périphérique auquel on veut se connecter
+     */
     public BluetoothService(Context context, Device d) {
         localAdapter = initBT(context);
         BluetoothSocket tmp = null;
@@ -47,6 +60,10 @@ public class BluetoothService {
         socket = tmp;
     }
 
+    /** Méthode qui initialise le Bluetooth
+     * @param context : contexte de l'application
+     * @return : l'adaptateur Bluetooth
+     */
     public BluetoothAdapter initBT(Context context){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             BluetoothManager localBluetoothManager = context.getSystemService(BluetoothManager.class);
@@ -56,6 +73,9 @@ public class BluetoothService {
         return localAdapter;
     }
 
+    /** Méthode qui retourne la liste des périphériques appairés depuis les paramètres Bluetooth de l'appareil
+     * @return : la liste des périphériques appairés
+     */
     public List<Device> getPairedBluetoothDevices() {
         Set<BluetoothDevice> pairedDevices = localAdapter.getBondedDevices();
         List<Device> devices = new ArrayList<>();
@@ -67,6 +87,10 @@ public class BluetoothService {
         return devices;
     }
 
+    /** Méthode qui se connecte à un périphérique
+     * @param EV3 : périphérique auquel on veut se connecter
+     * @return : true si la connexion a réussi, false sinon
+     */
     public boolean connectToDevice(Device EV3){
         BluetoothDevice device = localAdapter.getRemoteDevice(EV3.getMacAddress());
         BluetoothSocket tmp;
@@ -81,6 +105,8 @@ public class BluetoothService {
         }
     }
 
+    /** Méthode qui se déconnecte du périphérique
+     */
     public void disconnect() {
         try {
             socket.close();
@@ -90,7 +116,9 @@ public class BluetoothService {
         }
     }
 
-    // Utile pour envoyer des messages à l'EV3 (pour les fonctionnalités)
+    /** Méthode qui envoie une commande au périphérique
+     * @param speed : vitesse à envoyer
+     */
     public void sendCommand(int speed){
         BluetoothSocket connSock = socket;
         if(connSock != null){
@@ -105,6 +133,11 @@ public class BluetoothService {
         }
     }
 
+    /** Méthode qui reçoit la vitesse du robot
+     * La vitesse est reçue sous forme de tableau d'entiers et multipliée par 10
+     * @throws IOException : exception si la connexion est perdue
+     * @return : la collection de vitesses reçues (contenant 2 vitesses pour les 2 moteurs)
+     */
     public int[] receiveSpeed() throws IOException {
         BluetoothSocket connSock = socket;
         if (!connSock.isConnected())
@@ -123,6 +156,11 @@ public class BluetoothService {
         return intResult;
     }
 
+    /** Méthode qui vérifie si l'application a les permissions pour utiliser le Bluetooth
+     * @param context : contexte de l'application
+     * @param activity : activité de l'application
+     * @return : true si l'application a les permissions, false sinon
+     */
     public static boolean checkBTPermissions(Context context, Activity activity) {
         boolean bluetoothAvailable = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
         if (!bluetoothAvailable) {
@@ -138,6 +176,9 @@ public class BluetoothService {
         return false;
     }
 
+    /** Méthode qui retourne le nom de l'appareil
+     * @return : le nom de l'appareil
+     */
     public static String getNameOfDevice(){
         return BluetoothAdapter.getDefaultAdapter().getName();
     }
