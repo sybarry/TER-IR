@@ -43,7 +43,11 @@ public class Controller {
             ratioRight = 0;
             ratioLeft = 0;
             rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioRight);
-        } else System.out.println("Must stop first");
+        } else if (actualState == State.BACKWARD) {
+            actualState = State.FORWARD;
+            leftMotor.movingForward();
+            rightMotor.movingForward();
+        } else System.out.println("No forward in this state");
         leftMotor.getMotor().endSynchronization();
     }
 
@@ -54,27 +58,28 @@ public class Controller {
     **/
     public void movingBackward() {
         leftMotor.getMotor().startSynchronization();
-        if (actualState == State.STOPPED) {
-            leftMotor.movingBackward();
-            rightMotor.movingBackward();
-            actualState = State.BACKWARD;
-        } else if (actualState == State.TURNING_LEFT) {
-            leftMotor.setActual_speed(rightMotor.getActual_speed() + ratioLeft);
-            actualState = State.BACKWARD;
-        } else if (actualState == State.TURNING_RIGHT) {
-            rightMotor.setActual_speed(leftMotor.getActual_speed() + ratioRight);
-            actualState = State.BACKWARD;
-        } else System.out.println("Must stop first");
+        leftMotor.stop();
+        rightMotor.stop();
+        actualState = State.BACKWARD;
+        ratioLeft = 0;
+        ratioRight = 0;
+        if (leftMotor.getActual_speed() > rightMotor.getActual_speed())
+            leftMotor.setActual_speed(rightMotor.getActual_speed());
+        else rightMotor.setActual_speed(leftMotor.getActual_speed());
+        leftMotor.movingBackward();
+        rightMotor.movingBackward();
         leftMotor.getMotor().endSynchronization();
     }
 
     /** Arrêter le robot **/
     public void stop() {
-        leftMotor.getMotor().startSynchronization();
-        leftMotor.stop();
-        rightMotor.stop();
-        actualState = State.STOPPED;
-        leftMotor.getMotor().endSynchronization();
+        if (actualState != State.STOPPED) {
+            leftMotor.getMotor().startSynchronization();
+            leftMotor.stop();
+            rightMotor.stop();
+            actualState = State.STOPPED;
+            leftMotor.getMotor().endSynchronization();
+        }
     }
 
     /**

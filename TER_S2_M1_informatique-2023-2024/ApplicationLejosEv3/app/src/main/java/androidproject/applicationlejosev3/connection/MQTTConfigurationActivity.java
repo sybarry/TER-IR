@@ -4,12 +4,14 @@ import static androidproject.applicationlejosev3.utils.Utils.toast;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import androidproject.applicationlejosev3.R;
 import androidproject.applicationlejosev3.utils.AsyncOperation;

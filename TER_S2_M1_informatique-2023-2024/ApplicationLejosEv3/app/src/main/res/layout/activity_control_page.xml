@@ -14,99 +14,43 @@
             android:paddingHorizontal="20dp"
             android:layout_weight="2">
 
-        <com.github.capur16.digitspeedviewlib.DigitSpeedView
-                android:id="@+id/digitGauche"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                app:speed="0"
-                gauge:showUnit="false"
-                android:layout_marginHorizontal="10dp"
-                app:speedTextColor="@android:color/white"
-                app:speedTextSize="20dp"
-                app:unitTextSize="3dp" />
-
-        <com.github.capur16.digitspeedviewlib.DigitSpeedView
-                android:id="@+id/digitDroite"
-                android:layout_width="170dp"
-                android:layout_toEndOf="@id/digitGauche"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                app:speed="0"
-                gauge:showUnit="false"
-                app:speedTextColor="@android:color/white"
-                app:speedTextSize="20dp"
-                app:unitTextSize="3dp" />
-
         <LinearLayout
-                android:id="@+id/seekLinearLayout"
                 android:layout_width="match_parent"
-                android:layout_below="@id/digitGauche"
                 android:layout_height="wrap_content"
+                android:id="@+id/layout_speed"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
-            <SeekBar
-                    android:id="@+id/seekGauche"
-                    android:max="500"
-                    android:progress="0"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <com.github.capur16.digitspeedviewlib.DigitSpeedView
+                    android:id="@+id/digitGauche"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    app:speed="0"
+                    gauge:showUnit="false"
+                    android:layout_marginHorizontal="10dp"
+                    app:speedTextColor="@android:color/white"
+                    app:speedTextSize="20dp"
+                    app:unitTextSize="3dp" />
 
-            <SeekBar
-                    android:id="@+id/seekDroite"
-                    android:max="500"
-                    android:progress="0"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
+            <com.github.capur16.digitspeedviewlib.DigitSpeedView
+                    android:id="@+id/digitDroite"
+                    android:layout_width="170dp"
+                    android:layout_toEndOf="@id/digitGauche"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    app:speed="0"
+                    gauge:showUnit="false"
+                    app:speedTextColor="@android:color/white"
+                    app:speedTextSize="20dp"
+                    app:unitTextSize="3dp" />
         </LinearLayout>
 
 
         <LinearLayout
-                android:id="@+id/seekText"
                 android:layout_width="match_parent"
-                android:layout_below="@id/seekLinearLayout"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/txtR1"
-                    android:layout_weight="1"
-                    android:text="Roue gauche"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            <include
-                    layout="@layout/marker"
-                    android:id="@+id/markerG"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"/>
-
-            <include
-                    layout="@layout/marker"
-                    android:id="@+id/markerD"
-                    android:layout_marginStart="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"/>
-
-            <TextView
-                    android:id="@+id/txtR2"
-                    android:layout_weight="1"
-                    android:text="Roue droite"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_below="@id/seekText"
+                android:id="@+id/layout_speed_general"
+                android:layout_below="@id/layout_speed"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
@@ -127,6 +71,25 @@
                     android:layout_height="wrap_content"
                     android:visibility="invisible"/>
 
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_below="@id/layout_speed_general"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+<!--            <com.google.android.material.slider.Slider-->
+<!--                    android:id="@+id/ss"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:valueFrom="0"-->
+<!--                    android:valueTo="500"-->
+<!--                    android:stepSize="50"-->
+<!--                    android:value="50"-->
+<!--                    android:layout_height="wrap_content"/>-->
 
         </LinearLayout>
 

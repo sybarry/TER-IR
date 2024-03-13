@@ -4,11 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,17 +34,17 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         LV = findViewById(R.id.LV);
         editMAC = findViewById(R.id.editMac);
 
-        /** Verifie si le bluetooth est activé, sinon demande à l'utilisateur de l'activer */
+        /* Verifie si le bluetooth est activé, sinon demande à l'utilisateur de l'activer */
         if (!BluetoothService.checkBTPermissions(this, this))
             finish();
 
-        /** Récupère les appareils appairés et les affiche dans la liste */
+        /* Récupère les appareils appairés et les affiche dans la liste */
         BTConnect = new BluetoothService(this);
         List<Device> devices = getPairedDevices(BTConnect.localAdapter);
         DeviceAdapter adapter = new DeviceAdapter(this, devices);
         LV.setAdapter(adapter);
 
-        /** Permet de se connecter à un appareil en cliquant dessus */
+        /* Permet de se connecter à un appareil en cliquant dessus */
         LV.setOnItemClickListener((parent, item_view, pos, row_id) -> {
             Device device = (Device) parent.getItemAtPosition(pos);
             editMAC.setText(device.getMacAddress());
@@ -52,7 +53,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
             startActivity(it);
         });
 
-        /** Rafraichit la liste des appareils appairés */
+        /* Rafraichit la liste des appareils appairés */
         btnRefresh.setOnClickListener(view -> updateBluetoothDevices(LV, BTConnect.localAdapter));
     }
 
@@ -81,6 +82,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
     /** Demande à l'utilisateur d'activer le bluetooth */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 updateBluetoothDevices(LV, BTConnect.localAdapter);
@@ -91,6 +93,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
     /** Récupère le résultat de la demande d'activation du bluetooth */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 Utils.toast(this, "Bluetooth is enabled");
