@@ -152,8 +152,14 @@ public class BluetoothService {
         byte[] result = new byte[bytesRead];
         System.arraycopy(buffer, 0, result, 0, bytesRead);
         int[] intResult = new int[bytesRead];
-        for (int i = 0; i < bytesRead; i++)
-            intResult[i] = Integer.parseInt(String.valueOf(result[i])) * 10;
+
+        for (int i = 0; i < bytesRead; i++) {
+            if (i<2){
+                intResult[i] = Integer.parseInt(String.valueOf(result[i])) * 10;
+            }else {
+                intResult[i] = Integer.parseInt(String.valueOf(result[i]));
+            }
+        }
         return intResult;
     }
 

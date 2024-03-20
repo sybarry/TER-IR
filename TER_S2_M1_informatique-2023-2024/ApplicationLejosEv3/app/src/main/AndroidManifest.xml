@@ -21,7 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".connection.ConnectionBluetoothActivity">
+        <activity android:name=".connection.ConnectionBluetoothActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+
         </activity>
         <activity android:name=".panel.ControlPageActivity">
         </activity>
