@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.capur16.digitspeedviewlib.DigitSpeedView;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidproject.applicationlejosev3.R;
 import androidproject.applicationlejosev3.connection.BluetoothService;
@@ -31,6 +32,8 @@ public class ControlPageActivity extends AppCompatActivity {
     SeekBar vitesseGeneral;
     TextView txtStatus, txtProgressGeneral;
     int step = 50;
+    //AtomicBoolean deliver = new AtomicBoolean(false);
+    boolean deliver = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +180,11 @@ public class ControlPageActivity extends AppCompatActivity {
                         } else vitesseGeneral.setEnabled(false);
                         digitG.updateSpeed(speedData[0]);
                         digitD.updateSpeed(speedData[1]);
+                        if (!deliver){
+                            toast(this, "Bien demarré");
+                            deliver = speedData[2] == 1;
+                        }
+
                     });
                 } catch (InterruptedException | IOException e) {
                     if (e.getMessage().trim().equals("bt socket closed, read return: -1".trim()))

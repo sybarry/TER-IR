@@ -176,7 +176,8 @@ public class Controller {
     public byte[] getSpeedAsArray() {
         return new byte[]{
                 (byte) (leftMotor.getActual_speed() / 10),
-                (byte) (rightMotor.getActual_speed() / 10)
+                (byte) (rightMotor.getActual_speed() / 10),
+                (byte) (1)
         };
     }
 
