@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    namespace "com.example.applicationlejosev3"
     compileSdkVersion 34
     defaultConfig {
         applicationId "androidproject.applicationlejosev3"

@@ -175,6 +175,8 @@ public class ControlPageActivity extends AppCompatActivity {
                             vitesseGeneral.setProgress(speedData[0]);
                             vitesseGeneral.setEnabled(true);
                         } else vitesseGeneral.setEnabled(false);
+                        digitG.updateSpeed(speedData[0]);
+                        digitD.updateSpeed(speedData[1]);
                     });
                 } catch (InterruptedException | IOException e) {
                     if (e.getMessage().trim().equals("bt socket closed, read return: -1".trim()))
