@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.capur16.digitspeedviewlib.DigitSpeedView;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidproject.applicationlejosev3.R;
 import androidproject.applicationlejosev3.connection.BluetoothService;
@@ -30,10 +29,8 @@ public class ControlPageActivity extends AppCompatActivity {
     DigitSpeedView digitG, digitD;
     RelativeLayout rlmarkerGeneral;
     SeekBar vitesseGeneral;
-    TextView txtStatus, txtProgressGeneral;
+    TextView txtConnectionStatus, txtProgressGeneral, txtStatus;
     int step = 50;
-    //AtomicBoolean deliver = new AtomicBoolean(false);
-    boolean deliver = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +45,7 @@ public class ControlPageActivity extends AppCompatActivity {
         vitesseGeneral = findViewById(R.id.seekGeneral);
         digitG = findViewById(R.id.digitGauche);
         digitD = findViewById(R.id.digitDroite);
+        txtConnectionStatus = findViewById(R.id.txtConnectionStatus);
         txtStatus = findViewById(R.id.txtStatus);
         rlmarkerGeneral = findViewById(R.id.markerGeneral);
         txtProgressGeneral = rlmarkerGeneral.findViewById(R.id.tvProgress);
@@ -180,11 +178,7 @@ public class ControlPageActivity extends AppCompatActivity {
                         } else vitesseGeneral.setEnabled(false);
                         digitG.updateSpeed(speedData[0]);
                         digitD.updateSpeed(speedData[1]);
-                        if (!deliver){
-                            toast(this, "Bien demarré");
-                            deliver = speedData[2] == 1;
-                        }
-
+                        setTextFromBytes(txtStatus ,speedData[2]);
                     });
                 } catch (InterruptedException | IOException e) {
                     if (e.getMessage().trim().equals("bt socket closed, read return: -1".trim()))
@@ -196,12 +190,34 @@ public class ControlPageActivity extends AppCompatActivity {
         return R;
     }
 
+    private void setTextFromBytes(TextView txtStatus, int actualStatus) {
+        switch (actualStatus) {
+            case 1:
+                txtStatus.append("je suis arreté\n");
+                break;
+            case 2:
+                txtStatus.append("Je vais en avant\n");
+                break;
+            case 3:
+                txtStatus.append("Je vais en arrière\n");
+                break;
+            case 4:
+                txtStatus.append("Je tourne à gauche\n");
+                break;
+            case 5:
+                txtStatus.append("Je tourne à droite\n");
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Si la connexion est perdue, desactive les boutons de commande et affiche un message d'erreur
      */
     private void connectionCut() {
-        txtStatus.setText("Connexion perdue");
-        txtStatus.setTextColor(getResources().getColor(R.color.red));
+        txtConnectionStatus.setText("Connexion perdue");
+        txtConnectionStatus.setTextColor(getResources().getColor(R.color.red));
         btnAvancer.setEnabled(false);
         btnReculer.setEnabled(false);
         btnGauche.setEnabled(false);
@@ -215,8 +231,8 @@ public class ControlPageActivity extends AppCompatActivity {
      * Si la connexion est retablie, active les boutons de commande et affiche un message de succes
      */
     private void connectionEstablished() {
-        txtStatus.setText("Connexion établie");
-        txtStatus.setTextColor(getResources().getColor(R.color.green));
+        txtConnectionStatus.setText("Connexion établie");
+        txtConnectionStatus.setTextColor(getResources().getColor(R.color.green));
         btnAvancer.setEnabled(true);
         btnReculer.setEnabled(true);
         btnGauche.setEnabled(true);
