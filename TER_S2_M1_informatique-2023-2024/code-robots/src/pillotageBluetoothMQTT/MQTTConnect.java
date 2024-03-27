@@ -57,12 +57,6 @@ public class MQTTConnect {
                     case "stop":
                         MainMQTT_BT.ctrl.stop();
                         break;
-                    case "speedup":
-                        MainMQTT_BT.ctrl.accelerate(50);
-                        break;
-                    case "speeddown":
-                        MainMQTT_BT.ctrl.decelerate(50);
-                        break;
                     case "disconnect":
                         MainMQTT_BT.BT_disconnected = true;
                         break;

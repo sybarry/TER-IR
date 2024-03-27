@@ -3,6 +3,7 @@ package androidproject.applicationlejosev3.connection;
 import static androidx.core.app.ActivityCompat.requestPermissions;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,11 +14,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,10 +32,12 @@ import androidproject.applicationlejosev3.utils.Utils;
  *  Elle permet de se connecter à un périphérique, d'envoyer des commandes et de recevoir des données
  *  Elle permet aussi de récupérer la liste des périphériques appairés
  */
+@SuppressLint("MissingPermission")
 public class BluetoothService {
     private static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
     BluetoothAdapter localAdapter;
     private BluetoothSocket socket;
+    private byte[] output = new byte[2];
 
     /** Constructeur 1 de la classe
      * Initialise le Bluetooth
@@ -73,6 +77,7 @@ public class BluetoothService {
         } else localAdapter = BluetoothAdapter.getDefaultAdapter();
         return localAdapter;
     }
+
 
     /** Méthode qui retourne la liste des périphériques appairés depuis les paramètres Bluetooth de l'appareil
      * @return : la liste des périphériques appairés
@@ -117,15 +122,20 @@ public class BluetoothService {
         }
     }
 
+
     /** Méthode qui envoie une commande au périphérique
-     * @param speed : vitesse à envoyer
+     * @param overall_speed : vitesse globale du robot à envoyer
+     * @param action : action à envoyer
      */
-    public void sendCommand(int speed){
+    public void sendCommand(Integer action, @Nullable Integer overall_speed){
+        output[0] = action.byteValue();
+        if (overall_speed != null)
+            output[1] = overall_speed.byteValue();
         BluetoothSocket connSock = socket;
         if(connSock != null){
             try {
-                OutputStreamWriter out = new OutputStreamWriter(connSock.getOutputStream());
-                out.write(speed);
+                OutputStream out = connSock.getOutputStream();
+                out.write(output);
                 out.flush();
                 Thread.sleep(250); // wait for the message to be treated by EV3
             } catch (IOException | InterruptedException e) {

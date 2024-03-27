@@ -7,6 +7,7 @@ import lejos.remote.nxt.NXTConnection;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 
 import static pillotageBluetoothMQTT.MainMQTT_BT.ctrl;
@@ -32,13 +33,14 @@ public class BTConnect implements Runnable {
          * Au cas où le client se déconnecte, on sort de la boucle et la connexion bluetooth (le thread) est fermée. <br>
          * **/
         while (true) {
-            out.write(ctrl.getSpeedAsArray());
+            out.write(ctrl.getSpeedAsArray(ctrl.getActualState().getValue()));
             out.flush();
-            int n = in.read();
-            if (!MainMQTT_BT.BT_disconnected)
-                executeCommand(ctrl, n);
-
-            if (n == -1) {
+            try{
+                byte[] input = new byte[2];
+                in.readFully(input);
+                if (!MainMQTT_BT.BT_disconnected)
+                    executeCommand(ctrl, input);
+            } catch (EOFException e) {
                 in.close();
                 break;
             }
@@ -50,10 +52,10 @@ public class BTConnect implements Runnable {
     /** Méthode pour exécuter une commande envoyée par le client.
      * Les commandes sont des entiers entre 1 et 7. <br>
      * @param ctrl le controlleur du robot
-     * @param command la commande à exécuter
+     * @param input la commande à exécuter
      * **/
-    private void executeCommand(Controller ctrl, int command) {
-        switch (command) {
+    private void executeCommand(Controller ctrl, byte[] input) {
+        switch (input[0]) {
             case 1:
                 ctrl.movingForward();
                 break;
@@ -67,10 +69,7 @@ public class BTConnect implements Runnable {
                 ctrl.turnRight();
                 break;
             case 5:
-                ctrl.accelerate(50);
-                break;
-            case 6:
-                ctrl.decelerate(50);
+                ctrl.saveSpeed(input[1] * 10);
                 break;
             case 7:
                 ctrl.stop();

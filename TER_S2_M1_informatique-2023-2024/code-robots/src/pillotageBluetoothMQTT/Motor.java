@@ -15,7 +15,9 @@ public class Motor {
 	}
 
 	public void setActual_speed(int actual_speed) {
-		motor.setSpeed(actual_speed);
+		if (actual_speed == 0)
+			motor.stop();
+		else motor.setSpeed(actual_speed);
 	}
 
 	public void movingBackward() {
@@ -32,16 +34,6 @@ public class Motor {
 
 	public void stop() {
 		motor.stop();
-	}
-
-	public void speedUp(int value) {
-		int new_speed = motor.getSpeed() + value;
-		motor.setSpeed(new_speed);
-	}
-
-	public void speedDown(int value) {
-		int new_speed = motor.getSpeed() - value;
-		motor.setSpeed(new_speed);
 	}
 
 }

@@ -22,7 +22,7 @@ import androidproject.applicationlejosev3.connection.BluetoothService;
 import androidproject.applicationlejosev3.utils.Device;
 
 public class ControlPageActivity extends AppCompatActivity {
-    BluetoothService BTConnect;
+    BluetoothService BTServ;
     int currentSpeed = 50;
     ImageButton btnGauche, btnDroite;
     Button btnExit, btnStop, btnReculer, btnAvancer, btnRetry;
@@ -54,12 +54,12 @@ public class ControlPageActivity extends AppCompatActivity {
 
         // Toast pour avertir l'utilisateur
         Device device = getIntent().getParcelableExtra("mac");
-        BTConnect = new BluetoothService(this, device);
+        BTServ = new BluetoothService(this, device);
 
         /*
           Si la connexion échoue, on affiche un message d'erreur et on ferme l'activité
           */
-        if (!BTConnect.connectToDevice(device)) {
+        if (!BTServ.connectToDevice(device)) {
             toast(this, "Impossible de se connecter à cet appareil");
             finish();
         }
@@ -78,8 +78,7 @@ public class ControlPageActivity extends AppCompatActivity {
             int progressChangedValue = 0;
 
             /**
-             * On ajuste la valeur de la barre de vitesse pour qu'elle soit un multiple de 50
-             *
+             * On ajuste la valeur de la barre de vitesse pour qu'elle soit un multiple de 5
              * @param progress la valeur de la barre de vitesse
              */
             private void adjustProgress(int progress) {
@@ -120,12 +119,10 @@ public class ControlPageActivity extends AppCompatActivity {
                 rlmarkerGeneral.setVisibility(View.INVISIBLE);
 
                 if (progressChangedValue == 0) {
-                    BTConnect.sendCommand(7);
+                    BTServ.sendCommand(7, null);
                     currentSpeed = 0;
-                } else if (progressChangedValue > currentSpeed)
-                    BTConnect.sendCommand(5);
-                else if (progressChangedValue < currentSpeed)
-                    BTConnect.sendCommand(6);
+                } else
+                    BTServ.sendCommand(5, progressChangedValue / 10);
 
                 seekBar.setProgress(progressChangedValue);
             }
@@ -135,11 +132,11 @@ public class ControlPageActivity extends AppCompatActivity {
         new Thread(listenToIncommingSpeed()).start();
 
         /* Commandes pour avancer, reculer, tourner a gauche, tourner a droite, arreter le rebot. */
-        btnAvancer.setOnClickListener((view) -> BTConnect.sendCommand(1));
-        btnReculer.setOnClickListener((view) -> BTConnect.sendCommand(2));
-        btnGauche.setOnClickListener((view) -> BTConnect.sendCommand(3));
-        btnDroite.setOnClickListener((view) -> BTConnect.sendCommand(4));
-        btnStop.setOnClickListener((view) -> BTConnect.sendCommand(7));
+        btnAvancer.setOnClickListener((view) -> BTServ.sendCommand(1, currentSpeed));
+        btnReculer.setOnClickListener((view) -> BTServ.sendCommand(2, currentSpeed));
+        btnGauche.setOnClickListener((view) -> BTServ.sendCommand(3, null));
+        btnDroite.setOnClickListener((view) -> BTServ.sendCommand(4, null));
+        btnStop.setOnClickListener((view) -> BTServ.sendCommand(7, null));
         btnExit.setOnClickListener((view) -> finish());
 
         /* Si la connexion est perdue, on affiche un message d'erreur et on desactive les boutons de commande. <br>
@@ -147,7 +144,7 @@ public class ControlPageActivity extends AppCompatActivity {
          * à condition que le robot soit en attente de connexion Bluetooth
          * */
         btnRetry.setOnClickListener((view) -> {
-            if (BTConnect.connectToDevice(device)) {
+            if (BTServ.connectToDevice(device)) {
                 connectionEstablished();
                 new Thread(listenToIncommingSpeed()).start();
             } else connectionCut();
@@ -167,7 +164,7 @@ public class ControlPageActivity extends AppCompatActivity {
             while (true) {
                 try {
                     Thread.sleep(50);
-                    int[] speedData = BTConnect.receiveSpeed();
+                    int[] speedData = BTServ.receiveSpeed();
                     if (speedData == null)
                         break;
                     runOnUiThread(() -> {
@@ -253,7 +250,7 @@ public class ControlPageActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        BTConnect.disconnect();
+        BTServ.disconnect();
         super.onDestroy();
     }
 
