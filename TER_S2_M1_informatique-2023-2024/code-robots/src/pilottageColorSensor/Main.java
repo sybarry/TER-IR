@@ -1,14 +1,13 @@
 package pilottageColorSensor;
 
-import lejos.utility.Delay;
-
 public class Main {
 
-	public static void main(String[] args) {
-
+    public static void main(String[] args) {
+	/*	
 		ConduiteAutonome conduite = new ConduiteAutonome();
+	
 		try {
-			conduite.test();
+		//	conduite.test();
 		} catch (InterruptedException e) {
 			System.out.println(e.getMessage());
 		} catch (RuntimeException e) {
@@ -17,6 +16,8 @@ public class Main {
 			Delay.msDelay(1500);
 		}
 		
-		System.exit(0);
-	}
+		System.exit(0);*/
+
+
+    }
 }
