@@ -2,6 +2,8 @@ package pillotageBluetoothMQTT;
 
 import org.eclipse.paho.client.mqttv3.*;
 
+import lejos.hardware.Battery;
+
 public class MQTTConnect {
     /** Credentials pour se connecter au broker MQTT */
     final String username = "ev3";
@@ -63,6 +65,9 @@ public class MQTTConnect {
                     case "connect":
                         MainMQTT_BT.BT_disconnected = false;
                         break;
+                    case "sensor":
+                    	System.out.println(MainMQTT_BT.ctrl.calculateDistance());
+                    	break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
