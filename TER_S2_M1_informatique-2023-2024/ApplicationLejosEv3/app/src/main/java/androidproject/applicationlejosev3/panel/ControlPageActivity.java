@@ -20,17 +20,20 @@ import java.io.IOException;
 import androidproject.applicationlejosev3.R;
 import androidproject.applicationlejosev3.connection.BluetoothService;
 import androidproject.applicationlejosev3.utils.Device;
+import eo.view.batterymeter.BatteryMeterView;
 
 public class ControlPageActivity extends AppCompatActivity {
     BluetoothService BTServ;
-    int currentSpeed = 50;
-    ImageButton btnGauche, btnDroite;
+    int currentSpeed, step = 50;
+    ImageButton btnGauche, btnDroite, btnClear;
     Button btnExit, btnStop, btnReculer, btnAvancer, btnRetry;
     DigitSpeedView digitG, digitD;
     RelativeLayout rlmarkerGeneral;
     SeekBar vitesseGeneral;
+    BatteryMeterView batteryView;
     TextView txtConnectionStatus, txtProgressGeneral, txtStatus;
-    int step = 50;
+    boolean obstacleDetected = false;
+    int volt = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +50,10 @@ public class ControlPageActivity extends AppCompatActivity {
         digitD = findViewById(R.id.digitDroite);
         txtConnectionStatus = findViewById(R.id.txtConnectionStatus);
         txtStatus = findViewById(R.id.txtStatus);
+        btnClear = findViewById(R.id.btnClear);
         rlmarkerGeneral = findViewById(R.id.markerGeneral);
         txtProgressGeneral = rlmarkerGeneral.findViewById(R.id.tvProgress);
+        batteryView = findViewById(R.id.batteryMeter);
         digitD.updateSpeed(currentSpeed);
         digitG.updateSpeed(currentSpeed);
 
@@ -149,6 +154,8 @@ public class ControlPageActivity extends AppCompatActivity {
                 new Thread(listenToIncommingSpeed()).start();
             } else connectionCut();
         });
+        btnClear.setOnClickListener((view) -> txtStatus.setText(""));
+        batteryView.setOnClickListener((view) -> toast(this, volt + "V"));
     }
 
 
@@ -160,7 +167,7 @@ public class ControlPageActivity extends AppCompatActivity {
      */
     @NonNull
     private Runnable listenToIncommingSpeed() {
-        Runnable R = () -> {
+        return () -> {
             while (true) {
                 try {
                     Thread.sleep(50);
@@ -175,7 +182,9 @@ public class ControlPageActivity extends AppCompatActivity {
                         } else vitesseGeneral.setEnabled(false);
                         digitG.updateSpeed(speedData[0]);
                         digitD.updateSpeed(speedData[1]);
-                        setTextFromBytes(txtStatus ,speedData[2]);
+//                        reactToObstacle(speedData[3]);
+                        printOnUIConsole(speedData[2]);
+                        batteryView.setChargeLevel(calculateBattery(speedData[4]));
                     });
                 } catch (InterruptedException | IOException e) {
                     if (e.getMessage().trim().equals("bt socket closed, read return: -1".trim()))
@@ -184,10 +193,19 @@ public class ControlPageActivity extends AppCompatActivity {
             }
             runOnUiThread(this::connectionCut);
         };
-        return R;
     }
 
-    private void setTextFromBytes(TextView txtStatus, int actualStatus) {
+    private void reactToObstacle(int detected) {
+        if (detected == 1 && !obstacleDetected) {
+            toast(this, "Obstacle détecté");
+            obstacleDetected = true;
+            BTServ.sendCommand(7, null); // stop the robot
+        } else {
+            obstacleDetected = false;
+        }
+    }
+
+    private void printOnUIConsole(int actualStatus) {
         switch (actualStatus) {
             case 1:
                 txtStatus.append("je suis arreté\n");
@@ -237,6 +255,21 @@ public class ControlPageActivity extends AppCompatActivity {
         btnStop.setEnabled(true);
         vitesseGeneral.setEnabled(true);
         btnRetry.setVisibility(View.GONE);
+    }
+
+    /**
+     * Calcule le pourcentage de la batterie en fonction de la tension
+     * @param voltage la tension de la batterie
+     * @return le pourcentage correspondant à la tension de la batterie
+     */
+    private int calculateBattery(int voltage){
+        final int VOLTAGE_MIN = 71;
+        final int VOLTAGE_MAX = 81;
+        if (voltage < VOLTAGE_MIN) return 0;
+        else if (voltage > VOLTAGE_MAX) return 100;
+
+        float percentage = ((float) (voltage - VOLTAGE_MIN) / (VOLTAGE_MAX - VOLTAGE_MIN)) * 100;
+        return Math.round(percentage);
     }
 
     /**
