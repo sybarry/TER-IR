@@ -111,7 +111,8 @@ public class BluetoothService {
         }
     }
 
-    /** Méthode qui se déconnecte du périphérique
+    /**
+     *  Se déconnecter du périphérique
      */
     public void disconnect() {
         try {
@@ -123,7 +124,7 @@ public class BluetoothService {
     }
 
 
-    /** Méthode qui envoie une commande au périphérique
+    /** Envoyer une commande au périphérique
      * @param overall_speed : vitesse globale du robot à envoyer
      * @param action : action à envoyer
      */
@@ -149,12 +150,12 @@ public class BluetoothService {
      * @throws IOException : exception si la connexion est perdue
      * @return : la collection de vitesses reçues (contenant 2 vitesses pour les 2 moteurs)
      */
-    public int[] receiveSpeed() throws IOException {
+    public int[] receivePayload() throws IOException {
         BluetoothSocket connSock = socket;
         if (!connSock.isConnected())
             return null;
 
-        InputStream in = connSock.getInputStream();
+        InputStream in = connSock.getInputStream(); // bloquing call
         byte[] buffer = new byte[1024]; // adjust the size as needed
         int bytesRead = in.read(buffer);
         if (bytesRead == -1)
@@ -163,7 +164,7 @@ public class BluetoothService {
         System.arraycopy(buffer, 0, result, 0, bytesRead);
         int[] intResult = new int[bytesRead];
         for (int i = 0; i < bytesRead; i++) {
-            if (i<2){
+            if (i < 2){
                 intResult[i] = Integer.parseInt(String.valueOf(result[i])) * 10;
             } else {
                 intResult[i] = Integer.parseInt(String.valueOf(result[i]));

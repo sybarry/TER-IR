@@ -171,7 +171,8 @@ public class ControlPageActivity extends AppCompatActivity {
             while (true) {
                 try {
                     Thread.sleep(50);
-                    int[] speedData = BTServ.receiveSpeed();
+                    BTServ.sendCommand(0, null);
+                    int[] speedData = BTServ.receivePayload();
                     if (speedData == null)
                         break;
                     runOnUiThread(() -> {
@@ -182,8 +183,7 @@ public class ControlPageActivity extends AppCompatActivity {
                         } else vitesseGeneral.setEnabled(false);
                         digitG.updateSpeed(speedData[0]);
                         digitD.updateSpeed(speedData[1]);
-//                        reactToObstacle(speedData[3]);
-                        printOnUIConsole(speedData[2]);
+                        reactToObstacle(speedData[3]);
                         batteryView.setChargeLevel(calculateBattery(speedData[4]));
                     });
                 } catch (InterruptedException | IOException e) {
@@ -205,7 +205,8 @@ public class ControlPageActivity extends AppCompatActivity {
         }
     }
 
-    private void printOnUIConsole(int actualStatus) {
+    private void printOnUIConsole(int actualStatus, String customMessage){
+
         switch (actualStatus) {
             case 1:
                 txtStatus.append("je suis arreté\n");
@@ -221,6 +222,9 @@ public class ControlPageActivity extends AppCompatActivity {
                 break;
             case 5:
                 txtStatus.append("Je tourne à droite\n");
+                break;
+            case 0:
+                txtStatus.append(customMessage + "\n");
                 break;
             default:
                 break;

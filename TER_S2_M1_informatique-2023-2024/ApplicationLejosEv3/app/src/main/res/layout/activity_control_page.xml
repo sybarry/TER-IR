@@ -49,7 +49,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/batteryMeter"
                     app:batteryMeterChargeLevel="5"
-                    app:batteryMeterColor="#0277bd"
+                    app:batteryMeterColor="#26A653"
                     app:batteryMeterCriticalChargeLevel="25"
                     app:batteryMeterCriticalColor="#d84315"
                     app:batteryMeterIndicatorColor="@android:color/transparent"
