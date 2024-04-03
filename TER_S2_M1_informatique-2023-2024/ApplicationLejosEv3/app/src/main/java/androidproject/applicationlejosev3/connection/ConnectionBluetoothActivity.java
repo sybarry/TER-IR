@@ -58,8 +58,11 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
 
         /* Permet de se connecter à un appareil en entrant son adresse MAC */
         btnConnect.setOnClickListener(view -> {
-            if (!editMAC.getText().toString().isEmpty() && editMAC.getText().toString().length() == 17){
-                connectToDevice(new Device("EV3", editMAC.getText().toString()));
+            String macAddress = editMAC.getText().toString();
+            String macAddressRegex = "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
+
+            if (!macAddress.isEmpty() && macAddress.matches(macAddressRegex)){
+                connectToDevice(new Device("EV3", macAddress));
             } else {
                 Utils.toast(this, "Please enter a valid MAC address");
             }
