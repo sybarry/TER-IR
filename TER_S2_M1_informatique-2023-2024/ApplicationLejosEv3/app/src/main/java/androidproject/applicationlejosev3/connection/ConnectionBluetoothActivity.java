@@ -55,7 +55,15 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
 
         /* Rafraichit la liste des appareils appairés */
         btnRefresh.setOnClickListener(view -> updateBluetoothDevices(LV, BTConnect.localAdapter));
-        btnConnect.setOnClickListener(view -> connectToDevice(new Device("EV3", editMAC.getText().toString())));
+
+        /* Permet de se connecter à un appareil en entrant son adresse MAC */
+        btnConnect.setOnClickListener(view -> {
+            if (!editMAC.getText().toString().isEmpty() && editMAC.getText().toString().length() == 17){
+                connectToDevice(new Device("EV3", editMAC.getText().toString()));
+            } else {
+                Utils.toast(this, "Please enter a valid MAC address");
+            }
+        });
     }
 
     private void connectToDevice(Device device) {

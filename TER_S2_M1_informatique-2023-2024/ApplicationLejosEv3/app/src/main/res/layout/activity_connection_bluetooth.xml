@@ -27,7 +27,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/stat_sys_data_bluetooth"
+                android:src="@android:drawable/ic_menu_search"
                 app:tint="@color/black" />
         <!--android:cursorVisible="false"
         android:focusable="false"
