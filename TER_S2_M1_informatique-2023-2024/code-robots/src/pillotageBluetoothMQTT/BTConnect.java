@@ -58,6 +58,8 @@ public class BTConnect implements Runnable {
      * **/
     private void executeCommand(Controller ctrl, byte[] input) {
         switch (input[0]) {
+        	case 0:
+        		break;
             case 1:
                 ctrl.movingForward();
                 break;
