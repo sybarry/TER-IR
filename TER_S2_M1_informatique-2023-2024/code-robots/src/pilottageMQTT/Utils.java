@@ -4,9 +4,16 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
+/**
+ * Utility class to get different information about the EV3 robot
+ */
 public class Utils {
 
-	// Get the MAC Address of the Wifi dongle
+	/**
+	 * Generate a unique client ID for the MQTT client from the MAC address of the EV3 robot
+	 * @return The generated client ID
+	 * @throws Exception If the MAC address of the EV3 robot cannot be retrieved
+	 */
 	public static StringBuilder generateClientID() throws Exception {
 		InetAddress localHost = getLocalIPAddress();
 		NetworkInterface ni = NetworkInterface.getByInetAddress(localHost);
@@ -18,7 +25,11 @@ public class Utils {
 		return stringBuilder;
 	}
 
-	// Get the IP Address of the EV3 robot
+	/**
+	 * Get the local IP address of the EV3 robot
+	 * @return The local IP address of the EV3 robot
+	 * @throws Exception If the local IP address of the EV3 robot cannot be retrieved
+	 */
 	private static InetAddress getLocalIPAddress() throws Exception {
 		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 
@@ -42,6 +53,10 @@ public class Utils {
 		throw new Exception("No suitable network interface found");
 	}
 
+	/**
+	 * Print a message to the standard output (The LCD screen and the LeJOS Control Center)
+	 * @param message The message to print
+	 */
 	public static void print(String message) {
 		System.out.println(message);
 	}

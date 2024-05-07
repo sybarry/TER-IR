@@ -5,17 +5,16 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import lejos.hardware.Button;
-import lejos.hardware.motor.Motor;
 import lejos.utility.Delay;
 import pilottageColorSensor.Automate;
 import pilottageColorSensor.ConduiteAutonome;
-import pilottageColorSensor.Direction;
 
+/**
+ * This class is used to connect to the MQTT broker and listen to messages.
+ **/
 public class MQTTConnect {
 	ConduiteAutonome  conduiteAutonome = null;
 
@@ -26,7 +25,7 @@ public class MQTTConnect {
 		MqttConnectOptions connOpts = new MqttConnectOptions();
 		 
 		connOpts.setCleanSession(true);
-		// Security credentials; not available in the broker for the moment
+		// Security credentials if needed
 		// connOpts.setUserName("");
 		// connOpts.setPassword("");
 		Utils.print("Connecting to broker " + broker_IP);
@@ -61,7 +60,7 @@ public class MQTTConnect {
 				String payload = new String(message.getPayload());
 				
 				if(payload.contains(String.valueOf('('))) {
-					  //On recupere le fichier Json depuis MQTT et on Construit L'automate 
+					  //On recupere le fichier Json depuis MQTT et on construit L'automate
 					Automate auto = new Automate(payload);
 					conduiteAutonome = new ConduiteAutonome(auto);
 					

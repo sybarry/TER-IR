@@ -30,10 +30,10 @@ public class BTConnect implements Runnable {
         DataOutputStream out = connection.openDataOutputStream();
         System.out.println("Client connected");
 
-        /** Boucle pour lire les commandes envoyées par le client et les exécuter.
+        /* Boucle pour lire les commandes envoyées par le client et les exécuter.
          * Avant de lire une commande, on envoie la vitesse actuelle des moteurs au client. <br>
          * Au cas où le client se déconnecte, on sort de la boucle et la connexion bluetooth (le thread) est fermée. <br>
-         * **/
+         */
         while (true) {
             out.write(ctrl.sendPayloadAsArray(ctrl.getActualState().getValue()));
             out.flush();
@@ -81,6 +81,9 @@ public class BTConnect implements Runnable {
         }
     }
 
+    /*
+        * Méthode run() pour lancer le thread de connexion bluetooth
+     */
     @Override
     public void run() {
         try {

@@ -2,6 +2,10 @@ package pillotageBluetoothMQTT;
 
 import lejos.robotics.RegulatedMotor;
 
+/**
+ * Class to manage the motors of the robot
+ *
+ */
 public class Motor {
 	private final RegulatedMotor motor;
 

@@ -5,7 +5,13 @@ import lejos.utility.Delay;
 
 public class MotorSync {
 
-	// Move the motors at the same time with no delay (sync)
+	/**
+	 * Move the two motors synchronously
+	 * @param M1 : Motor 1
+	 * @param M2 : Motor 2
+	 * @param action : Action to perform
+	 * @param duration : Duration of the action
+	 */
 	public static void startMotorsSync(final NXTRegulatedMotor M1, final NXTRegulatedMotor M2, final Action action,
 			final int duration) {
 		
@@ -20,7 +26,12 @@ public class MotorSync {
 		
 	}
 
-	// Custom action on given motor
+	/**
+	 * Perform the action on the motors
+	 * @param motor1 : Motor 1
+	 * @param motor2 : Motor 2
+	 * @param action : Action to perform
+	 */
 	private static void performMotorAction(final NXTRegulatedMotor motor1, final NXTRegulatedMotor motor2, Action action) {
 	    switch (action) {
 	        case FORWARD:
