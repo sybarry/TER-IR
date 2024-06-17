@@ -10,6 +10,7 @@ public class MainClassPilottageMQTT {
 		final String clientId = "EV3_" + Utils.generateClientID();
 		final String topic = "ev3/topic";
 
+		// MQTT Connexion
 		try {
 			new MQTTConnect(MQTT_SERVER_IP, clientId, topic);
 		} catch (InterruptedException e) {

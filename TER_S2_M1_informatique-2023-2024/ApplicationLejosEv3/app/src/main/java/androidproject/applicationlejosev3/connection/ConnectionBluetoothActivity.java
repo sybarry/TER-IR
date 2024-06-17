@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
     BluetoothService BTConnect;
     ListView LV;
     Button btnRefresh;
+    ImageButton btnConnect;
     EditText editMAC;
 
     @Override
@@ -33,6 +35,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         btnRefresh = findViewById(R.id.btnRefresh);
         LV = findViewById(R.id.LV);
         editMAC = findViewById(R.id.editMac);
+        btnConnect = findViewById(R.id.btnConnect);
 
         /* Verifie si le bluetooth est activé, sinon demande à l'utilisateur de l'activer */
         if (!BluetoothService.checkBTPermissions(this, this))
@@ -47,14 +50,29 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
         /* Permet de se connecter à un appareil en cliquant dessus */
         LV.setOnItemClickListener((parent, item_view, pos, row_id) -> {
             Device device = (Device) parent.getItemAtPosition(pos);
-            editMAC.setText(device.getMacAddress());
-            Intent it = new Intent(ConnectionBluetoothActivity.this, ControlPageActivity.class);
-            it.putExtra("mac", device);
-            startActivity(it);
+            connectToDevice(device);
         });
 
         /* Rafraichit la liste des appareils appairés */
         btnRefresh.setOnClickListener(view -> updateBluetoothDevices(LV, BTConnect.localAdapter));
+
+        /* Permet de se connecter à un appareil en entrant son adresse MAC */
+        btnConnect.setOnClickListener(view -> {
+            String macAddress = editMAC.getText().toString();
+            String macAddressRegex = "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
+
+            if (!macAddress.isEmpty() && macAddress.matches(macAddressRegex)){
+                connectToDevice(new Device("EV3", macAddress));
+            } else {
+                Utils.toast(this, "Please enter a valid MAC address");
+            }
+        });
+    }
+
+    private void connectToDevice(Device device) {
+        Intent it = new Intent(ConnectionBluetoothActivity.this, ControlPageActivity.class);
+        it.putExtra("mac", device);
+        startActivity(it);
     }
 
     /** Récupère les appareils appairés */
@@ -107,6 +125,7 @@ public class ConnectionBluetoothActivity extends AppCompatActivity {
     /** Retourne à la page précédente en fermant efficacement l'activité */
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         finish();
     }
 

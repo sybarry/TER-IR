@@ -2,6 +2,9 @@ package pilottageColorSensor;
 
 import pilottageMQTT.Action;
 
+/**
+ * Classe qui permet de stocker une action et l'état de destination
+ */
 public class Action_Etat {
 
     private Action action;

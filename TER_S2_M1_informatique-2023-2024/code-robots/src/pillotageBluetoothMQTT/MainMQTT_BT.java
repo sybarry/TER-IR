@@ -2,14 +2,14 @@ package pillotageBluetoothMQTT;
 
 import lejos.hardware.Button;
 
-import static pillotageBluetoothMQTT.BTConnect.MAC;
-
 import java.io.IOException;
+
+import static pillotageBluetoothMQTT.BTConnect.MAC;
 
 public class MainMQTT_BT {
     // IP of the MQTT server, hebergée sur le cloud
     static final String MQTT_SERVER_IP = "141.145.203.36";
-//    private static final String MQTT_SERVER_IP = "192.168.0.188";
+    //    private static final String MQTT_SERVER_IP = "192.168.0.188";
     private static final String clientId = "EV3_" + MAC;
     public static Controller ctrl;
     public static boolean BT_disconnected = false;
@@ -27,8 +27,6 @@ public class MainMQTT_BT {
                 public void run() {
                     try {
                         new MQTTConnect(MQTT_SERVER_IP, clientId, "ev3/topic");
-//                        while (true)
-//                            Thread.sleep(1000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

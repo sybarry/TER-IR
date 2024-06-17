@@ -2,6 +2,8 @@ package pillotageBluetoothMQTT;
 
 import lejos.hardware.Bluetooth;
 import lejos.hardware.BrickFinder;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.remote.nxt.NXTCommConnector;
 import lejos.remote.nxt.NXTConnection;
 
@@ -28,12 +30,12 @@ public class BTConnect implements Runnable {
         DataOutputStream out = connection.openDataOutputStream();
         System.out.println("Client connected");
 
-        /** Boucle pour lire les commandes envoyées par le client et les exécuter.
+        /* Boucle pour lire les commandes envoyées par le client et les exécuter.
          * Avant de lire une commande, on envoie la vitesse actuelle des moteurs au client. <br>
          * Au cas où le client se déconnecte, on sort de la boucle et la connexion bluetooth (le thread) est fermée. <br>
-         * **/
+         */
         while (true) {
-            out.write(ctrl.getSpeedAsArray(ctrl.getActualState().getValue()));
+            out.write(ctrl.sendPayloadAsArray(ctrl.getActualState().getValue()));
             out.flush();
             try{
                 byte[] input = new byte[2];
@@ -56,6 +58,8 @@ public class BTConnect implements Runnable {
      * **/
     private void executeCommand(Controller ctrl, byte[] input) {
         switch (input[0]) {
+        	case 0:
+        		break;
             case 1:
                 ctrl.movingForward();
                 break;
@@ -69,7 +73,7 @@ public class BTConnect implements Runnable {
                 ctrl.turnRight();
                 break;
             case 5:
-                ctrl.saveSpeed(input[1] * 10);
+                ctrl.applySpeed(input[1] * 10);
                 break;
             case 7:
                 ctrl.stop();
@@ -77,6 +81,9 @@ public class BTConnect implements Runnable {
         }
     }
 
+    /*
+        * Méthode run() pour lancer le thread de connexion bluetooth
+     */
     @Override
     public void run() {
         try {

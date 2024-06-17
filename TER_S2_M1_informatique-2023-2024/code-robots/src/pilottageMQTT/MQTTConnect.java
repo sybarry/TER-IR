@@ -11,17 +11,21 @@ import lejos.hardware.Button;
 import lejos.utility.Delay;
 import pilottageColorSensor.Automate;
 import pilottageColorSensor.ConduiteAutonome;
-import pilottageColorSensor.Direction;
 
+/**
+ * This class is used to connect to the MQTT broker and listen to messages.
+ **/
 public class MQTTConnect {
+	ConduiteAutonome  conduiteAutonome = null;
 
 	public MQTTConnect(String broker_IP, final String clientID, String topic) throws Exception {
 		// Attempt to connect
 		final String broker = "tcp://" + broker_IP + ":1883";
 		MqttClient client = new MqttClient(broker, clientID);
 		MqttConnectOptions connOpts = new MqttConnectOptions();
+		 
 		connOpts.setCleanSession(true);
-		// Security credentials; not available in the broker for the moment
+		// Security credentials if needed
 		// connOpts.setUserName("");
 		// connOpts.setPassword("");
 		Utils.print("Connecting to broker " + broker_IP);
@@ -37,7 +41,8 @@ public class MQTTConnect {
 		MqttMessage mqttMessage = new MqttMessage(message.getBytes());
 		client.publish(topic, mqttMessage);
 		Utils.print("Waiting action");
-
+         
+		
 		// MQTT message listenner
 		client.setCallback(new MqttCallback() {
 
@@ -53,37 +58,24 @@ public class MQTTConnect {
 			@Override
 			public void messageArrived(String topic, MqttMessage message) throws ParseException, InterruptedException, RuntimeException {
 				String payload = new String(message.getPayload());
-
-				Automate auto = new Automate(payload);
-				ConduiteAutonome  conduiteAutonome = new ConduiteAutonome(auto);
-				conduiteAutonome.execute();
-
-
-
-			/*	try {
-					if (auto.getWhite().equals("left")) {
-						Utils.print("Moving forward");
-						MotorSync.startMotorsSync(Motor.B, Motor.C, Action.FORWARD, 2000);
-					} else if (payload.equals("back")) {
-						Utils.print("Moving backward");
-						MotorSync.startMotorsSync(Motor.B, Motor.C, Action.BACKWARD, 2000);
-					} else if (payload.equals(clientID)) {
-						Utils.print("Special move");
-						MotorSync.startMotorsSync(Motor.B, Motor.B, Action.FORWARD, 5000); // Tourbillon
+				
+				if(payload.contains(String.valueOf('('))) {
+					  //On recupere le fichier Json depuis MQTT et on construit L'automate
+					Automate auto = new Automate(payload);
+					conduiteAutonome = new ConduiteAutonome(auto);
+					
+				}else {
+					if(conduiteAutonome !=null) {
+						conduiteAutonome.execute(payload);
+					}else {
+						Utils.print("Veuillez lancer l'automate en premier lieu");
 					}
-
-				}catch(Exception e) {
-
-				}*/
-
-
+				}
 			}
-
+			
 
 			@Override
-			public void deliveryComplete(IMqttDeliveryToken token) {
-			}
-		});
+			public void deliveryComplete(IMqttDeliveryToken token) {}});
 
 		// Exit program by long-pressing DOWN button
 		while (true) {

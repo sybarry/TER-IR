@@ -1,17 +1,22 @@
 package pillotageBluetoothMQTT;
 
+import lejos.hardware.Battery;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
+import lejos.robotics.SampleProvider;
 
 public class Controller {
-    public int ratioLeft = 0;
-    public int ratioRight = 0;
+    private static final EV3UltrasonicSensor ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S4);
+    public int ratioLeft, ratioRight = 0;
+    float distanceSeuil = 0.05f;
     private State actualState = State.STOPPED;
-    private Motor leftMotor;
-    private Motor rightMotor;
-    private int initial_speed = 50;
-    private int max_speed = 500;
+    private final Motor leftMotor;
+    private final Motor rightMotor;
+    private final int initial_speed = 50;
+    private final int max_speed = 500;
 
     /**
      * Initialisation de la vitesse des deux moteurs
@@ -30,8 +35,10 @@ public class Controller {
     // Les méthodes suivantes permettent de contrôler le robot
 
     /**
-     * Avancer le robot, si le robot est déjà en train d'avancer, il continue d'avancer. <br>
-     * Si le robot est en train de tourner à gauche ou à droite, il arrête de tourner et avance
+     * Avancer le robot, si le robot est déjà en train d'avancer, il continue
+     * d'avancer. <br>
+     * Si le robot est en train de tourner à gauche ou à droite, il arrête de
+     * tourner et avance
      */
     public void movingForward() {
         leftMotor.getMotor().startSynchronization();
@@ -57,14 +64,16 @@ public class Controller {
             actualState = State.FORWARD;
             leftMotor.movingForward();
             rightMotor.movingForward();
-        } else System.out.println("No forward in this state");
+        } else
+            System.out.println("No forward in this state");
         leftMotor.getMotor().endSynchronization();
     }
 
     /**
      * Reculer le robot: <br>
      * Si le robot est déjà en train de reculer, il continue de reculer. <br>
-     * Si le robot est en train de tourner à gauche ou à droite, il arrête de tourner et recule
+     * Si le robot est en train de tourner à gauche ou à droite, il arrête de
+     * tourner et recule
      **/
     public void movingBackward() {
         leftMotor.getMotor().startSynchronization();
@@ -75,7 +84,8 @@ public class Controller {
         ratioRight = 0;
         if (leftMotor.getActual_speed() > rightMotor.getActual_speed())
             leftMotor.setActual_speed(rightMotor.getActual_speed());
-        else rightMotor.setActual_speed(leftMotor.getActual_speed());
+        else
+            rightMotor.setActual_speed(leftMotor.getActual_speed());
         leftMotor.movingBackward();
         rightMotor.movingBackward();
         leftMotor.getMotor().endSynchronization();
@@ -97,10 +107,11 @@ public class Controller {
     /**
      * Tourner à gauche: <br>
      * - Si le robot est en train d'avancer, il commence à tourner à gauche <br>
-     * - Si le robot est déjà en train de tourner à gauche,
-     * il continue de tourner à gauche avec un angle plus grand. L'angle de rotation est limité à 200 (3 appels) <br>
-     * - Si le robot essaye de tourner à droite tout en tournant à gauche,
-     * il reduit l'angle de rotation à gauche jusqu'à sa stabilisation vers l'avant
+     * - Si le robot est déjà en train de tourner à gauche, il continue de tourner à
+     * gauche avec un angle plus grand. L'angle de rotation est limité à 200 (3
+     * appels) <br>
+     * - Si le robot essaye de tourner à droite tout en tournant à gauche, il reduit
+     * l'angle de rotation à gauche jusqu'à sa stabilisation vers l'avant
      **/
     public void turnLeft() {
         leftMotor.getMotor().startSynchronization();
@@ -127,10 +138,11 @@ public class Controller {
     /**
      * Tourner à droite: <br>
      * - Si le robot est en train d'avancer, il commence à tourner à droite <br>
-     * - Si le robot est déjà en train de tourner à droite,
-     * il continue de tourner à droite avec un angle plus grand. L'angle de rotation est limité à 200 (3 appels) <br>
-     * - Si le robot essaye de tourner à gauche tout en tournant à droite,
-     * il reduit l'angle de rotation à droite jusqu'à sa stabilisation vers l'avant
+     * - Si le robot est déjà en train de tourner à droite, il continue de tourner à
+     * droite avec un angle plus grand. L'angle de rotation est limité à 200 (3
+     * appels) <br>
+     * - Si le robot essaye de tourner à gauche tout en tournant à droite, il reduit
+     * l'angle de rotation à droite jusqu'à sa stabilisation vers l'avant
      */
     public void turnRight() {
         leftMotor.getMotor().startSynchronization();
@@ -157,7 +169,7 @@ public class Controller {
     /**
      * Appliquer une vitesse de 0 à 500 aux deux moteurs
      **/
-    public void saveSpeed(int value) {
+    public void applySpeed(int value) {
         int speed = Math.min(value, max_speed);
 
         leftMotor.getMotor().startSynchronization();
@@ -167,17 +179,36 @@ public class Controller {
     }
 
     /**
-     * Récupérer la vitesse des deux moteurs sous forme de tableau de bytes
-     * La vitesse est divisée par 10 pour réduire la taille du message à envoyer, les valeurs sont multipliées par 10 à la réception
+     * Récupérer la vitesse des deux moteurs sous forme de tableau de bytes La
+     * vitesse est divisée par 10 pour réduire la taille du message à envoyer, les
+     * valeurs sont multipliées par 10 à la réception
      *
      * @return tableau de bytes contenant la vitesse des deux moteurs
      **/
-    public byte[] getSpeedAsArray(int message_type) {
+    public byte[] sendPayloadAsArray(int status) {
         return new byte[]{
                 (byte) (leftMotor.getActual_speed() / 10),
                 (byte) (rightMotor.getActual_speed() / 10),
-                (byte) message_type
+                (byte) status,
+                (byte) (detectedObstacle(calculateDistance()) ? 1 : 0),
+                (byte) (Battery.getVoltage() * 10)
         };
+    }
+
+    public boolean detectedObstacle(float distance) {
+        // Afficher la distance mesurée
+        // System.out.println("Distance: " + distance + " m");
+        return !(distance > distanceSeuil);
+    }
+
+    public float calculateDistance() {
+        SampleProvider distanceProvider = ultrasonicSensor.getMode("Distance");
+        float[] distanceSample = new float[distanceProvider.sampleSize()];
+        // Obtenir la distance mesurée
+        distanceProvider.fetchSample(distanceSample, 0);
+        // La distance est stockée dans le premier élément du tableau
+        float distance = distanceSample[0];
+        return distance;
     }
 
 }

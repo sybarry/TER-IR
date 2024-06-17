@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:gauge="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +15,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:id="@+id/layout_speed"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
@@ -24,26 +23,39 @@
 
             <com.github.capur16.digitspeedviewlib.DigitSpeedView
                     android:id="@+id/digitGauche"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
                     app:speed="0"
-                    gauge:showUnit="false"
-                    android:layout_marginHorizontal="10dp"
+                    app:showUnit="false"
+                    android:layout_marginHorizontal="5dp"
                     app:speedTextColor="@android:color/white"
                     app:speedTextSize="20dp"
                     app:unitTextSize="3dp" />
 
             <com.github.capur16.digitspeedviewlib.DigitSpeedView
                     android:id="@+id/digitDroite"
-                    android:layout_width="170dp"
+                    android:layout_width="140dp"
                     android:layout_toEndOf="@id/digitGauche"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="5dp"
                     app:speed="0"
-                    gauge:showUnit="false"
+                    app:showUnit="false"
                     app:speedTextColor="@android:color/white"
                     app:speedTextSize="20dp"
                     app:unitTextSize="3dp" />
+
+            <eo.view.batterymeter.BatteryMeterView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/batteryMeter"
+                    app:batteryMeterChargeLevel="5"
+                    app:batteryMeterColor="#26A653"
+                    app:batteryMeterCriticalChargeLevel="25"
+                    app:batteryMeterCriticalColor="#d84315"
+                    app:batteryMeterIndicatorColor="@android:color/transparent"
+                    app:batteryMeterIsCharging="false"
+                    app:batteryMeterTheme="rounded"
+                    app:batteryMeterUnknownColor="#e0e0e0" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,6 +148,7 @@
                     android:layout_below="@id/buttonQuit"
                     android:textStyle="bold" />
 
+
             <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,12 +173,10 @@
             <ImageButton
                     android:id="@+id/buttonG"
                     android:enabled="true"
-                    android:layout_width="123dp"
-                    android:layout_height="113dp"
+                    android:layout_width="100dp"
+                    android:layout_height="110dp"
                     android:src="@drawable/right_arrow"
                     android:scaleType="fitCenter"
-                    android:layout_marginTop="16dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="50dp"
                     android:layout_alignParentStart="true"
@@ -173,12 +184,11 @@
 
             <ImageButton
                     android:id="@+id/buttonD"
-                    android:layout_width="123dp"
-                    android:layout_height="113dp"
+                    android:layout_width="100dp"
+                    android:layout_height="110dp"
                     android:enabled="true"
                     android:src="@drawable/left_arrow"
                     android:scaleType="fitCenter"
-                    android:layout_marginTop="50dp"
                     android:layout_below="@+id/buttonG"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="17dp"
@@ -194,14 +204,32 @@
             android:orientation="vertical"
             android:layout_height="200dp">
 
-        <TextView
-                android:layout_margin="7dp"
-                android:textSize="17dp"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily=""
-                android:text="Sortie :" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_margin="7dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Console" />
+
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnClear"
+                    android:src="@android:drawable/ic_menu_delete"
+                    android:padding="10dp"
+                    app:tint="@color/black"
+                    android:background="@color/white" />
+        </LinearLayout>
+
+
 
         <ScrollView
                 android:layout_width="match_parent"
